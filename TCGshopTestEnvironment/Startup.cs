@@ -60,7 +60,7 @@ namespace TCGshopTestEnvironment
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connection = @"User ID=postgres;Password=test;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
+            var connection = @"User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
             services.AddDbContext<DBModel>(options => options.UseNpgsql(connection));
         }
 
