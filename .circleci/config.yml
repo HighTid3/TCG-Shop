@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build:
+    docker:
+    # Primary container image where all steps run.
+     - image: microsoft/dotnet:2.1-sdk
+     
+    # Secondary container image on common network. 
+     - image: circleci/postgres:9.6.7-alpine
+       environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+     working_directory: ~/TCG/
+     steps:
+      - checkout
+      - run: find .
+      - run: dotnet restore
+      - run: cd ./TCGshopTestEnvironment && ls -all && dotnet ef database update
+      - run: dotnet build
