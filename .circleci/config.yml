@@ -10,8 +10,10 @@ jobs:
        environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-     working_directory: ~/TCG/
-     steps:
+
+    working_directory: ~/TCG/
+
+    steps:
       - checkout
       - run: find .
       - run: dotnet restore
