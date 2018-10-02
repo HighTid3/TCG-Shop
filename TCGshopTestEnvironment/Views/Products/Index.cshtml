@@ -1,0 +1,33 @@
+﻿@model TCGshopTestEnvironment.ViewModels.ProductsIndexModel
+    @{ViewBag.Title = "Product View";
+}
+
+<div id ="asssets">
+<h3>Product</h3>
+<div id="productsTable">
+    <table class="table table-condensed" id="productsIndexTable">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var asset in @Model.Assets)
+            {
+                <tr class="assetRow">
+                    <td class="">
+                        <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
+                            <img src="@asset.ImageUrl" class="imageCell" />
+                        </a>
+                    </td>
+                    <td class="">@asset.Name</td>
+                    <td class="">@asset.Price</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+</div>
