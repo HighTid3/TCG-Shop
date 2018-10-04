@@ -10,8 +10,9 @@ namespace TCGshopTestEnvironment.Models
     public class Products
     {
         [Key]
-        public int Product_ID { get; set; }
+        public int ProductID { get; set; }
 
+        public string Name { get; set; }    
         public float Price { get; set; }
 
         public string Description { get; set; }
@@ -28,5 +29,6 @@ namespace TCGshopTestEnvironment.Models
 
         public string Views_Details { get; set; }
 
-   }
+        public string ImageUrl { get; set; }
+    }
 }
