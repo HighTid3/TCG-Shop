@@ -10,22 +10,27 @@
             <tr>
                 <th>Image</th>
                 <th>Name</th>
+                <th>Grade</th>
+                <th>Stock</th>
                 <th>Price</th>
+
             </tr>
         </thead>
         <tbody>
             @foreach (var asset in @Model.Assets)
             {
-                <tr class="assetRow">
-                    <td class="">
-                        <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                            <img src="@asset.ImageUrl" class="imageCell" />
-                        </a>
-                    </td>
-                    <td class="">@asset.Name</td>
-                    <td class="">@asset.Price</td>
+            <tr class="assetRow">
+                <td class="">
+                    <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
+                        <img src="/images/Cards/@(asset.ImageUrl+ ".png")" class="imageCell" />
+                    </a>
+                </td>
+                <td class="">@asset.Name</td>
+                <td class="">@asset.Grade</td>
+                <td class="">@asset.Stock</td>
+                <td class="">€@asset.Price</td>
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>

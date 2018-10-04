@@ -6,6 +6,7 @@ using TCGshopTestEnvironment.Models;
 
 namespace TCGshopTestEnvironment.Services
 {
+    //all possible methods for gaining/writing data to the products table in the database
     public interface IProducts
     {
         IEnumerable<Products> GetAll();

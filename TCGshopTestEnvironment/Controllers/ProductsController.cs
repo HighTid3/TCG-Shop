@@ -27,7 +27,10 @@ namespace TCGshopTestEnvironment.Controllers
                     Id = result.ProductID,
                     Name = result.Name,
                     Price = result.Price,
-                    ImageUrl = result.ImageUrl
+                    ImageUrl = result.ImageUrl,
+                    Grade = result.Grade,
+                    Stock = result.Stock
+                    
                     
 
                 });
@@ -38,5 +41,23 @@ namespace TCGshopTestEnvironment.Controllers
             ;
             return View(model);
         }
+
+        public IActionResult Detail(int id)
+        {
+            var asset = _assets.GetByID(id);
+
+            var model = new ProductsDetailModel
+            {
+                Description = asset.Description,
+                Grade = asset.Grade,
+                Name = asset.Name,
+                Price = asset.Price,
+                Stock = asset.Stock,
+                ImageUrl = asset.ImageUrl,
+
+            };
+            return View(model);
+        }
+        }
     }
-}
+
