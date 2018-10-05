@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace TCGshopTestEnvironment.Migrations
 {
-    public partial class firstmigration : Migration
+    public partial class FirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,17 +53,15 @@ namespace TCGshopTestEnvironment.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "catagories",
+                name: "categories",
                 columns: table => new
                 {
-                    Catagory_ID = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: true),
+                    CategoryName = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_catagories", x => x.Catagory_ID);
+                    table.PrimaryKey("PK_categories", x => x.CategoryName);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,26 +91,6 @@ namespace TCGshopTestEnvironment.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_pictures", x => x.Picture_ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "products",
-                columns: table => new
-                {
-                    Product_ID = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Price = table.Column<float>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Grade = table.Column<string>(nullable: true),
-                    Stock = table.Column<int>(nullable: false),
-                    Date_Created = table.Column<DateTime>(nullable: false),
-                    Date_Updated = table.Column<DateTime>(nullable: false),
-                    Views_Listed = table.Column<int>(nullable: false),
-                    Views_Details = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_products", x => x.Product_ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -246,6 +224,59 @@ namespace TCGshopTestEnvironment.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "products",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Name = table.Column<string>(nullable: true),
+                    OwnerId = table.Column<string>(nullable: true),
+                    Price = table.Column<float>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Grade = table.Column<string>(nullable: true),
+                    Stock = table.Column<int>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    DateUpdated = table.Column<DateTime>(nullable: false),
+                    ViewsListed = table.Column<int>(nullable: false),
+                    ViewsDetails = table.Column<int>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_products", x => x.ProductId);
+                    table.ForeignKey(
+                        name: "FK_products_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductCategory",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(nullable: false),
+                    CategoryName = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategory", x => new { x.ProductId, x.CategoryName });
+                    table.ForeignKey(
+                        name: "FK_ProductCategory_categories_CategoryName",
+                        column: x => x.CategoryName,
+                        principalTable: "categories",
+                        principalColumn: "CategoryName",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductCategory_products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -282,6 +313,16 @@ namespace TCGshopTestEnvironment.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCategory_CategoryName",
+                table: "ProductCategory",
+                column: "CategoryName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_products_OwnerId",
+                table: "products",
+                column: "OwnerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -302,16 +343,13 @@ namespace TCGshopTestEnvironment.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "catagories");
-
-            migrationBuilder.DropTable(
                 name: "orders");
 
             migrationBuilder.DropTable(
                 name: "pictures");
 
             migrationBuilder.DropTable(
-                name: "products");
+                name: "ProductCategory");
 
             migrationBuilder.DropTable(
                 name: "statistics");
@@ -321,6 +359,12 @@ namespace TCGshopTestEnvironment.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "categories");
+
+            migrationBuilder.DropTable(
+                name: "products");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
