@@ -10,8 +10,8 @@ using TCGshopTestEnvironment.Models;
 namespace TCGshopTestEnvironment.Migrations
 {
     [DbContext(typeof(DBModel))]
-    [Migration("20181002205644_UpdateDatabase")]
-    partial class UpdateDatabase
+    [Migration("20181005141815_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,18 +128,29 @@ namespace TCGshopTestEnvironment.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.Catagory", b =>
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Category", b =>
                 {
-                    b.Property<int>("Catagory_ID")
+                    b.Property<string>("CategoryName")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("Name");
+                    b.HasKey("CategoryName");
 
-                    b.HasKey("Catagory_ID");
+                    b.ToTable("categories");
+                });
 
-                    b.ToTable("catagories");
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.JoinTables.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("CategoryName");
+
+                    b.HasKey("ProductId", "CategoryName");
+
+                    b.HasIndex("CategoryName");
+
+                    b.ToTable("ProductCategory");
                 });
 
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Orders", b =>
@@ -174,12 +185,12 @@ namespace TCGshopTestEnvironment.Migrations
 
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Products", b =>
                 {
-                    b.Property<int>("ProductID")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Date_Created");
+                    b.Property<DateTime>("DateCreated");
 
-                    b.Property<DateTime>("Date_Updated");
+                    b.Property<DateTime>("DateUpdated");
 
                     b.Property<string>("Description");
 
@@ -189,15 +200,19 @@ namespace TCGshopTestEnvironment.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("OwnerId");
+
                     b.Property<float>("Price");
 
                     b.Property<int>("Stock");
 
-                    b.Property<string>("Views_Details");
+                    b.Property<int>("ViewsDetails");
 
-                    b.Property<int>("Views_Listed");
+                    b.Property<int>("ViewsListed");
 
-                    b.HasKey("ProductID");
+                    b.HasKey("ProductId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("products");
                 });
@@ -327,6 +342,26 @@ namespace TCGshopTestEnvironment.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.JoinTables.ProductCategory", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryName")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TCGshopTestEnvironment.Models.Products", "Products")
+                        .WithMany("Category")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Products", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
                 });
 #pragma warning restore 612, 618
         }

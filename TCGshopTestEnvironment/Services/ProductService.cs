@@ -32,12 +32,12 @@ namespace TCGshopTestEnvironment.Services
         {
             
             return _context.products
-                    .FirstOrDefault(product => product.ProductID == id);
+                    .FirstOrDefault(product => product.ProductId == id);
         }
 
         public string GetName(int id)
         {
-            return _context.products.FirstOrDefault(product => product.ProductID == id).Name;
+            return _context.products.FirstOrDefault(product => product.ProductId == id).Name;
         }
     }
 }

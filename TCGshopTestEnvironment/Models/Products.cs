@@ -1,18 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using TCGshopTestEnvironment.Models.JoinTables;
 
 namespace TCGshopTestEnvironment.Models
 {
     public class Products
     {
         [Key]
-        public int ProductID { get; set; }
+        public int ProductId { get; set; }
 
-        public string Name { get; set; }    
+        public string Name { get; set; }
+
+        public UserAccount Owner { get; set; }
+
         public float Price { get; set; }
 
         public string Description { get; set; }
@@ -20,15 +26,17 @@ namespace TCGshopTestEnvironment.Models
         public string Grade { get; set; }
 
         public int Stock { get; set; }
+        public DateTime DateCreated { get; set; }
+        
 
-        public DateTime Date_Created { get; set; }
+        public DateTime DateUpdated { get; set; }
 
-        public DateTime Date_Updated { get; set; }
+        public int ViewsListed { get; set; }
 
-        public int Views_Listed { get; set; }
-
-        public string Views_Details { get; set; }
+        public int ViewsDetails { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public virtual List<ProductCategory> Category { get; set; }
     }
 }
