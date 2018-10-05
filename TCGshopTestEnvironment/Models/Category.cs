@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using TCGshopTestEnvironment.Models.JoinTables;
 
 namespace TCGshopTestEnvironment.Models
 {
-    public class Catagory
+    public class Category
     {
         [Key]
-        public int Catagory_ID { get; set; }
-
-        public string Name { get; set; }
+        public string CategoryName { get; set; }
 
         public string Description { get; set; }
 
-   }
+        public virtual List<ProductCategory> Products { get; set; }
+    }
 }

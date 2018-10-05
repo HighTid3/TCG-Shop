@@ -24,7 +24,7 @@ namespace TCGshopTestEnvironment.Controllers
             var listingResult = assetModels
                 .Select(result => new ProductsViewModel
                 {
-                    Id = result.ProductID,
+                    Id = result.ProductId,
                     Name = result.Name,
                     Price = result.Price,
                     ImageUrl = result.ImageUrl,
