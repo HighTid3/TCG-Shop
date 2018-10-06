@@ -54,6 +54,25 @@ ul.nav.navbar-nav li:first-child {
     border-left: .3em solid transparent;
     color: #f5b740;
 }
+.btnLogin {
+    background-color: #f5b740;
+    border-color: #f5b740;
+    width: 82%;
+    padding: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+.callToActionRegister {
+    margin-top: 15px;
+    background-color: #f5b740;
+    border-color: #f5b740;
+    width: 375px;
+    padding: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
 .form-control {
     width: 300px !important;
 }

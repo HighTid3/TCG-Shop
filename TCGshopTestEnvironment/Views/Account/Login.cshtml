@@ -1,13 +1,15 @@
 ﻿@model TCGshopTestEnvironment.ViewModels.LoginViewModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Log In";
 }
 
 <div class="container">
-    <h2>@ViewData["Title"]</h2>
-    <div class="row">
+    <div class="row justify-content-center">
+
         <div class="col-md-4">
+            <h2>@ViewData["Title"]</h2>
+
             <form method="post" asp-action="Login" asp-controller="Account">
                 <div asp-validation-summary="All"></div>
                 <div class="form-group">
@@ -25,18 +27,36 @@
                     <input asp-for="RememberMe" />
                     <span asp-validation-for="RememberMe"></span>
                 </div>
-                <div>
-                    <p><input type="submit" value="Login" /></p>
-                    <div class="form-group">
-                        <p>
-                            <a>Forgot your password?</a>
-                        </p>
-                        <p>
-                            <a asp-action="Register">No account yet? Register</a>
-                        </p>
-                    </div>
+                <p><input type="submit" value="Login" class="btn btn-default btnLogin" /></p>
+                <div class="form-group">
+                    <p>
+                        <a>Forgot your password?</a>
+                    </p>
+                    <p>
+                        <a asp-action="Register">No account yet? Register</a>
+                    </p>
                 </div>
             </form>
+        </div>
+        <div class="col-md-8">
+           <h1>Sign Up </h1>
+
+           <p>
+               <img src="~/images/ok.png" />View your orders easily and manage personal data.
+           </p>
+           <p>
+               <img src="~/images/ok.png" />You can easily keep track of the status of your orders.
+           </p>
+           <p>
+               <img src="~/images/ok.png" />You can download invoices from your orders.
+           </p>
+           <p>
+               <img src="~/images/ok.png" />You can download invoices from your orders.
+           </p>
+
+           <button class="btn btn-default callToActionRegister">
+               Create an account
+           </button>
         </div>
     </div>
 </div>
