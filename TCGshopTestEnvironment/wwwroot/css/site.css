@@ -1,17 +1,57 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 body {
-    padding-top: 50px;
+    /* padding-top: 50px; */
     padding-bottom: 20px;
 }
-
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+.dropdown-toggle::after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+}
+.loginRight {
+    margin-top:20px;
+}
+.navbar-inverse {
+    background-color: #2b74f6;
+    border-color: #2b74f6;
+    color: white;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color: white;
+}
+.search-bar {
+    margin-top: 15px;
+}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
-
+.logo-image {
+    margin-top:15px;
+    margin-bottom:10px;
+}
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
