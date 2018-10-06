@@ -101,14 +101,62 @@
     </nav>
 
     <partial name="_CookieConsentPartial" />
-   
-        @RenderBody()
 
-        <hr />
-        <footer>
-            <p>&copy; 2018 - TCGshopTestEnvironment</p>
-        </footer>
-  
+    @RenderBody()
+
+<div style="background-color: #3c76ee;color:white;margin-top: 100px;padding-top: 10px;padding-bottom: 25px;">
+    <footer>
+        <div class="container">
+            <div class="row footerRow">
+                <div class="col-md-3">
+                    <h1 class="footertitle">Information</h1>
+                    <p>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                        <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    <h1 class="footertitle">Category</h1>
+                    <p>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                        <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    <h1 class="footertitle">Legal</h1>
+                    <p>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                        <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    <h1 class="footertitle">Social Media</h1>
+                    <p>
+                        Facebook Logo
+                    </p>
+                </div>
+            </div>
+        </div>        
+    </footer>
+</div>
+    <div style="background-color: #1657e0; color: white;">
+    <footer>
+        <div class="container">
+            <div class="row copy-info text-center>
+                <div class="col-md-12">
+                    <p class=text-center>&copy; 2018 TCG Shop -  All rights reserved</p>
+                </div>
+            </div>
+        </div>        
+    </footer>
+</div>
+
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

@@ -1,8 +1,7 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 body {
-    /* padding-top: 50px; */
-    padding-bottom: 20px;
+
 }
 .wrapper {
     padding: 0px;
@@ -63,16 +62,35 @@ ul.nav.navbar-nav li:first-child {
     font-weight: 700;
     font-size: 1.5rem;
 }
-.callToActionRegister {
-    margin-top: 15px;
-    background-color: #f5b740;
-    border-color: #f5b740;
-    width: 375px;
-    padding: 10px;
-    color: white;
+.footertitle {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
     font-weight: 700;
-    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: #ecb858;
+    padding-bottom: 10px;
 }
+.footerRow {
+    color: white;
+}
+.footerRow a {
+    color: white;
+}
+.copy-info {
+    color: white;
+    padding: 25px;
+}
+    .callToActionRegister {
+        margin-top: 15px;
+        background-color: #f5b740;
+        border-color: #f5b740;
+        width: 375px;
+        padding: 10px;
+        color: white;
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
 .form-control {
     width: 300px !important;
 }
@@ -83,10 +101,10 @@ ul.nav.navbar-nav li:first-child {
     margin-bottom: 0px;
 }
 .navbar-inverse {
+    font-family: 'Oswald', sans-serif;
     font-weight: 800;
     font-size: 2rem;
     letter-spacing: 1px;
-    font-family: 'Oswald', sans-serif;
     background-color: #2b74f6;
     border-color: #2b74f6;
     color: white;
