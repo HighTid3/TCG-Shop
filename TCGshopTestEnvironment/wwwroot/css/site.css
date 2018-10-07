@@ -1,7 +1,18 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 body {
-
+    margin: 0;
+    padding: 0;
+}
+.logo-image {
+    margin-left: 0px;
+}
+.btn-primary {
+    background-color: #f5b740;
+    border-color: #f5b740;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.4rem;
 }
 .wrapper {
     padding: 0px;
@@ -10,14 +21,39 @@ body {
 .innerPrice {
     font-size: 3rem;
 }
+.loginRight {
+    margin-top: 10px;
+}
+.signIn {
+    font-weight: 700;
+    font-size: 1.6rem;
+    border-radius: 5px;
+    background-color: #f5b740;
+    border-color: #f5b740;
+    width: 100px;
+    height: 35px;
+    color: #ffffff;
+}
 .outerCallToAction {
     padding: 20px;
 }
+.containerCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.containerCenterRegister {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 ul.nav.navbar-nav li {
-    border-right: 1px solid rgba(0, 0, 0, 0.5);
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
 }
 ul.nav.navbar-nav li:first-child {
-    border-left: 1px solid rgba(0, 0, 0, 0.5);
+    border-left: 1px solid rgba(0, 0, 0, 0.3);
 }
 .callToAction {
     background-color: #2b74f6;
@@ -53,6 +89,21 @@ ul.nav.navbar-nav li:first-child {
     border-left: .3em solid transparent;
     color: #f5b740;
 }
+.signUpBox {
+    margin-left: 75px;
+}
+.btnRegister {
+    background-color: #f5b740;
+    border-color: #f5b740;
+    width: 50%;
+    padding: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin-left: 15%;
+}
 .btnLogin {
     background-color: #f5b740;
     border-color: #f5b740;
@@ -64,18 +115,34 @@ ul.nav.navbar-nav li:first-child {
 }
 .footertitle {
     font-family: 'Oswald', sans-serif;
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    font-weight: 400;
     text-transform: uppercase;
-    color: #ecb858;
-    padding-bottom: 10px;
+    color: #f5b740;
+    padding-bottom: 5px;
 }
 .footerRow {
     color: white;
 }
 .footerRow a {
     color: white;
+}
+.extraInfo {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 150px;
+}
+p.lead {
+    margin-right: 150px;
+}
+.promo {
+    margin-top: 50px;
+    margin-bottom: 25px;
+}
+.regLabel {
+    margin-top: 0px;
+    margin-right: 0px;
 }
 .copy-info {
     color: white;
@@ -93,9 +160,6 @@ ul.nav.navbar-nav li:first-child {
     }
 .form-control {
     width: 300px !important;
-}
-.loginRight {
-    margin-top:20px;
 }
 .navbar {
     margin-bottom: 0px;

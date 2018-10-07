@@ -1,68 +1,66 @@
 ﻿@model TCGshopTestEnvironment.ViewModels.RegisterViewModel
 
 @{
-    ViewData["Title"] = "Register Page";
+    ViewData["Title"] = "Register Account";
 }
 
-
 <div class="container">
-    <h2>@ViewData["Title"]</h2>
-    <div class="row">
-        <div class="col-md-4">
+    <div class="containerCenterRegister">
+        <div class="col-md-7">
             <form method="post" asp-controller="Account" asp-action="Register">
                 <div asp-validation-summary="All"></div>
 
                 <div class="form-group">
-                    <label asp-for="UserName"></label>
+                    <label asp-for="UserName" class="col-md-3 regLabel"></label>
                     <input asp-for="UserName" class="form-control" />
                     <span asp-validation-for="UserName"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Email"></label>
+                    <label asp-for="Email" class="col-md-3 regLabel"></label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="FirstName"></label>
+                    <label asp-for="FirstName" class="col-md-3 regLabel"></label>
                     <input asp-for="FirstName" class="form-control" />
                     <span asp-validation-for="FirstName"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="LastName"></label>
+                    <label asp-for="LastName" class="col-md-3 regLabel"></label>
                     <input asp-for="LastName" class="form-control" />
                     <span asp-validation-for="LastName"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Country"></label>
+                    <label asp-for="Country" class="col-md-3 regLabel"></label>
                     <input asp-for="Country" class="form-control" />
                     <span asp-validation-for="Country"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Address"></label>
+                    <label asp-for="Address" class="col-md-3 regLabel"></label>
                     <input asp-for="Address" class="form-control" />
                     <span asp-validation-for="Address"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="ZipCode"></label>
+                    <label asp-for="ZipCode" class="col-md-3 regLabel"></label>
                     <input asp-for="ZipCode" class="form-control" />
                     <span asp-validation-for="ZipCode"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="PhoneNumber"></label>
+                    <label asp-for="PhoneNumber" class="col-md-3 regLabel"></label>
                     <input asp-for="PhoneNumber" class="form-control" />
                     <span asp-validation-for="PhoneNumber"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Password"></label>
+                    <label asp-for="Password" class="col-md-3 regLabel"></label>
                     <input asp-for="Password" class="form-control" />
                     <span asp-validation-for="Password"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="ConfirmPassword"></label>
+                    <label asp-for="ConfirmPassword" class="col-md-3 regLabel"></label>
                     <input asp-for="ConfirmPassword" class="form-control" />
                     <span asp-validation-for="ConfirmPassword"></span>
                 </div>
-                <div><input type="submit" value="Register" /></div>
+                <div><input type="submit" value="Register" class="col-md-3 btnRegister" /></div>
             </form>
         </div>
     </div>
