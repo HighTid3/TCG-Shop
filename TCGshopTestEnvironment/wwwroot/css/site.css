@@ -1,17 +1,130 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
 
+}
+.wrapper {
+    padding: 0px;
+    margin: 0px;
+}
+.innerPrice {
+    font-size: 3rem;
+}
+.outerCallToAction {
+    padding: 20px;
+}
+ul.nav.navbar-nav li {
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
+}
+ul.nav.navbar-nav li:first-child {
+    border-left: 1px solid rgba(0, 0, 0, 0.5);
+}
+.callToAction {
+    background-color: #2b74f6;
+    border-color: #2b74f6;
+    padding: 10px 35px 10px 35px;
+    color: #FFF;
+    font-weight: 700;
+    font-size: 1.6rem;
+    border-radius: 5px;
+}
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+.dropdown-toggle::after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+    color: #f5b740;
+}
+.btnLogin {
+    background-color: #f5b740;
+    border-color: #f5b740;
+    width: 82%;
+    padding: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+.footertitle {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ecb858;
+    padding-bottom: 10px;
+}
+.footerRow {
+    color: white;
+}
+.footerRow a {
+    color: white;
+}
+.copy-info {
+    color: white;
+    padding: 25px;
+}
+    .callToActionRegister {
+        margin-top: 15px;
+        background-color: #f5b740;
+        border-color: #f5b740;
+        width: 375px;
+        padding: 10px;
+        color: white;
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
+.form-control {
+    width: 300px !important;
+}
+.loginRight {
+    margin-top:20px;
+}
+.navbar {
+    margin-bottom: 0px;
+}
+.navbar-inverse {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    background-color: #2b74f6;
+    border-color: #2b74f6;
+    color: white;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color: white;
+}
+.search-bar {
+    margin-top: 10px;
+}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
-
+.logo-image {
+    margin-top:5px;
+    margin-bottom:5px;
+}
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
