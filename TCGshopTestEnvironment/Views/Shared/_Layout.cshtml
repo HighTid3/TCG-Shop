@@ -32,13 +32,13 @@
                             <label for="inputPassword2" class="sr-only"></label>
                             <input type="text" class="form-control" id="textPassword" width="100px" placeholder="Search here...">
                         </div>
-                        <button type="submit" class="btn btn-primary">Go!</button>
+                        <button type="submit" class="btn btn-primary btnSearch">Go!</button>
                     </form>
                 </div>
             </div>
         </div>
         <div class="col-md-4 text-center loginRight">
-            <p><button type="button" onclick="location.href='@Url.Action("Login", "Account")'" class="signIn">Sign in</button> or 
+            <p><button type="button" onclick="location.href='@Url.Action("Login", "Account")'" class="btn btn-primary btnSignIn">Sign in</button> or 
             <a asp-area="" asp-controller="Account" asp-action="Register">Register</a></p>
          </div>
     </div>

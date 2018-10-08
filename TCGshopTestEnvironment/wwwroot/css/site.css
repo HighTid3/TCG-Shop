@@ -7,7 +7,7 @@ body {
 .logo-image {
     margin-left: 0px;
 }
-.btn-primary {
+.btnSearch {
     background-color: #f5b740;
     border-color: #f5b740;
     color: #ffffff;
@@ -24,7 +24,7 @@ body {
 .loginRight {
     margin-top: 10px;
 }
-.signIn {
+.btnSignIn {
     font-weight: 700;
     font-size: 1.6rem;
     border-radius: 5px;
