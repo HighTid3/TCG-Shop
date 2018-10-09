@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -58,6 +59,10 @@ namespace TCGshopTestEnvironment
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
+
+                // Email Settings
+                options.SignIn.RequireConfirmedEmail = true;
+
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -65,6 +70,9 @@ namespace TCGshopTestEnvironment
             services.AddScoped<IProducts, ProductService>();
             var connection = @"User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
             services.AddDbContext<DBModel>(options => options.UseNpgsql(connection));
+
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
