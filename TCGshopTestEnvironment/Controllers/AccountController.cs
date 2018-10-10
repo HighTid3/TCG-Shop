@@ -10,6 +10,7 @@ using TCGshopTestEnvironment.Controllers;
 using TCGshopTestEnvironment.Services;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,12 +30,32 @@ namespace TCGshopTestEnvironment.Controllers
             _emailSender = emailSender;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return RedirectToPage("/Index");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+            }
+
+            return View();
+        }
 
         [HttpGet]
         public IActionResult Login()
         {
-            //_emailSender.SendEmailAsync("jurre@koetse.eu", "Please Work","Please work by clicking here.");
-
             ViewBag.Title = "Login Page";
             return View();
 
@@ -89,11 +110,20 @@ namespace TCGshopTestEnvironment.Controllers
                 if (result.Succeeded)
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
+                    //var callbackUrl = Url.Page(
+                    //    "/Account/ConfirmEmail",
+                    //    pageHandler: null,
+                    //    values: new { userId = user.Id, code = code },
+                    //    protocol: Request.Scheme);
+
+                    var callbackUrl = Url.Action(new UrlActionContext
+                    {
+                        Action = "ConfirmEmail",
+                        Controller = "Account",
+                        Values = new { userId = user.Id, code = code },
+                        Protocol = HttpContext.Request.Scheme
+                    });
+
 
 
                     await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
