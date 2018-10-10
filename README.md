@@ -8,7 +8,7 @@ It's important to set the user-secrets, otherwise the application cannot send em
 
 this can be done by running:
 
-dotnet user-secrets set SendGridUser <MyUsername>
+dotnet user-secrets set SendGridUser MyUsername
   
   
-dotnet user-secrets set SendGridKey <MySendGridAPIKey>
+dotnet user-secrets set SendGridKey MySendGridAPIKey
