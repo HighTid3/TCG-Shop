@@ -62,6 +62,13 @@ namespace TCGshopTestEnvironment.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ForgotPasswordConfirmation()
+        {
+
+            return View();
+        }
+
         // Model for Forget Password
 
         [HttpPost]
@@ -73,7 +80,7 @@ namespace TCGshopTestEnvironment.Controllers
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    //return RedirectToPage("./ForgotPasswordConfirmation");
+                    return RedirectToAction("ForgotPasswordConfirmation", "Account");
                 }
 
                 // For more information on how to enable account confirmation and password reset please 
@@ -99,11 +106,69 @@ namespace TCGshopTestEnvironment.Controllers
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                return RedirectToPage("./ForgotPasswordConfirmation");
+                //return RedirectToPage("./ForgotPasswordConfirmation");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             return View();
         }
+
+        public ResetPasswordViewModel RpInput { get; set; }
+
+
+        //Reset Password
+        [HttpGet]
+        public async Task<IActionResult> ResetPassword(string code = null)
+        {
+            if (code == null)
+            {
+                return BadRequest("A code must be supplied for password reset.");
+            }
+            else
+            {
+                RpInput = new ResetPasswordViewModel
+                {
+                    Code = code
+                };
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var user = await _userManager.FindByEmailAsync(vm.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, vm.Code, vm.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ResetPasswordConfirmation()
+        {
+
+            return View();
+        }
+
 
 
 
