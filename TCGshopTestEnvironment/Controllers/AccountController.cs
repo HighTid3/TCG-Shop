@@ -11,6 +11,7 @@ using TCGshopTestEnvironment.Services;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Routing;
+using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -52,6 +53,124 @@ namespace TCGshopTestEnvironment.Controllers
 
             return View();
         }
+
+        // /Account/ForgetPassword
+        [HttpGet]
+        public async Task<IActionResult> ForgotPassword()
+        {
+
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ForgotPasswordConfirmation()
+        {
+
+            return View();
+        }
+
+        // Model for Forget Password
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(vm.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed
+                    return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                }
+
+                // For more information on how to enable account confirmation and password reset please 
+                // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                //var callbackUrl = Url.Page(
+                //    "/Account/ResetPassword",
+                //    pageHandler: null,
+                //    values: new { code },
+                //    protocol: Request.Scheme);
+
+                var callbackUrl = Url.Action(new UrlActionContext
+                {
+                    Action = "ResetPassword",
+                    Controller = "Account",
+                    Values = new { code = code },
+                    Protocol = HttpContext.Request.Scheme
+                });
+
+
+                await _emailSender.SendEmailAsync(
+                    vm.Email,
+                    "Reset Password",
+                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                //return RedirectToPage("./ForgotPasswordConfirmation");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+            }
+
+            return View();
+        }
+
+        public ResetPasswordViewModel RpInput { get; set; }
+
+
+        //Reset Password
+        [HttpGet]
+        public async Task<IActionResult> ResetPassword(string code = null)
+        {
+            if (code == null)
+            {
+                return BadRequest("A code must be supplied for password reset.");
+            }
+            else
+            {
+                RpInput = new ResetPasswordViewModel
+                {
+                    Code = code
+                };
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var user = await _userManager.FindByEmailAsync(vm.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, vm.Code, vm.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ResetPasswordConfirmation()
+        {
+
+            return View();
+        }
+
+
+
 
         [HttpGet]
         public IActionResult Login()
@@ -129,13 +248,8 @@ namespace TCGshopTestEnvironment.Controllers
                     await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
                         "Please confirm your account by <a href=" + callbackUrl + ">clicking here</a>.");
 
-                    // await _signInManager.SignInAsync(user, isPersistent: false);
-                    //return LocalRedirect(returnUrl);
 
-
-
-                    //await _signInManager.SignInAsync(user, false);
-                    //return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -157,6 +271,7 @@ namespace TCGshopTestEnvironment.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
     }
 
 }
