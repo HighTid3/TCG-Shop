@@ -9,7 +9,7 @@
 <div id="asssets">
     <h3>Product</h3>
     <div id="productsTable">
-        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Index", new { page, ViewBag.PageAmount, ViewBag.CardType }))
+        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name }))
         <table class="table table-condensed" id="productsIndexTable">
             <thead>
                 <tr>
@@ -39,10 +39,10 @@
                 }
             </tbody>
         </table>
-        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Index", new { page, ViewBag.PageAmount, ViewBag.CardType }))
+        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name }))
     </div>
-    <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="5" asp-route-CardType="@ViewBag.CardType"><button>5</button></a>
-    <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="10" asp-route-CardType="@ViewBag.CardType"><button>10</button></a>
-    <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="20" asp-route-CardType="@ViewBag.CardType"><button>20</button></a>
-    <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="50" asp-route-CardType="@ViewBag.CardType"><button>50</button></a>
+    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="5" asp-route-name="@ViewBag.name"><button>5</button></a>
+    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="10" asp-route-name="@ViewBag.name"><button>10</button></a>
+    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="20" asp-route-name="@ViewBag.name"><button>20</button></a>
+    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="50" asp-route-name="@ViewBag.name"><button>50</button></a>
 </div>

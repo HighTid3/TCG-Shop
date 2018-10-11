@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2;
 using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels;
 using X.PagedList.Mvc;
@@ -19,11 +20,17 @@ namespace TCGshopTestEnvironment.Controllers
             _assets = assets;
         }
 
-        public IActionResult Index(int? page, int? pageAmount)
+        public IActionResult Index(int? page, int? pageAmount, string cardType)
         {
             ViewBag.page = page;
             ViewBag.PageAmount = pageAmount;
-            var assetModels = _assets.GetAll();
+            ViewBag.CardType = cardType;
+            //var assetModels = _assets.GetAll();
+            var assetModels = _assets.GetbyCardType(cardType);
+            if (cardType == "Default")
+            {
+                assetModels = _assets.GetAll();
+            }
             var pageNumber = page ?? 1;
             var pageAmnt = pageAmount ?? 10;
             var listingResult = assetModels
@@ -37,14 +44,27 @@ namespace TCGshopTestEnvironment.Controllers
                     Stock = result.Stock
 
                 });
-            var model = new ProductsIndexModel()
-            {
-                Assets = listingResult
-            };
+            //var model = new ProductsIndexModel()
+            //{
+            //    Assets = listingResult
+            //};
             var onePageOfProducts = listingResult.ToPagedList(pageNumber, pageAmnt);
             ViewBag.OnePageOfProducts = onePageOfProducts;
 
+            if (cardType == "Pokemon")
+            {
+                return View("~/Views/Products/Pokemon/Pokemon.cshtml");
+            }
+            if (cardType == "YuGiOh")
+            {
+                return View("~/Views/Products/YuGiOh/YuGiOh.cshtml");
+            }
+            if (cardType == "Magic")
+            {
+                return View("~/Views/Products/Magic/Magic.cshtml");
+            }
             return View();
+            
         }
 
         public IActionResult Detail(int id)
@@ -63,6 +83,33 @@ namespace TCGshopTestEnvironment.Controllers
             };
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Search(int? page, int? pagAmount, string name)
+        {
+            ViewBag.page = page;
+            ViewBag.PageAmount = pagAmount;
+            ViewBag.name = name;
+            var pageNmber = page ?? 1;
+            var pageAmnt = pagAmount ?? 10;
+            var assetmodel = _assets.GetByNameSearch(name);
+            var listingResult = assetmodel
+                .Select(result => new ProductsViewModel
+                {
+                    Id = result.ProductId,
+                    Name = result.Name,
+                    Price = result.Price,
+                    ImageUrl = result.ImageUrl,
+                    Grade = result.Grade,
+                    Stock = result.Stock
+                });
+
+            var onePageOfProducts = listingResult.ToPagedList(pageNmber, pageAmnt);
+            ViewBag.OnePageOfProducts = onePageOfProducts;
+
+            return View();
         }
+
     }
+}
 

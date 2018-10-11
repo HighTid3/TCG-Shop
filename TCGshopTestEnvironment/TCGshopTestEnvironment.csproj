@@ -26,6 +26,12 @@
     <Content Update="Views\Home\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="Views\Products\Magic\Magic.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Products\YuGiOh\YuGiOh.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
   <Target Name="PrePublishTarget" AfterTargets="Publish">
     <Exec Command="dotnet ef database update" />
