@@ -68,8 +68,40 @@ namespace TCGshopTestEnvironment
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton(Configuration);
             services.AddScoped<IProducts, ProductService>();
-            var connection = @"User ID=postgres;Password=test;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
-            services.AddDbContext<DBModel>(options => options.UseNpgsql(connection));
+
+            var connection = @"User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
+            
+            
+            // Heroku provides PostgreSQL connection URL via env variable
+            var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+            var connStr = "";
+
+            if (connUrl == null)
+            {
+                connStr = connection;
+            }
+            else
+            {
+
+                // Parse connection URL to connection string for Npgsql
+                connUrl = connUrl.Replace("postgres://", string.Empty);
+
+                var pgUserPass = connUrl.Split("@")[0];
+                var pgHostPortDb = connUrl.Split("@")[1];
+                var pgHostPort = pgHostPortDb.Split("/")[0];
+
+                var pgDb = pgHostPortDb.Split("/")[1];
+                var pgUser = pgUserPass.Split(":")[0];
+                var pgPass = pgUserPass.Split(":")[1];
+                var pgHost = pgHostPort.Split(":")[0];
+                var pgPort = pgHostPort.Split(":")[1];
+
+                connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
+            }
+            
+            services.AddDbContext<DBModel>(options => options.UseNpgsql(connStr));
+
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);

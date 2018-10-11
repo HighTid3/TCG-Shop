@@ -1,0 +1,32 @@
+{
+  "name": "TCG-Shop",
+  "scripts": {
+  },
+  "env": {
+    "ASPNETCORE_ENVIRONMENT": {
+      "required": true
+    },
+    "old": {
+      "required": true
+    },
+    "SendGridKey": {
+      "required": true
+    },
+    "SendGridUser": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://buildpack-registry.s3.amazonaws.com/buildpacks/jincod/dotnetcore.tgz"
+    }
+  ]
+}
