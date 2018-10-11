@@ -1,5 +1,5 @@
 ﻿@model TCGshopTestEnvironment.ViewModels.ProductsIndexModel
-@{ViewBag.Title = "Product View";
+@{ViewBag.Title = "YuGiOh";
 }
 
 @using X.PagedList.Mvc;
@@ -7,7 +7,7 @@
 @using X.PagedList.Mvc.Core
 
 <div id="asssets">
-    <h3>Product</h3>
+    <h3>YuGiOh</h3>
     <div id="productsTable">
         @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Index", new { page, ViewBag.PageAmount, ViewBag.CardType }))
         <table class="table table-condensed" id="productsIndexTable">

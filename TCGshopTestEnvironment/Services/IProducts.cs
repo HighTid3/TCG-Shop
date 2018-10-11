@@ -14,7 +14,7 @@ namespace TCGshopTestEnvironment.Services
         void Add(Products NewProduct);
         string GetName(int id);
 
-
+        IEnumerable<Products> GetbyCardType(string type);
 
     }
 }

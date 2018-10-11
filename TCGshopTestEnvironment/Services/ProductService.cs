@@ -39,5 +39,13 @@ namespace TCGshopTestEnvironment.Services
         {
             return _context.products.FirstOrDefault(product => product.ProductId == id).Name;
         }
+
+        public IEnumerable<Products> GetbyCardType(string type)
+        {
+
+            return from p in _context.products
+                join c in _context.ProductCategory on p.ProductId equals c.ProductId where c.CategoryName == type
+                select p;
+        }
     }
 }

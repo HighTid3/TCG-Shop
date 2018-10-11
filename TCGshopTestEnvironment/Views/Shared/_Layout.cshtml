@@ -38,9 +38,9 @@
             </div>
         </div>
         <div class="col-md-4 text-center loginRight">
-            <p><button type="button" onclick="location.href='@Url.Action("Login", "Account")'" class="btn btn-primary btnSignIn">Sign in</button> or 
-            <a asp-area="" asp-controller="Account" asp-action="Register">Register</a></p>
-         </div>
+              @await Html.PartialAsync("_LoginPartial") 
+
+        </div>
     </div>
 </div>
 
@@ -65,7 +65,8 @@
                             Pokemon
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
+
+                            <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="Pokemon">All Pokemon Cards</a>>
                             <a class="dropdown-item" href="#">Another action</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Something else here</a>
@@ -76,7 +77,7 @@
                             Yu-Gi-Oh!
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="YuGiOh">All YuGiOh Cards</a>>
                             <a class="dropdown-item" href="#">Another action</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Something else here</a>
@@ -87,7 +88,7 @@
                             Magic the Gathering
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="Magic">All Magic: The Gathering Cards</a>>
                             <a class="dropdown-item" href="#">Another action</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Something else here</a>
@@ -95,10 +96,10 @@
                     </li>
 
                     <!-- ><li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li> -->
-                    <li><a asp-area="" asp-controller="Products" asp-action="Index">Cards</a></li>
+                    <li><a asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="Default">Cards</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
-                <!--  @await Html.PartialAsync("_LoginPartial") -->
+                
             </div>
         </div>
     </nav>

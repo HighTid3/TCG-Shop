@@ -19,11 +19,17 @@ namespace TCGshopTestEnvironment.Controllers
             _assets = assets;
         }
 
-        public IActionResult Index(int? page, int? pageAmount)
+        public IActionResult Index(int? page, int? pageAmount, string cardType)
         {
             ViewBag.page = page;
             ViewBag.PageAmount = pageAmount;
-            var assetModels = _assets.GetAll();
+            ViewBag.CardType = cardType;
+            //var assetModels = _assets.GetAll();
+            var assetModels = _assets.GetbyCardType(cardType);
+            if (cardType == "Default")
+            {
+                assetModels = _assets.GetAll();
+            }
             var pageNumber = page ?? 1;
             var pageAmnt = pageAmount ?? 10;
             var listingResult = assetModels
@@ -37,14 +43,27 @@ namespace TCGshopTestEnvironment.Controllers
                     Stock = result.Stock
 
                 });
-            var model = new ProductsIndexModel()
-            {
-                Assets = listingResult
-            };
+            //var model = new ProductsIndexModel()
+            //{
+            //    Assets = listingResult
+            //};
             var onePageOfProducts = listingResult.ToPagedList(pageNumber, pageAmnt);
             ViewBag.OnePageOfProducts = onePageOfProducts;
 
+            if (cardType == "Pokemon")
+            {
+                return View("~/Views/Products/Pokemon/Pokemon.cshtml");
+            }
+            if (cardType == "YuGiOh")
+            {
+                return View("~/Views/Products/YuGiOh/YuGiOh.cshtml");
+            }
+            if (cardType == "Magic")
+            {
+                return View("~/Views/Products/Magic/Magic.cshtml");
+            }
             return View();
+            
         }
 
         public IActionResult Detail(int id)
@@ -63,6 +82,9 @@ namespace TCGshopTestEnvironment.Controllers
             };
             return View(model);
         }
-        }
+
+
+
     }
+}
 
