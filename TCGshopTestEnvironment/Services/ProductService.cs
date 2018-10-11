@@ -51,7 +51,7 @@ namespace TCGshopTestEnvironment.Services
         public IEnumerable<Products> GetByNameSearch(string name)
         {
             return from p in _context.products
-                where p.Name.ToLower() == name.ToLower() || p.Name.ToLower().Contains(name.ToLower())
+                where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
                 select p;
         }
     }

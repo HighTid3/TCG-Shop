@@ -87,27 +87,34 @@ namespace TCGshopTestEnvironment.Controllers
         [HttpGet]
         public IActionResult Search(int? page, int? pagAmount, string name)
         {
-            ViewBag.page = page;
-            ViewBag.PageAmount = pagAmount;
-            ViewBag.name = name;
-            var pageNmber = page ?? 1;
-            var pageAmnt = pagAmount ?? 10;
-            var assetmodel = _assets.GetByNameSearch(name);
-            var listingResult = assetmodel
-                .Select(result => new ProductsViewModel
-                {
-                    Id = result.ProductId,
-                    Name = result.Name,
-                    Price = result.Price,
-                    ImageUrl = result.ImageUrl,
-                    Grade = result.Grade,
-                    Stock = result.Stock
-                });
+            if (!String.IsNullOrEmpty(name))
+            {
+                ViewBag.page = page;
+                ViewBag.PageAmount = pagAmount;
+                ViewBag.name = name;
+                var pageNmber = page ?? 1;
+                var pageAmnt = pagAmount ?? 10;
+                var assetmodel = _assets.GetByNameSearch(name.ToLower());
+                var listingResult = assetmodel
+                    .Select(result => new ProductsViewModel
+                    {
+                        Id = result.ProductId,
+                        Name = result.Name,
+                        Price = result.Price,
+                        ImageUrl = result.ImageUrl,
+                        Grade = result.Grade,
+                        Stock = result.Stock
+                    });
 
-            var onePageOfProducts = listingResult.ToPagedList(pageNmber, pageAmnt);
-            ViewBag.OnePageOfProducts = onePageOfProducts;
+                var onePageOfProducts = listingResult.ToPagedList(pageNmber, pageAmnt);
+                ViewBag.OnePageOfProducts = onePageOfProducts;
 
-            return View();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index","Home");
+            }
         }
 
     }
