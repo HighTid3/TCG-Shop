@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2;
 using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels;
 using X.PagedList.Mvc;
@@ -83,7 +84,31 @@ namespace TCGshopTestEnvironment.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult Search(int? page, int? pagAmount, string name)
+        {
+            ViewBag.page = page;
+            ViewBag.PageAmount = pagAmount;
+            ViewBag.name = name;
+            var pageNmber = page ?? 1;
+            var pageAmnt = pagAmount ?? 10;
+            var assetmodel = _assets.GetByNameSearch(name);
+            var listingResult = assetmodel
+                .Select(result => new ProductsViewModel
+                {
+                    Id = result.ProductId,
+                    Name = result.Name,
+                    Price = result.Price,
+                    ImageUrl = result.ImageUrl,
+                    Grade = result.Grade,
+                    Stock = result.Stock
+                });
 
+            var onePageOfProducts = listingResult.ToPagedList(pageNmber, pageAmnt);
+            ViewBag.OnePageOfProducts = onePageOfProducts;
+
+            return View();
+        }
 
     }
 }
