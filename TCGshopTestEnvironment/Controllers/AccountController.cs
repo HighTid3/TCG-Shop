@@ -134,8 +134,8 @@ namespace TCGshopTestEnvironment.Controllers
 
 
 
-                    //await _signInManager.SignInAsync(user, false);
-                    //return RedirectToAction("Index", "Home");
+                    await _signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
