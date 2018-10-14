@@ -30,7 +30,7 @@
                     <form class="form-inline" method="get" asp-action="Search" asp-controller="Products">
                         <div class="form-group mx-sm-12 text-center">
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input  type="text" class="form-control" id="textPassword" name="name" width="100px" placeholder="Search here...">
+                            <input  type="text" class="form-control" id="textSearch" name="name" width="100px" placeholder="Search here...">
                         </div>
                         <button type="submit" class="btn btn-primary btnSearch">Go!</button>
                     </form>
@@ -100,7 +100,7 @@
                     <li><a asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="Default">Cards</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
-                
+
             </div>
         </div>
     </nav>
@@ -109,58 +109,60 @@
 
     @RenderBody()
 
-<div style="background-color: #3c76ee;color:white;padding-top: 10px;padding-bottom: 25px;">
-    <footer>
-        <div class="containerCenter">
-            <div class="row footerRow">
-                <div class="col-md-3 extraInfo">
-                    <h1 class="footertitle">Information</h1>
-                    <p>
-                        <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
-                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                        <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
-                    </p>
-                </div>
-                <div class="col-md-3 extraInfo">
-                    <h1 class="footertitle">Category</h1>
-                    <p>
-                        <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
-                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                        <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
-                    </p>
-                </div>
-                <div class="col-md-3 extraInfo">
-                    <h1 class="footertitle">Legal Info</h1>
-                    <p>
-                        <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
-                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                        <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
-                    </p>
-                </div>
-                <div class="col-md-3 extraInfo">
-                    <h1 class="footertitle">Social Media</h1>
-                    <p>
-                        Facebook Logo
-                    </p>
+    <div style="background-color: #3c76ee;color:white;padding-top: 10px;padding-bottom: 25px;">
+        <footer>
+            <div class="containerCenter">
+                <div class="row footerRow">
+                    <div class="col-md-3 extraInfo">
+                        <h1 class="footertitle">Information</h1>
+                        <p>
+                            <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
+                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                            <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
+                        </p>
+                    </div>
+                    <div class="col-md-3 extraInfo">
+                        <h1 class="footertitle">Category</h1>
+                        <p>
+                            <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
+                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                            <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
+                        </p>
+                    </div>
+                    <div class="col-md-3 extraInfo">
+                        <h1 class="footertitle">Legal Info</h1>
+                        <p>
+                            <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
+                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
+                            <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
+                        </p>
+                    </div>
+                    <div class="col-md-3 extraInfo">
+                        <h1 class="footertitle">Social Media</h1>
+                        <p>
+                            Facebook Logo
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>        
-    </footer>
-</div>
+        </footer>
+    </div>
     <div style="background-color: #1657e0; color: white;">
-    <footer>
-        <div class="containerCenter">
-            <div class="row copy-info text-center>
-                <div class="col-md-12">
-                    <p class=text-center>&copy; 2018 TCG Shop -  All rights reserved</p>
+        <footer>
+            <div class="containerCenter">
+                <div class="row copy-info text-center>
+                    <div class="col-md-12">
+                        <p class=text-center>&copy; 2018 TCG Shop -  All rights reserved</p>
+                    </div>
                 </div>
             </div>
-        </div>        
-    </footer>
-</div>
+        </footer>
+    </div>
+
+
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -180,44 +182,14 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+
+    
+        
+    
+
     @RenderSection("Scripts", required: false)
-@section scripts{
-    <script>
-        $("#textPassword").on("keypress",
-            function() {
-                // get the value ftom input
-                var text = $(this).val();
-
-                if (text.length > 0) {
-                    $.get("@Url.Action("CardAutoCompleteResult", "Products")",
-                        { text: text },
-                        function(data) {
-
-                            //add all data
-                            for (i = 0; i < data.length; i++) {
-                                $("#textPassword").append('<option>' + data[i] + "</option>");
-                            }
-
-                            //if hidden show the select
-                            if ($("#textPassword").is(":hidden")) {
-                                $("#textPassword").show();
-                            }
-                        });
-                }
-            });
 
 
-        $(document).on("click",
-            "#result > option",
-            function() {
 
-                //add selected value to #search
-                $("#textPassword").val($(this).val());
-
-                //clear and hide #result
-                $("#textPassword").empty().hide();
-            });
-    </script>
-}
 </body>
     </html>
