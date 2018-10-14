@@ -117,6 +117,14 @@ namespace TCGshopTestEnvironment.Controllers
             }
         }
 
+        public JsonResult CardAutoCompleteResult(string text)
+        {
+
+            IEnumerable<string> cardname = _assets.GetByNameSearch(text).Select(x => x.Name).ToList();
+
+            return Json(cardname);
+        }
+
     }
 }
 
