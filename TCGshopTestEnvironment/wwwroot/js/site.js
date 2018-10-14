@@ -13,10 +13,10 @@ $("#textSearch").keyup(function (e) {
         $.get("/Products/CardAutoCompleteResult",
             { text: text },
             function (data) {
-
+                $("#textSearchData").empty();
                 //add all data
-                for (i = 0; i < data.length; i++) {
-                    $("#textSearch").append('<option>' + data[i] + "</option>");
+                for (i = 0; i < 5; i++) {
+                    $("#textSearchData").append('<option>' + data[i] + "</option>");
                 }
 
                 //if hidden show the select
