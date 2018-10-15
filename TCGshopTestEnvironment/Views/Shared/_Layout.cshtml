@@ -30,10 +30,8 @@
                     <form class="form-inline" method="get" asp-action="Search" asp-controller="Products">
                         <div class="form-group mx-sm-12 text-center">
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input list="textSearchData"  class="form-control" id="textSearch" name="name" width="100px" placeholder="Search here...">
-                            <datalist id="textSearchData">
-
-                            </datalist>
+                            <input list="textSearchData" class="form-control" id="textSearch" name="name" width="100px" placeholder="Search here...">
+                            <datalist id="textSearchData"></datalist>
                         </div>
                         <button type="submit" class="btn btn-primary btnSearch">Go!</button>
                     </form>
@@ -42,7 +40,7 @@
             </div>
         </div>
         <div class="col-md-4 text-center loginRight">
-              @await Html.PartialAsync("_LoginPartial") 
+            @await Html.PartialAsync("_LoginPartial")
 
         </div>
     </div>
@@ -186,13 +184,13 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    
-        
-    
+
+
+
 
     @RenderSection("Scripts", required: false)
 
 
 
 </body>
-    </html>
+</html>

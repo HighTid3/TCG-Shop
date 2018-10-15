@@ -4,9 +4,48 @@ body {
     margin: 0;
     padding: 0;
 }
+
 .logo-image {
     margin-left: 0px;
 }
+
+img.imageCell {
+    width: 190px;
+}
+
+.ProductTitleCat {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #3c76ee;
+}
+
+.AddCart {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.detailProduct {
+    margin: 35px;
+}
+
+.innerColomn {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.5);
+    margin-bottom: 5px;
+    border: 1px solid #B0B0B0;
+    border-radius: 15px;
+    margin: 20px;
+    height: 100%;
+    width: 235px;
+}
+
+.GradeText {
+    text-transform: uppercase;
+    font-size: 1rem;
+    color: #909090;
+}
+
 .btnSearch {
     background-color: #f5b740;
     border-color: #f5b740;
@@ -14,16 +53,20 @@ body {
     font-weight: 700;
     font-size: 1.4rem;
 }
+
 .wrapper {
     padding: 0px;
     margin: 0px;
 }
+
 .innerPrice {
     font-size: 3rem;
 }
+
 .loginRight {
     margin-top: 10px;
 }
+
 .btnSignIn {
     font-weight: 700;
     font-size: 1.6rem;
@@ -34,14 +77,17 @@ body {
     height: 35px;
     color: #ffffff;
 }
+
 .outerCallToAction {
     padding: 20px;
 }
+
 .containerCenter {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .containerCenterRegister {
     display: flex;
     justify-content: center;
@@ -49,12 +95,15 @@ body {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
 ul.nav.navbar-nav li {
     border-right: 1px solid rgba(0, 0, 0, 0.3);
 }
-ul.nav.navbar-nav li:first-child {
-    border-left: 1px solid rgba(0, 0, 0, 0.3);
-}
+
+    ul.nav.navbar-nav li:first-child {
+        border-left: 1px solid rgba(0, 0, 0, 0.3);
+    }
+
 .callToAction {
     background-color: #2b74f6;
     border-color: #2b74f6;
@@ -64,6 +113,7 @@ ul.nav.navbar-nav li:first-child {
     font-size: 1.6rem;
     border-radius: 5px;
 }
+
 .dropdown-item {
     display: block;
     width: 100%;
@@ -76,6 +126,7 @@ ul.nav.navbar-nav li:first-child {
     background-color: transparent;
     border: 0;
 }
+
 .dropdown-toggle::after {
     display: inline-block;
     width: 0;
@@ -89,21 +140,30 @@ ul.nav.navbar-nav li:first-child {
     border-left: .3em solid transparent;
     color: #f5b740;
 }
+
+.borderRegister {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
+    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
+    border: 1px solid rgba(165, 165, 165, 0.7);
+    border-radius: 5px;
+    padding: 20px;
+}
+
 .signUpBox {
     margin-left: 75px;
 }
+
 .btnRegister {
     background-color: #f5b740;
     border-color: #f5b740;
-    width: 50%;
-    padding: 10px;
+    padding: 15px 80px;
     color: white;
     font-weight: 700;
     font-size: 1.5rem;
     border-radius: 5px;
-    margin-bottom: 10px;
-    margin-left: 15%;
 }
+
 .btnLogin {
     background-color: #f5b740;
     border-color: #f5b740;
@@ -113,6 +173,7 @@ ul.nav.navbar-nav li:first-child {
     font-weight: 700;
     font-size: 1.5rem;
 }
+
 .footertitle {
     font-family: 'Oswald', sans-serif;
     font-size: 1.5rem;
@@ -122,48 +183,59 @@ ul.nav.navbar-nav li:first-child {
     color: #f5b740;
     padding-bottom: 5px;
 }
+
 .footerRow {
     color: white;
 }
-.footerRow a {
-    color: white;
-}
+
+    .footerRow a {
+        color: white;
+    }
+
 .extraInfo {
     margin-left: 0px;
     margin-right: 0px;
     width: 150px;
 }
+
 p.lead {
     margin-right: 150px;
 }
+
 .promo {
     margin-top: 50px;
     margin-bottom: 25px;
 }
+
 .regLabel {
     margin-top: 0px;
     margin-right: 0px;
 }
+
 .copy-info {
     color: white;
     padding: 25px;
 }
-    .callToActionRegister {
-        margin-top: 15px;
-        background-color: #f5b740;
-        border-color: #f5b740;
-        width: 375px;
-        padding: 10px;
-        color: white;
-        font-weight: 700;
-        font-size: 1.5rem;
-    }
+
+.callToActionRegister {
+    margin-top: 15px;
+    background-color: #f5b740;
+    border-color: #f5b740;
+    width: 375px;
+    padding: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
 .form-control {
     width: 300px !important;
 }
+
 .navbar {
     margin-bottom: 0px;
 }
+
 .navbar-inverse {
     font-family: 'Oswald', sans-serif;
     font-weight: 800;
@@ -173,9 +245,11 @@ p.lead {
     border-color: #2b74f6;
     color: white;
 }
-.navbar-inverse .navbar-nav > li > a {
-    color: white;
-}
+
+    .navbar-inverse .navbar-nav > li > a {
+        color: white;
+    }
+
 .search-bar {
     margin-top: 10px;
 }
@@ -185,9 +259,10 @@ p.lead {
     padding-left: 15px;
     padding-right: 15px;
 }
+
 .logo-image {
-    margin-top:5px;
-    margin-bottom:5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 /* Carousel */
 .carousel-caption p {
