@@ -6,36 +6,46 @@
 @using X.PagedList;
 @using X.PagedList.Mvc.Core
 
-<div id="asssets">
+<div id="asssets" class="pokemonCategory">
     
     <div id="productsTable">
         <table class="table table-condensed" id="productsIndexTable">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row">
-                    @foreach (var asset in ViewBag.OnePageOfProducts)
-        {
-            <div class="col-md-4">
-                <td class="">
-                    <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                        <img src="/images/TCG-Cards/@(asset.ImageUrl + ".png")" class="imageCell" />
-                    </a>
-                    <p>
-                        @asset.Name<br />
-                        @asset.Grade<br />
-                        @asset.Stock<br />
-                        €@asset.Price
-                    </p>
-                </td>
+                    <div class="col-md-2">
+                        <h1>Filter</h1>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row">
+                        @foreach (var asset in ViewBag.OnePageOfProducts)
+                        {
+                            <div class="col-xl-3 col-md-3 col-xs-6 text-center" style="margin-top:25px;">
+                                <div class="innerColomn">
 
-            </div>
-}
+                                <h1 class="ProductTitleCat">@asset.Name</h1>
+                                <label class="GradeText">[@asset.Grade]</label>
+                                <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
+                                    <img src="/images/TCG-Cards/@(asset.ImageUrl + ".png")" class="imagePokemonCell" />
+                                </a>
+                                <h4>€@asset.Price</h4>
+                                <button class="btn btn-primary btnSignIn AddCart" style="margin-bottom:10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+                            </div>
+                                </div>
+                      }
+                            </div>
+                        
+                        <div class=" col-md-12 text-center">
+                            @Html.PagedListPager((IPagedList) ViewBag.OnePageOfProducts, page => Url.Action("Index", new { page, ViewBag.PageAmount, ViewBag.CardType
+}))
+                            <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="5" asp-route-CardType="@ViewBag.CardType"><button>5</button></a>
+                            <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="10" asp-route-CardType="@ViewBag.CardType"><button>10</button></a>
+                            <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="20" asp-route-CardType="@ViewBag.CardType"><button>20</button></a>
+                            <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="50" asp-route-CardType="@ViewBag.CardType"><button>50</button></a>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
         </table>
-        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Index", new { page, ViewBag.PageAmount, ViewBag.CardType }))
     </div>
-    <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="5" asp-route-CardType="@ViewBag.CardType"><button>5</button></a>
-    <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="10" asp-route-CardType="@ViewBag.CardType"><button>10</button></a>
-    <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="20" asp-route-CardType="@ViewBag.CardType"><button>20</button></a>
-    <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="50" asp-route-CardType="@ViewBag.CardType"><button>50</button></a>
-</div>
+   

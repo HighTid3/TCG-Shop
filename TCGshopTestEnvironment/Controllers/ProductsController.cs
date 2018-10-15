@@ -37,7 +37,7 @@ namespace TCGshopTestEnvironment.Controllers
                 .Select(result => new ProductsViewModel
                 {
                     Id = result.ProductId,
-                    Name = result.Name,
+                    Name = result.Name.Length < 20 ? result.Name : result.Name.Substring(0, 20) + "...",
                     Price = result.Price,
                     ImageUrl = result.ImageUrl,
                     Grade = result.Grade,
