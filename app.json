@@ -1,7 +1,8 @@
 {
   "name": "TCG-Shop",
     "scripts": {
-    "postdeploy": "pg_dump -Fc DATABASE_URL_Prod | pg_restore --clean --no-owner -n public -d $DATABASE_URL && bundle exec rails db:migrate"
+    "predeploy": "pg_dump -Fc DATABASE_URL_Prod | pg_restore --clean --no-owner -n public -d $DATABASE_URL",
+    "postdeploy": "pg_dump -Fc DATABASE_URL_Prod | pg_restore --clean --no-owner -n public -d $DATABASE_URL"
   },
   "env": {
     "ASPNETCORE_ENVIRONMENT": {
