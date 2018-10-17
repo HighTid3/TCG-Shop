@@ -58,7 +58,7 @@ namespace TCGshopTestEnvironment
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = true;
 
                 // Email Settings
                 options.SignIn.RequireConfirmedEmail = true;
