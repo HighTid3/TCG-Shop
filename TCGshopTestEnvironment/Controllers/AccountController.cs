@@ -258,10 +258,10 @@ namespace TCGshopTestEnvironment.Controllers
                         ModelState.AddModelError("", error.Description);
                     }
 
-                    
+
                 }
             }
-            return View(vm);
+                return View(vm);
         }
 
         [HttpPost]

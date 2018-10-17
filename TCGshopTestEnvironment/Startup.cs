@@ -61,7 +61,7 @@ namespace TCGshopTestEnvironment
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = true;
 
                 // Email Settings
                 options.SignIn.RequireConfirmedEmail = true;
@@ -72,7 +72,7 @@ namespace TCGshopTestEnvironment
             services.AddSingleton(Configuration);
             services.AddScoped<IProducts, ProductService>();
 
-            var connection = @"User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
+            var connection = @"User ID=postgres;Password=test;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
             
             
             // Heroku provides PostgreSQL connection URL via env variable

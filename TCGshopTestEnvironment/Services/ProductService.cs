@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using TCGshopTestEnvironment.Models;
 
@@ -54,5 +55,23 @@ namespace TCGshopTestEnvironment.Services
                 where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
                 select p;
         }
+
+        public List<string> GetCardCatagory(IEnumerable<Products> cards)
+        {
+            List<string>categoriesList = new List<string>();
+            foreach (var card in cards)
+            {
+                string query =_context.ProductCategory.FirstOrDefault(product => product.ProductId == card.ProductId).CategoryName;
+                if (!categoriesList.Contains(query))
+                {
+                    categoriesList.Add(query);
+                }
+                
+            }
+
+            return categoriesList;
+        }
     }
-}
+    }
+
+
