@@ -32,7 +32,7 @@ namespace TCGshopTestEnvironment.Controllers
                 assetModels = _assets.GetAll();
             }
             var pageNumber = page ?? 1;
-            var pageAmnt = pageAmount ?? 10;
+            var pageAmnt = pageAmount ?? 8;
             var listingResult = assetModels
                 .Select(result => new ProductsViewModel
                 {
