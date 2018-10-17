@@ -1,12 +1,15 @@
 {
   "name": "TCG-Shop",
-  "scripts": {
+    "scripts": {
   },
   "env": {
     "ASPNETCORE_ENVIRONMENT": {
       "required": true
     },
     "old": {
+      "required": true
+    },
+    "DATABASE_URL_Prod": {
       "required": true
     },
     "SendGridKey": {
