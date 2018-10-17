@@ -1,12 +1,16 @@
 {
   "name": "TCG-Shop",
-  "scripts": {
+    "scripts": {
+    "postdeploy": "pg_dump -Fc DATABASE_URL_Prod | pg_restore --clean --no-owner -n public -d $DATABASE_URL && bundle exec rails db:migrate"
   },
   "env": {
     "ASPNETCORE_ENVIRONMENT": {
       "required": true
     },
     "old": {
+      "required": true
+    },
+    "DATABASE_URL_Prod": {
       "required": true
     },
     "SendGridKey": {
