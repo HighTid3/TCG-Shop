@@ -27,7 +27,7 @@
                     <tr class="assetRow">
                         <td class="">
                             <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                                <img src="/images/TCG-Cards/@(asset.ImageUrl + ".png")" class="imageCell" />
+                                <img src="@(Startup.storagePath + asset.ImageUrl + ".png")" class="imageCell" />
                             </a>
                         </td>
                         <td class="">@asset.Name</td>
