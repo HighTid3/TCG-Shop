@@ -1,4 +1,4 @@
-﻿@model TCGshopTestEnvironment.ViewModels.ProductsIndexModel
+﻿@model IEnumerable<TCGshopTestEnvironment.ViewModels.ProductsViewModel>
 @{ViewBag.Title = "Product View";
 }
 
@@ -6,7 +6,71 @@
 @using X.PagedList;
 @using X.PagedList.Mvc.Core
 
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>
+
 <div id="asssets">
+    <div id="productsTable">
+        <div class="container-fluid">
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2">
+                    <h2>Filter</h2>
+                    <div>
+                        @foreach (var grade in Model.Select(x => x.Grade).Distinct())
+                        {
+                            <div>
+                                @Html.CheckBox(grade, false)
+                                <label>@grade</label>
+                                @*@Html.DropDownList("Grade", new SelectList(Model.Select(x => x.Grade).Distinct()))*@
+                            </div>
+                        }
+                        @foreach (string categorie in ViewBag.Category)
+                        {
+                            <div>
+                                @Html.CheckBox(categorie, false)
+                                <label>@categorie</label>
+                            </div>
+                                }
+                            </div>
+                        </div>
+                <div class="col-md-10">
+                    @foreach (var asset in ViewBag.OnePageOfProducts)
+                    {
+                        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px;">
+                            <div class="innerColomn">
+                                <h1 class="ProductTitleCat">@asset.Name</h1>
+                                <label class="GradeText">[@asset.Grade]</label>
+                                <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
+                                    <img src="/images/TCG-Cards/@(asset.ImageUrl + ".png")" class="imageCell" />
+                                </a>
+                                <br>
+                                @*@asset.Stock*@
+                                <h4>€@asset.Price</h4>
+                                <button class="btn btn-primary btnSignIn AddCart" style="margin-bottom:10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-md-12">
+                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name }))
+                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="8" asp-route-name="@ViewBag.name"><button>8</button></a>
+                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="16" asp-route-name="@ViewBag.name"><button>16</button></a>
+                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="32" asp-route-name="@ViewBag.name"><button>32</button></a>
+                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="62" asp-route-name="@ViewBag.name"><button>62</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id="asssets">
     <h3>Product</h3>
     <div id="productsTable">
         @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name }))
@@ -45,4 +109,4 @@
     <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="10" asp-route-name="@ViewBag.name"><button>10</button></a>
     <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="20" asp-route-name="@ViewBag.name"><button>20</button></a>
     <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="50" asp-route-name="@ViewBag.name"><button>50</button></a>
-</div>
+</div>*@

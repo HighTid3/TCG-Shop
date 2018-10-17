@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -95,6 +96,8 @@ namespace TCGshopTestEnvironment.Controllers
                 var pageNmber = page ?? 1;
                 var pageAmnt = pagAmount ?? 10;
                 var assetmodel = _assets.GetByNameSearch(name.ToLower());
+                var cardscategory = _assets.GetCardCatagory(assetmodel);
+                ViewBag.Category = cardscategory;
                 var listingResult = assetmodel
                     .Select(result => new ProductsViewModel
                     {
@@ -109,7 +112,7 @@ namespace TCGshopTestEnvironment.Controllers
                 var onePageOfProducts = listingResult.ToPagedList(pageNmber, pageAmnt);
                 ViewBag.OnePageOfProducts = onePageOfProducts;
 
-                return View();
+                return View(listingResult);
             }
             else
             {
