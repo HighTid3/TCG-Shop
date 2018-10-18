@@ -1,0 +1,58 @@
+﻿@model TCGshopTestEnvironment.ViewModels.ProductsViewModel
+
+@{
+    ViewData["Title"] = "Add New Product";
+}
+
+<div class="containerCenter">
+    <div class="row justify-content-center">
+
+        <div class="col-md-4">
+            <h2>@ViewData["Title"]</h2>
+
+            <form method="post" asp-action="NewProduct" asp-controller="Products">
+                <div asp-validation-summary="All"></div>
+                <div class="form-group">
+                    <label asp-for="Id"></label>
+                    <input asp-for="Id" class="form-control" />
+                    <span asp-validation-for="Id"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" size="10" class="form-control" />
+                    <span asp-validation-for="Name"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ImageUrl"></label>
+                    <input asp-for="ImageUrl" size="10" class="form-control" />
+                    <span asp-validation-for="ImageUrl"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Price"></label>
+                    <input asp-for="Price" size="10" class="form-control" />
+                    <span asp-validation-for="Price"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Grade"></label>
+                    <input asp-for="Grade" size="10" class="form-control" />
+                    <span asp-validation-for="Grade"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Stock"></label>
+                    <input asp-for="Stock" size="10" class="form-control" />
+                    <span asp-validation-for="Stock"></span>
+                </div>
+
+
+                <p><input type="submit" value="Login" class="btn btn-default btnLogin" /></p>
+                <div class="form-group">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

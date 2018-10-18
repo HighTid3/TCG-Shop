@@ -10,6 +10,8 @@ using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels;
 using X.PagedList.Mvc;
 using X.PagedList;
+using Microsoft.EntityFrameworkCore;
+
 namespace TCGshopTestEnvironment.Controllers
 {
     public class ProductsController : Controller
@@ -126,6 +128,47 @@ namespace TCGshopTestEnvironment.Controllers
             IEnumerable<string> cardname = _assets.GetByNameSearch(text).Select(x => x.Name).ToList();
 
             return Json(cardname);
+        }
+
+
+
+
+        //Adding New product
+        [HttpGet]
+        public IActionResult NewProduct()
+        {
+            return View();
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewProduct(ProductsViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+
+                using (ProductsViewModel Product = new ProductsViewModel
+                {
+                    Id = vm.Id,
+                    Name = vm.Name,
+                    ImageUrl = vm.ImageUrl,
+                    Price = vm.Price,
+                    Grade = vm.Grade,
+                    Stock = vm.Stock,
+                })
+
+                    Product.Add(Product);
+                
+                
+
+                
+
+                
+
+
+            }
+
+            return View();
         }
 
     }
