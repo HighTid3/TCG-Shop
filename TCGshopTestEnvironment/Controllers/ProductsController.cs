@@ -11,16 +11,22 @@ using TCGshopTestEnvironment.ViewModels;
 using X.PagedList.Mvc;
 using X.PagedList;
 using Microsoft.EntityFrameworkCore;
+using TCGshopTestEnvironment.Models;
 
 namespace TCGshopTestEnvironment.Controllers
 {
     public class ProductsController : Controller
     {
         private IProducts _assets;
+        private DBModel dbModel;
 
-        public ProductsController(IProducts assets)
+        private DBModel _context;
+
+
+        public ProductsController(IProducts assets, DBModel context)
         {
             _assets = assets;
+            _context = context;
         }
 
         public IActionResult Index(int? page, int? pageAmount, string cardType)
@@ -147,18 +153,17 @@ namespace TCGshopTestEnvironment.Controllers
             if (ModelState.IsValid)
             {
 
-                using (ProductsViewModel Product = new ProductsViewModel
+                Products Product = new Products
                 {
-                    Id = vm.Id,
                     Name = vm.Name,
                     ImageUrl = vm.ImageUrl,
                     Price = vm.Price,
                     Grade = vm.Grade,
                     Stock = vm.Stock,
-                })
+                };
 
-                    Product.Add(Product);
-                
+                _context.Add(Product);
+                _context.SaveChanges();
                 
 
                 
