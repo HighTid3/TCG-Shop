@@ -51,7 +51,7 @@ $(document).ready(function () {
         }
     });
 
-    $.getJSON("http://localhost:63737/Products/GetCategoryAll", function (result) {
+    $.getJSON("/Products/GetCategoryAll", function (result) {
         $.each(result, function (i, field) {
             //console.log(field)
             data = Object.assign({ [field]: null }, data);
