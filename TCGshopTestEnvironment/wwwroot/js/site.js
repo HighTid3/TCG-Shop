@@ -42,15 +42,28 @@ $(document).on("click",
 
 
 $(document).ready(function () {
+    data = {}
+
     $('.chips-autocomplete').material_chip({
         secondaryPlaceholder: 'Catagories',
         placeholder: '+ Add more',
         autocompleteData: {
-            'Pokemon': null,
-            'Magic the Gathering': null,
-            'Yu-Gi-Oh': null,
         }
     });
+
+    $.getJSON("http://localhost:63737/Products/GetCategoryAll", function (result) {
+        $.each(result, function (i, field) {
+            //console.log(field)
+            data = Object.assign({ [field]: null }, data);
+
+        });
+        $('.chips-autocomplete').material_chip({
+            autocompleteData: data
+        });
+        console.table(data);
+    });
+
+
 });
 
 $('#NewProduct').submit(function () {
@@ -66,3 +79,4 @@ $('#NewProduct').submit(function () {
         $("#HiddenCategroyInput").append('<input type="hidden" name="Category[]" value="' + Chips[i].tag + '">');
     }
 });
+
