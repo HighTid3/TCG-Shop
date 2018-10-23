@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -145,6 +145,14 @@ namespace TCGshopTestEnvironment.Controllers
         public IActionResult NewProduct()
         {
             return View();
+
+        }
+
+        [HttpGet]
+        public IActionResult GetCategoryAll()
+        {
+            IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
+            return Json(categories);
 
         }
 
