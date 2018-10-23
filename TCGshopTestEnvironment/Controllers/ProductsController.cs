@@ -12,6 +12,7 @@ using X.PagedList.Mvc;
 using X.PagedList;
 using Microsoft.EntityFrameworkCore;
 using TCGshopTestEnvironment.Models;
+using TCGshopTestEnvironment.Models.JoinTables;
 
 namespace TCGshopTestEnvironment.Controllers
 {
@@ -46,7 +47,7 @@ namespace TCGshopTestEnvironment.Controllers
                 .Select(result => new ProductsViewModel
                 {
                     Id = result.ProductId,
-                    Name = result.Name.Length < 20 ? result.Name : result.Name.Substring(0, 20) + "...",
+                    Name = result.Name.Length < 20 ? result.Name : result.Name.Substring(0, 15) + "...",
                     Price = result.Price,
                     ImageUrl = result.ImageUrl,
                     Grade = result.Grade,
@@ -148,7 +149,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewProduct(ProductsViewModel vm)
+        public async Task<IActionResult> NewProduct(ProductsNewProductViewModel vm)
         {
             if (ModelState.IsValid)
             {
@@ -161,15 +162,40 @@ namespace TCGshopTestEnvironment.Controllers
                     Grade = vm.Grade,
                     Stock = vm.Stock,
                 };
-
                 _context.Add(Product);
+
+                IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
+                foreach (string TestCategory in vm.Category)
+                {
+                    if (categories.Contains(TestCategory))
+                    {
+                        Console.WriteLine("Category: " + TestCategory + "is in database");
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Category: " + TestCategory + " is NOT in database, ADDING!");
+
+                        //Here code to add new category to database
+                        Category category = new Category
+                        {
+                            CategoryName = TestCategory,
+                            Description = "NULL"
+                        };
+                        _context.Add(category);
+                    }
+
+                    //Adding date to merge Table
+                    ProductCategory productCategory = new ProductCategory
+                    {
+                        ProductId = Product.ProductId,
+                        CategoryName = TestCategory
+                    };
+                    _context.Add(productCategory);
+                }
+                
                 _context.SaveChanges();
                 
-
-                
-
-                
-
 
             }
 

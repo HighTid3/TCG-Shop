@@ -39,3 +39,30 @@ $(document).on("click",
         //clear and hide #result
         $("#textSearch").empty().hide();
     });
+
+
+$(document).ready(function () {
+    $('.chips-autocomplete').material_chip({
+        secondaryPlaceholder: 'Catagories',
+        placeholder: '+ Add more',
+        autocompleteData: {
+            'Pokemon': null,
+            'Magic the Gathering': null,
+            'Yu-Gi-Oh': null,
+        }
+    });
+});
+
+$('#NewProduct').submit(function () {
+    //Deleting Everything inside DIV
+    $("#HiddenCategroyInput").empty();
+
+    //Get all variables from the chips
+    var Chips = $('.catagory-chips').material_chip('data');
+
+    //loop trough all chips, and add them to an hidden div.
+    for (i = 0; i < Chips.length; ++i) {
+        console.log(Chips[i].tag);
+        $("#HiddenCategroyInput").append('<input type="hidden" name="Category[]" value="' + Chips[i].tag + '">');
+    }
+});
