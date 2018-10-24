@@ -13,6 +13,7 @@ namespace TCGshopTestEnvironment.ViewModels
         public float Price { get; set; }
         public string Grade { get; set; }
         public int Stock { get; set; }
+        public List<string> CardCatagoryList { get; set; }
     }
 }
 
