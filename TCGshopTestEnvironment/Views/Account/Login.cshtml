@@ -27,7 +27,7 @@
                     <input asp-for="RememberMe" />
                     <span asp-validation-for="RememberMe"></span>
                 </div>
-                <p><input type="submit" value="Login" class="btn btn-default btnLogin" /></p>
+                <p><input type="submit" value="Login" class="btn btn-primary btnSignIn" /></p>
                 <div class="form-group">
                     <p>
                         <a asp-area="" asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
@@ -52,9 +52,11 @@
                    <img src="~/images/ok.png" />You can download invoices from your orders.
                </p>
 
-               <button class="btn btn-default callToActionRegister">
-                   Create an account
-               </button>
+               <a asp-controller="account" asp-action="Register">
+                   <button class="btn btn-primary btnSignIn">
+                       Create an account
+                   </button>
+               </a>
             </div>
         </div>
     </div>
