@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,15 +10,24 @@ using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels;
 using X.PagedList.Mvc;
 using X.PagedList;
+using Microsoft.EntityFrameworkCore;
+using TCGshopTestEnvironment.Models;
+using TCGshopTestEnvironment.Models.JoinTables;
+
 namespace TCGshopTestEnvironment.Controllers
 {
     public class ProductsController : Controller
     {
         private IProducts _assets;
+        private DBModel dbModel;
 
-        public ProductsController(IProducts assets)
+        private DBModel _context;
+
+
+        public ProductsController(IProducts assets, DBModel context)
         {
             _assets = assets;
+            _context = context;
         }
 
         public IActionResult Index(int? page, int? pageAmount, string cardType)
@@ -38,7 +47,7 @@ namespace TCGshopTestEnvironment.Controllers
                 .Select(result => new ProductsViewModel
                 {
                     Id = result.ProductId,
-                    Name = result.Name.Length < 20 ? result.Name : result.Name.Substring(0, 20) + "...",
+                    Name = result.Name.Length < 20 ? result.Name : result.Name.Substring(0, 15) + "...",
                     Price = result.Price,
                     ImageUrl = result.ImageUrl,
                     Grade = result.Grade,
@@ -86,18 +95,37 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(int? page, int? pagAmount, string name)
+        public IActionResult Search(int? page, int? pageAmount, string name, string sortBy, string catagorie)
         {
             if (!String.IsNullOrEmpty(name))
             {
-                ViewBag.page = page;
-                ViewBag.PageAmount = pagAmount;
-                ViewBag.name = name;
                 var pageNmber = page ?? 1;
-                var pageAmnt = pagAmount ?? 10;
+                var pageAmnt = pageAmount ?? 10;
+
+                //queries to get items and catagories from database
                 var assetmodel = _assets.GetByNameSearch(name.ToLower());
                 var cardscategory = _assets.GetCardCatagory(assetmodel);
-                ViewBag.Category = cardscategory;
+
+                //viewbags to send to the view
+                ViewBag.page = page;
+                ViewBag.PageAmount = pageAmount;
+                ViewBag.name = name;
+                ViewBag.totalCategory = cardscategory;
+                ViewBag.catagorie = catagorie;
+                // sorting list
+
+                List<SelectListItem> Sorting = new List<SelectListItem>
+                {
+                    new SelectListItem {Text = "Name A-Z", Value = "name"},
+                    new SelectListItem {Text = "Name Z-A", Value = "name_desc"},
+                    new SelectListItem() {Text = "Price High-Low", Value = "Price"},
+                    new SelectListItem() {Text = "Price Low-High", Value = "price_desc"}
+                };
+                ViewBag.Sorting = Sorting;
+                ViewBag.SelectSort = sortBy ?? "Name A-Z";
+                ViewBag.sortBy = sortBy;
+
+                // bind all products from database to productviewmodel
                 var listingResult = assetmodel
                     .Select(result => new ProductsViewModel
                     {
@@ -106,13 +134,34 @@ namespace TCGshopTestEnvironment.Controllers
                         Price = result.Price,
                         ImageUrl = result.ImageUrl,
                         Grade = result.Grade,
-                        Stock = result.Stock
+                        Stock = result.Stock,
+                        CardCatagoryList = _context.ProductCategory.Where(x => x.ProductId == result.ProductId).Select(x => x.CategoryName).ToList()
+                        
                     });
+
+                //filters
+                if(!String.IsNullOrEmpty(catagorie)) listingResult = listingResult.Where(x => x.CardCatagoryList.Contains(catagorie));
+
+                //sorting
+                switch (sortBy)
+                {
+                    case "name_desc":
+                        listingResult = listingResult.OrderByDescending(s => s.Name);
+                        break;
+                    case "Price":
+                        listingResult = listingResult.OrderByDescending(s => s.Price);
+                        break;
+                    case "price_desc":
+                        listingResult = listingResult.OrderBy(s => s.Price);
+                        break;
+                    default:
+                        listingResult = listingResult.OrderBy(s => s.Name);
+                        break;
+                }
 
                 var onePageOfProducts = listingResult.ToPagedList(pageNmber, pageAmnt);
                 ViewBag.OnePageOfProducts = onePageOfProducts;
-
-                return View(listingResult);
+                return View();
             }
             else
             {
@@ -126,6 +175,79 @@ namespace TCGshopTestEnvironment.Controllers
             IEnumerable<string> cardname = _assets.GetByNameSearch(text).Select(x => x.Name).ToList();
 
             return Json(cardname);
+        }
+
+
+
+
+        //Adding New product
+        [HttpGet]
+        public IActionResult NewProduct()
+        {
+            return View();
+
+        }
+
+        [HttpGet]
+        public IActionResult GetCategoryAll()
+        {
+            IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
+            return Json(categories);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewProduct(ProductsNewProductViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+
+                Products Product = new Products
+                {
+                    Name = vm.Name,
+                    ImageUrl = vm.ImageUrl,
+                    Price = vm.Price,
+                    Grade = vm.Grade,
+                    Stock = vm.Stock,
+                };
+                _context.Add(Product);
+
+                IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
+                foreach (string TestCategory in vm.Category)
+                {
+                    if (categories.Contains(TestCategory))
+                    {
+                        Console.WriteLine("Category: " + TestCategory + "is in database");
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Category: " + TestCategory + " is NOT in database, ADDING!");
+
+                        //Here code to add new category to database
+                        Category category = new Category
+                        {
+                            CategoryName = TestCategory,
+                            Description = "NULL"
+                        };
+                        _context.Add(category);
+                    }
+
+                    //Adding date to merge Table
+                    ProductCategory productCategory = new ProductCategory
+                    {
+                        ProductId = Product.ProductId,
+                        CategoryName = TestCategory
+                    };
+                    _context.Add(productCategory);
+                }
+                
+                _context.SaveChanges();
+                
+
+            }
+
+            return View();
         }
 
     }

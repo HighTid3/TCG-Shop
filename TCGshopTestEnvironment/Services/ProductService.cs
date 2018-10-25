@@ -59,14 +59,11 @@ namespace TCGshopTestEnvironment.Services
         public List<string> GetCardCatagory(IEnumerable<Products> cards)
         {
             List<string>categoriesList = new List<string>();
+            List<string>catagorieresResultList = new List<string>();
             foreach (var card in cards)
             {
-                string query =_context.ProductCategory.FirstOrDefault(product => product.ProductId == card.ProductId).CategoryName;
-                if (!categoriesList.Contains(query))
-                {
-                    categoriesList.Add(query);
-                }
-                
+                categoriesList = _context.ProductCategory.Where(x => x.ProductId == card.ProductId).Select(x => x.CategoryName).Concat(categoriesList).Distinct().ToList();
+
             }
 
             return categoriesList;

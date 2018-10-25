@@ -20,7 +20,7 @@ namespace TCGshopTestEnvironment
     public class Startup
     {
 
-        public static string storagePath = "https://minio.crystalbox.nl/tcg/";
+        public static string storagePath = "https://cdn.tcg.sale/tcg/";
 
         public Startup(IConfiguration configuration)
         {

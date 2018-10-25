@@ -2,6 +2,7 @@
 @{ViewBag.Title = "Product View";
 }
 
+@using System.Data.SqlClient
 @using X.PagedList.Mvc;
 @using X.PagedList;
 @using X.PagedList.Mvc.Core
@@ -20,93 +21,47 @@
     <div id="productsTable">
         <div class="container-fluid">
             <div class="row" style="margin-top: 10px;">
+                
+
+                <!--filtering-->
                 <div class="col-md-2">
                     <h2>Filter</h2>
                     <div>
-                        @foreach (var grade in Model.Select(x => x.Grade).Distinct())
+                        <!--sorting-->
+                        @using (Html.BeginForm("Search", "Products", FormMethod.Get, new {id = "TheForm"}))
+                        {
+                            <input type="hidden" name="name" value="@ViewBag.name"/>
+                            <input type="hidden" name="pagAmount" value="@ViewBag.PageAmount"/>
+                            <input type="hidden" name="catagorie" value="@ViewBag.catagorie"/>
+                            @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new {onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })
+
+                        }
+                        <!--catagorie filter-->
+                        @foreach (string categorie in ViewBag.totalCategory)
                         {
                             <div>
-                                @Html.CheckBox(grade, false)
-                                <label>@grade</label>
-                                @*@Html.DropDownList("Grade", new SelectList(Model.Select(x => x.Grade).Distinct()))*@
+                                <a asp-controller="Products" asp-action="Search" asp-route-pageAmount="@ViewBag.pageAmount" asp-route-name="@ViewBag.name" asp-route-catagorie="@categorie" asp-route-sortBy="@ViewBag.sortBy">
+                                <option value=@categorie>@categorie</option>
+                                </a>
                             </div>
                         }
-                        @foreach (string categorie in ViewBag.Category)
-                        {
-                            <div>
-                                @Html.CheckBox(categorie, false)
-                                <label>@categorie</label>
-                            </div>
-                                }
-                            </div>
-                        </div>
+                    </div>
+                </div>
+
+
+                <!--product views-->
                 <div class="col-md-10">
-                    @foreach (var asset in ViewBag.OnePageOfProducts)
-                    {
-                        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px;">
-                            <div class="innerColomn">
-                                <h1 class="ProductTitleCat">@asset.Name</h1>
-                                <label class="GradeText">[@asset.Grade]</label>
-                                <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                                    <img src="/images/TCG-Cards/@(asset.ImageUrl + ".png")" class="imageCell" />
-                                </a>
-                                <br>
-                                @*@asset.Stock*@
-                                <h4>€@asset.Price</h4>
-                                <button class="btn btn-primary btnSignIn AddCart" style="margin-bottom:10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
-                            </div>
-                        </div>
-                    }
+                    @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
+
                     <div class="col-md-12">
-                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name }))
-                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="8" asp-route-name="@ViewBag.name"><button>8</button></a>
-                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="16" asp-route-name="@ViewBag.name"><button>16</button></a>
-                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="32" asp-route-name="@ViewBag.name"><button>32</button></a>
-                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="62" asp-route-name="@ViewBag.name"><button>62</button></a>
+                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie }))
+                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="8" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>8</button></a>
+                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="16" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>16</button></a>
+                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="32" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>32</button></a>
+                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="62" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>62</button></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-@*<div id="asssets">
-    <h3>Product</h3>
-    <div id="productsTable">
-        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name }))
-        <table class="table table-condensed" id="productsIndexTable">
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Grade</th>
-                    <th>Stock</th>
-                    <th>Price</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var asset in ViewBag.OnePageOfProducts)
-                {
-                    <tr class="assetRow">
-                        <td class="">
-                            <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                                <img src="@(Startup.storagePath + asset.ImageUrl + ".png")" class="imageCell" />
-                            </a>
-                        </td>
-                        <td class="">@asset.Name</td>
-                        <td class="">@asset.Grade</td>
-                        <td class="">@asset.Stock</td>
-                        <td class="">€@asset.Price</td>
-
-                    </tr>
-                }
-            </tbody>
-        </table>
-        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name }))
-    </div>
-    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="5" asp-route-name="@ViewBag.name"><button>5</button></a>
-    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="10" asp-route-name="@ViewBag.name"><button>10</button></a>
-    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="20" asp-route-name="@ViewBag.name"><button>20</button></a>
-    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="50" asp-route-name="@ViewBag.name"><button>50</button></a>
-</div>*@
+</div> 

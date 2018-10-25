@@ -39,3 +39,5 @@ $(document).on("click",
         //clear and hide #result
         $("#textSearch").empty().hide();
     });
+
+
