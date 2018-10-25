@@ -33,7 +33,7 @@
                             <input type="hidden" name="name" value="@ViewBag.name"/>
                             <input type="hidden" name="pagAmount" value="@ViewBag.PageAmount"/>
                             <input type="hidden" name="catagorie" value="@ViewBag.catagorie"/>
-                            @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new {onChange = "document.getElementById('TheForm').submit();"})
+                            @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new {onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })
 
                         }
                         <!--catagorie filter-->
@@ -51,24 +51,10 @@
 
                 <!--product views-->
                 <div class="col-md-10">
-                    @foreach (var asset in ViewBag.OnePageOfProducts)
-                    {
-                        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top: 10px;">
-                            <div class="innerColomn">
-                                <h1 class="ProductTitleCat">@asset.Name</h1>
-                                <label class="GradeText">[@asset.Grade]</label>
-                                <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                                    <img src="@(Startup.storagePath + asset.ImageUrl + ".png")" class="imageCell"/>
-                                </a>
-                                <br>
-                                @*@asset.Stock*@
-                                <h4>€@asset.Price</h4>
-                                <button class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
-                            </div>
-                        </div>
-                    }
+                    @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
+
                     <div class="col-md-12">
-                        @Html.PagedListPager((IPagedList) ViewBag.OnePageOfProducts, page => Url.Action("Search", new {page, ViewBag.PageAmount, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie}))
+                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie }))
                         <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="8" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>8</button></a>
                         <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="16" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>16</button></a>
                         <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="32" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>32</button></a>
