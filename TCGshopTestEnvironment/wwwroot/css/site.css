@@ -160,6 +160,7 @@ img.imageCell {
     background-color: #f5b740;
     border-color: #f5b740;
     height: 35px;
+    width: auto !important;
     color: #ffffff;
 }
 
