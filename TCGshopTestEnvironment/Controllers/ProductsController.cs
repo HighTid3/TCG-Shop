@@ -30,19 +30,57 @@ namespace TCGshopTestEnvironment.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int? page, int? pageAmount, string cardType)
+        public IActionResult Index(int? page, int? pageAmount, string cardType, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
         {
             ViewBag.page = page;
             ViewBag.PageAmount = pageAmount;
             ViewBag.CardType = cardType;
-            //var assetModels = _assets.GetAll();
+
+            var pageNumber = page ?? 1;
+            var pageAmnt = pageAmount ?? 16;
+
+            float priceL = priceLow ?? 0;
+            float priceH = priceHigh ?? 10000;
+
+
+
+
+
+            //queries to get items and catagories from database
             var assetModels = _assets.GetbyCardType(cardType);
+            var cardscategory = _assets.GetCardCatagory(assetModels);
+
             if (cardType == "Default")
             {
                 assetModels = _assets.GetAll();
             }
-            var pageNumber = page ?? 1;
-            var pageAmnt = pageAmount ?? 8;
+
+
+            //viewbags to send to the view
+            ViewBag.page = page;
+            ViewBag.PageAmount = pageAmount;
+            ViewBag.name = "Name";
+            ViewBag.totalCategory = cardscategory;
+            ViewBag.catagorie = catagorie;
+            ViewBag.catagoriestring = "";
+            ViewBag.grades = grades;
+            ViewBag.PriceLow = priceL;
+            ViewBag.PriceHigh = priceH;
+            ViewBag.cardType = cardType;
+
+            // sorting list
+            List<SelectListItem> Sorting = new List<SelectListItem>
+                {
+                    new SelectListItem {Text = "Name A-Z", Value = "name"},
+                    new SelectListItem {Text = "Name Z-A", Value = "name_desc"},
+                    new SelectListItem() {Text = "Price High-Low", Value = "Price"},
+                    new SelectListItem() {Text = "Price Low-High", Value = "price_desc"}
+                };
+            ViewBag.Sorting = Sorting;
+            ViewBag.SelectSort = sortBy ?? "Name A-Z";
+            ViewBag.sortBy = sortBy;
+
+
             var listingResult = assetModels
                 .Select(result => new ProductsViewModel
                 {
@@ -51,13 +89,49 @@ namespace TCGshopTestEnvironment.Controllers
                     Price = result.Price,
                     ImageUrl = result.ImageUrl,
                     Grade = result.Grade,
-                    Stock = result.Stock
+                    Stock = result.Stock,
+                    CardCatagoryList = _context.ProductCategory.Where(x => x.ProductId == result.ProductId).Select(x => x.CategoryName).ToList()
 
                 });
-            //var model = new ProductsIndexModel()
-            //{
-            //    Assets = listingResult
-            //};
+
+            //filters
+            //if(!String.IsNullOrEmpty(catagorie)) listingResult = listingResult.Where(x => x.CardCatagoryList.Contains(catagorie));
+            if (catagorie.Count > 0)
+            {
+                listingResult = listingResult.Where(x => x.CardCatagoryList.Intersect(catagorie).Any());
+            }
+
+            ViewBag.Grade = listingResult.Select(x => x.Grade).Distinct();
+
+            if (grades.Count > 0 && listingResult.Count(x => grades.Contains(x.Grade)) > 0)
+            {
+                listingResult = listingResult.Where(x => grades.Contains(x.Grade));
+            }
+
+            if (priceL > 0 || priceH < 10000)
+            {
+                listingResult = listingResult.Where(x => x.Price >= priceL && x.Price <= priceH);
+            }
+
+
+            //sorting
+            switch (sortBy)
+            {
+                case "name_desc":
+                    listingResult = listingResult.OrderByDescending(s => s.Name);
+                    break;
+                case "Price":
+                    listingResult = listingResult.OrderByDescending(s => s.Price);
+                    break;
+                case "price_desc":
+                    listingResult = listingResult.OrderBy(s => s.Price);
+                    break;
+                default:
+                    listingResult = listingResult.OrderBy(s => s.Name);
+                    break;
+            }
+
+
             var onePageOfProducts = listingResult.ToPagedList(pageNumber, pageAmnt);
             ViewBag.OnePageOfProducts = onePageOfProducts;
 
@@ -95,12 +169,16 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades)
+        public IActionResult Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
         {
             if (!String.IsNullOrEmpty(name))
             {
                 var pageNmber = page ?? 1;
-                var pageAmnt = pageAmount ?? 10;
+                var pageAmnt = pageAmount ?? 16;
+
+                float priceL = priceLow ?? 0;
+                float priceH = priceHigh ?? 10000;
+
 
                 //queries to get items and catagories from database
                 var assetmodel = _assets.GetByNameSearch(name.ToLower());
@@ -114,6 +192,10 @@ namespace TCGshopTestEnvironment.Controllers
                 ViewBag.catagorie = catagorie;
                 ViewBag.catagoriestring = "";
                 ViewBag.grades = grades;
+                ViewBag.PriceLow = priceL;
+                ViewBag.PriceHigh = priceH;
+                ViewBag.cardType = "";
+
                 // sorting list
                 List<SelectListItem> Sorting = new List<SelectListItem>
                 {
@@ -126,12 +208,13 @@ namespace TCGshopTestEnvironment.Controllers
                 ViewBag.SelectSort = sortBy ?? "Name A-Z";
                 ViewBag.sortBy = sortBy;
 
+
                 // bind all products from database to productviewmodel
                 var listingResult = assetmodel
                     .Select(result => new ProductsViewModel
                     {
                         Id = result.ProductId,
-                        Name = result.Name,
+                        Name = result.Name.Length < 20 ? result.Name : result.Name.Substring(0, 15) + "...",
                         Price = result.Price,
                         ImageUrl = result.ImageUrl,
                         Grade = result.Grade,
@@ -154,6 +237,12 @@ namespace TCGshopTestEnvironment.Controllers
                 {
                     listingResult = listingResult.Where(x => grades.Contains(x.Grade));
                 }
+
+                if (priceL > 0 || priceH < 10000)
+                {
+                    listingResult = listingResult.Where(x => x.Price >= priceL && x.Price <= priceH);
+                }
+
 
                 //sorting
                 switch (sortBy)

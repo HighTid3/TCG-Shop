@@ -1,0 +1,103 @@
+﻿@model IEnumerable<TCGshopTestEnvironment.ViewModels.ProductsViewModel>
+@{ViewBag.Title = "Product View";
+}
+@{
+
+    List<string> catagorielist = ViewBag.catagorie as List<string>;
+    List<string> gradeslist = ViewBag.grades as List<string>;
+}
+
+
+@using System.Data.SqlClient
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+
+<!--filtering-->
+<div class="col-md-2">
+    <h3>Sorting</h3>
+    <div>
+        <!--sorting-->
+        @using (Html.BeginForm(FormMethod.Get, new { id = "TheForm" }))
+        {
+            <input type="hidden" name="name" value="@ViewBag.name" />
+            <input type="hidden" name="pageAmount" value="@ViewBag.PageAmount" />
+            <input type="hidden" name="cardType" value="@ViewBag.cardType"/>
+
+            @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })
+
+            @*}*@
+            <!--catagorie filter-->
+            @*<form class="" method="get" asp-controller="Products" asp-action="Search">*@
+            <h3>Categories</h3>
+            foreach (string categorie in ViewBag.totalCategory)
+            {
+
+                if (catagorielist == null || catagorielist.Count == 0)
+                {
+                    <div>
+                        <input type="checkbox" id="cats" name="catagorie" value=@categorie />
+                        <label for="cats">@categorie</label>
+                    </div>
+                }
+                else
+                {
+                    if (catagorielist.Contains(categorie))
+                    {
+                        <div>
+                            <input type="checkbox" id="cats" name="catagorie" value=@categorie checked="checked" />
+                            <label for="cats">@categorie</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <input type="checkbox" id="cats" name="catagorie" value=@categorie />
+                            <label for="cats">@categorie</label>
+                        </div>
+                    }
+                }
+
+
+
+            }
+            <h3>Grades</h3>
+            foreach (string grade in ViewBag.Grade)
+            {
+                if (gradeslist.Contains(grade))
+                {
+                    <div>
+                        <input type="checkbox" id="grade" name="grades" value="@grade" checked="checked" />
+                        <label for="cats">@grade</label>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <input type="checkbox" id="grade" name="grades" value="@grade" />
+                        <label for="cats">@grade</label>
+                    </div>
+                }
+            }
+
+            <h3>Price</h3>
+
+            <!--Price Range Slider-->
+            <div class="price-filter" style="padding-top: 10px; padding-bottom: 10px;">
+
+
+
+                € <input type="tel" data-facet="prijs" placeholder="0" value="@if (@ViewBag.PriceLow == 0) { } else {@ViewBag.PriceLow}" name="priceLow" style="width: 54px;">
+                to <input type="tel" data-facet="prijs" placeholder="10000" value="@if (@ViewBag.PriceHigh == 10000) { } else {@ViewBag.PriceHigh}" name="priceHigh" style="width: 54px;">
+
+            </div>
+
+            <div class="col-md-12 text-center">
+                <input type="submit" value="Search" class="btn btn-primary btnRegister" />
+            </div>
+            @*</form>*@
+        }
+    </div>
+
+
+</div>

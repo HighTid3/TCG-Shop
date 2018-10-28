@@ -27,77 +27,10 @@
     <div id="productsTable">
         <div class="container-fluid">
             <div class="row" style="margin-top: 10px;">
-                
+
 
                 <!--filtering-->
-                <div class="col-md-2">
-                    <h3>Sorting</h3>
-                    <div>
-                        <!--sorting-->
-                        @using (Html.BeginForm("Search", "Products", FormMethod.Get, new { id = "TheForm" }))
-                        {
-                            <input type="hidden" name="name" value="@ViewBag.name" />
-                            <input type="hidden" name="pageAmount" value="@ViewBag.PageAmount" />
-                            
-                            @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })
-
-                        @*}*@
-                        <!--catagorie filter-->
-                        @*<form class="" method="get" asp-controller="Products" asp-action="Search">*@
-                            <h3>Categories</h3>
-                        foreach (string categorie in ViewBag.totalCategory)
-                        {
-                            if (catagorielist == null || catagorielist.Count == 0)
-                            {
-                                <div>
-                                    <input type="checkbox" id="cats" name="catagorie" value=@categorie />
-                                    <label for="cats">@categorie</label>
-                                </div>
-                            }
-                            else
-                            {
-                                if (catagorielist.Contains(categorie))
-                                {
-                                    <div>
-                                        <input type="checkbox" id="cats" name="catagorie" value=@categorie checked="checked" />
-                                        <label for="cats">@categorie</label>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div>
-                                        <input type="checkbox" id="cats" name="catagorie" value=@categorie />
-                                        <label for="cats">@categorie</label>
-                                    </div>
-                                }
-                            }
-
-                        }
-                            <h3>Grades</h3>
-                        foreach (string grade in ViewBag.Grade)
-                        {
-                            if (gradeslist.Contains(grade))
-                            {
-                                <div>
-                                    <input type="checkbox" id="grade" name="grades" value="@grade" checked="checked"/>
-                                    <label for="cats">@grade</label>
-                                </div>
-                                }
-                            else
-                            {
-                                <div>
-                                    <input type="checkbox" id="grade" name="grades" value="@grade"/>
-                                    <label for="cats">@grade</label>
-                                </div>
-                            }
-                            }
-                        <div class="col-md-12 text-center">
-                            <input type="submit" value="Search" class="btn btn-primary btnRegister" />
-                        </div>
-                        @*</form>*@
-                        }
-                    </div>
-                </div>
+                @await Html.PartialAsync("/Views/Products/_Filters.cshtml")
 
 
                 <!--product views-->
@@ -105,18 +38,18 @@
                     @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
 
                     <div class="col-md-12">
-                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades }))
+                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh }))
 
 
                         @*<a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="8" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>8</button></a>
-                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="16" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>16</button></a>
-                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="32" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>32</button></a>
-                        <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="62" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>62</button></a>*@
+                <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="16" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>16</button></a>
+                <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="32" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>32</button></a>
+                <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="62" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>62</button></a>*@
 
-                        <input type="button" value="8" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades })&pageAmount=8'" />
-                        <input type="button" value="16" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades })&pageAmount=16'" />
-                        <input type="button" value="32" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades })&pageAmount=32'" />
-                        <input type="button" value="64" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades })&pageAmount=64'" />
+                        <input type="button" value="8" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=8'" />
+                        <input type="button" value="16" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=16'" />
+                        <input type="button" value="32" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=32'" />
+                        <input type="button" value="64" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=64'" />
 
                     </div>
                 </div>

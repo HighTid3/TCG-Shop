@@ -23,9 +23,7 @@
     <div id="productsTable">
         <div class="container-fluid">
             <div class="row" style="margin-top: 10px;">
-                <div class="col-md-2">
-                    <h2>Filter</h2>
-                </div>
+                @await Html.PartialAsync("/Views/Products/_Filters.cshtml")
                 <div class="col-md-10">
                     @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
 
