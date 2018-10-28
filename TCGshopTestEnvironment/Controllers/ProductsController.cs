@@ -95,7 +95,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie)
+        public IActionResult Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades)
         {
             if (!String.IsNullOrEmpty(name))
             {
@@ -113,7 +113,7 @@ namespace TCGshopTestEnvironment.Controllers
                 ViewBag.totalCategory = cardscategory;
                 ViewBag.catagorie = catagorie;
                 ViewBag.catagoriestring = "";
-
+                ViewBag.grades = grades;
                 // sorting list
                 List<SelectListItem> Sorting = new List<SelectListItem>
                 {
@@ -149,6 +149,11 @@ namespace TCGshopTestEnvironment.Controllers
                 }
 
                 ViewBag.Grade = listingResult.Select(x => x.Grade).Distinct();
+
+                if (grades.Count > 0 && listingResult.Count(x => grades.Contains(x.Grade)) > 0)
+                {
+                    listingResult = listingResult.Where(x => grades.Contains(x.Grade));
+                }
 
                 //sorting
                 switch (sortBy)
