@@ -43,7 +43,7 @@
                         @*}*@
                         <!--catagorie filter-->
                         @*<form class="" method="get" asp-controller="Products" asp-action="Search">*@
-                        @foreach (string categorie in ViewBag.totalCategory)
+                        foreach (string categorie in ViewBag.totalCategory)
                         {
                             if (catagorielist == null || catagorielist.Count == 0)
                             {
@@ -70,11 +70,15 @@
                                 }
                             }
 
-
-
-
-
                         }
+
+                            foreach (string grade in ViewBag.Grade)
+                            {
+                                <div>
+                                    <input type="checkbox" id="grade" name="grade" value=@grade />
+                                    <label for="cats">@grade</label>
+                                </div>
+                            }
                         <div class="col-md-12 text-center">
                             <input type="submit" value="Search" class="btn btn-primary btnRegister" />
                         </div>

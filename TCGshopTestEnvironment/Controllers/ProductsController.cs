@@ -140,9 +140,15 @@ namespace TCGshopTestEnvironment.Controllers
                         
                     });
 
-
+                
                 //filters
                 //if(!String.IsNullOrEmpty(catagorie)) listingResult = listingResult.Where(x => x.CardCatagoryList.Contains(catagorie));
+                if (catagorie.Count > 0)
+                {
+                    listingResult = listingResult.Where(x => x.CardCatagoryList.Intersect(catagorie).Any());
+                }
+
+                ViewBag.Grade = listingResult.Select(x => x.Grade).Distinct();
 
                 //sorting
                 switch (sortBy)
