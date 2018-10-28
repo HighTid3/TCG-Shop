@@ -112,8 +112,8 @@ namespace TCGshopTestEnvironment.Controllers
                 ViewBag.name = name;
                 ViewBag.totalCategory = cardscategory;
                 ViewBag.catagorie = catagorie;
-                // sorting list
 
+                // sorting list
                 List<SelectListItem> Sorting = new List<SelectListItem>
                 {
                     new SelectListItem {Text = "Name A-Z", Value = "name"},
@@ -158,6 +158,14 @@ namespace TCGshopTestEnvironment.Controllers
                         listingResult = listingResult.OrderBy(s => s.Name);
                         break;
                 }
+
+
+                // checkbox check
+                if (!String.IsNullOrEmpty(catagorie))
+                {
+                    ViewBag.Checked = true;
+                }
+
 
                 var onePageOfProducts = listingResult.ToPagedList(pageNmber, pageAmnt);
                 ViewBag.OnePageOfProducts = onePageOfProducts;
