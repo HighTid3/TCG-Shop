@@ -3,7 +3,7 @@
 }
 @{
 
-    List<string> totalcatagories= ViewBag.totalCategory as List<string>;
+    List<string> catagorielist= ViewBag.catagorie as List<string>;
 }
 
 
@@ -37,7 +37,7 @@
                         {
                             <input type="hidden" name="name" value="@ViewBag.name" />
                             <input type="hidden" name="pagAmount" value="@ViewBag.PageAmount" />
-                            <input type="hidden" name="catagorie" value="@ViewBag.catagorie" />
+                            <input type="hidden" type ="checkbox" name="catagorie" value="@catagorielist" />
                             @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })
 
                         }
@@ -45,20 +45,34 @@
                             <form class="" method="get" asp-controller="Products" asp-action="Search">
                                 @foreach (string categorie in ViewBag.totalCategory)
                                 {
-                                    if ((string)ViewBag.catagorie == categorie)
-                                     {
-                                         <div>
-                                             <input type="checkbox" id="cats" name="catagorie" value=@categorie checked="checked"/>
-                                             <label for="cats">@categorie</label>
-                                         </div>
-                                     }
-                                    else
+                                    if (catagorielist == null || catagorielist.Count == 0)
                                     {
                                         <div>
                                             <input type="checkbox" id="cats" name="catagorie" value=@categorie />
                                             <label for="cats">@categorie</label>
                                         </div>
                                     }
+                                    else
+                                    {
+                                        if (catagorielist.Contains(categorie))
+                                        {
+                                            <div>
+                                                <input type="checkbox" id="cats" name="catagorie" value=@categorie checked="checked"/>
+                                                <label for="cats">@categorie</label>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div>
+                                                <input type="checkbox" id="cats" name="catagorie" value=@categorie />
+                                                <label for="cats">@categorie</label>
+                                            </div>
+                                        }
+                                    }
+
+
+                                    
+
 
                                 }
                                 <input type="hidden" name="name" value="@ViewBag.name" />

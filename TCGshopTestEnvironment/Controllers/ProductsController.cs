@@ -95,7 +95,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(int? page, int? pageAmount, string name, string sortBy, string catagorie)
+        public IActionResult Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie)
         {
             if (!String.IsNullOrEmpty(name))
             {
@@ -112,6 +112,7 @@ namespace TCGshopTestEnvironment.Controllers
                 ViewBag.name = name;
                 ViewBag.totalCategory = cardscategory;
                 ViewBag.catagorie = catagorie;
+                ViewBag.catagoriestring = "";
 
                 // sorting list
                 List<SelectListItem> Sorting = new List<SelectListItem>
@@ -139,8 +140,9 @@ namespace TCGshopTestEnvironment.Controllers
                         
                     });
 
+
                 //filters
-                if(!String.IsNullOrEmpty(catagorie)) listingResult = listingResult.Where(x => x.CardCatagoryList.Contains(catagorie));
+                //if(!String.IsNullOrEmpty(catagorie)) listingResult = listingResult.Where(x => x.CardCatagoryList.Contains(catagorie));
 
                 //sorting
                 switch (sortBy)
@@ -157,13 +159,6 @@ namespace TCGshopTestEnvironment.Controllers
                     default:
                         listingResult = listingResult.OrderBy(s => s.Name);
                         break;
-                }
-
-
-                // checkbox check
-                if (!String.IsNullOrEmpty(catagorie))
-                {
-                    ViewBag.Checked = true;
                 }
 
 
