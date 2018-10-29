@@ -23,19 +23,17 @@
     <div id="productsTable">
         <div class="container-fluid">
             <div class="row" style="margin-top: 10px;">
-                <div class="col-md-2">
-                    <h2>Filter</h2>
-                </div>
+                @await Html.PartialAsync("/Views/Products/_Filters.cshtml")
                 <div class="col-md-10">
                     @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
 
                     <div class="col-md-12">
-                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Index", new { page, ViewBag.PageAmount, ViewBag.CardType }))
+                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Index", new { page, ViewBag.PageAmount, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh }))
 
-                        <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="8" asp-route-CardType="@ViewBag.CardType"><button>8</button></a>
-                        <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="16" asp-route-CardType="@ViewBag.CardType"><button>16</button></a>
-                        <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="32" asp-route-CardType="@ViewBag.CardType"><button>32</button></a>
-                        <a asp-controller="Products" asp-action="Index" asp-route-page="@ViewBag.page" asp-route-pageAmount="62" asp-route-CardType="@ViewBag.CardType"><button>62</button></a>
+                        <input type="button" value="8" onclick="location.href='@Url.Action("Index", new { ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=8'" />
+                        <input type="button" value="16" onclick="location.href='@Url.Action("Index", new { ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=16'" />
+                        <input type="button" value="32" onclick="location.href='@Url.Action("Index", new { ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=32'" />
+                        <input type="button" value="64" onclick="location.href='@Url.Action("Index", new { ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=64'" />
                     </div>
                 </div>
             </div>

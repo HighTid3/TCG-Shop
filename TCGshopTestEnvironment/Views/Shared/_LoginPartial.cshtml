@@ -21,7 +21,9 @@ else
 
     <p>
         <button type="button" onclick="location.href = '@Url.Action("Login", "Account")'" class="btn btn-primary btnSignIn">Sign in</button> or
-        <a asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+
+        <button type="button" onclick="location.href = '@Url.Action("Register", "Account" )'" class="btn btn-primary btnSignIn">Register</button>
+
     </p>
     @*<ul class="nav navbar-nav navbar-right">
         <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>

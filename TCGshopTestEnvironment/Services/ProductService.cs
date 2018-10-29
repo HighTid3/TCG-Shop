@@ -41,19 +41,29 @@ namespace TCGshopTestEnvironment.Services
             return _context.products.FirstOrDefault(product => product.ProductId == id).Name;
         }
 
-        public IEnumerable<Products> GetbyCardType(string type)
+        public IQueryable<Productscopy> GetbyCardType(string type)
         {
-
-            return from p in _context.products
-                join c in _context.ProductCategory on p.ProductId equals c.ProductId where c.CategoryName == type
-                select p;
+            if (type != "Default")
+            {
+                return from p in _context.products
+                    join c in _context.ProductCategory on p.ProductId equals c.ProductId
+                    where c.CategoryName == type
+                    select new Productscopy { prods = p, Catnames = c.CategoryName };
+            }
+            else
+            {
+                return from p in _context.products
+                    join c in _context.ProductCategory on p.ProductId equals c.ProductId
+                    select new Productscopy { prods = p, Catnames = c.CategoryName };
+            }
         }
 
-        public IEnumerable<Products> GetByNameSearch(string name)
+        public IQueryable<Productscopy> GetByNameSearch(string name)
         {
             return from p in _context.products
-                where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
-                select p;
+                join c in _context.ProductCategory on p.ProductId equals c.ProductId
+                   where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
+                select new Productscopy { prods = p, Catnames = c.CategoryName };
         }
 
         public List<string> GetCardCatagory(IEnumerable<Products> cards)

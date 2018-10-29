@@ -1,0 +1,127 @@
+﻿@model IEnumerable<TCGshopTestEnvironment.ViewModels.ProductsViewModel>
+@{ViewBag.Title = "Product View";
+}
+@{
+
+    List<string> catagorielist = ViewBag.catagorie as List<string>;
+    List<string> gradeslist = ViewBag.grades as List<string>;
+}
+
+
+@using System.Data.SqlClient
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+
+<!--filtering-->
+<style>
+   
+    .filter {
+        margin-top: 12px;
+        border-radius: 10px;
+        padding-left: 10px;
+        background-color: #2973f6;
+    }
+    .filter h3 {
+        color: white;
+    }
+    label {
+        color: white;
+    }
+    .FilterTitle {
+        font-size: 17px;
+        text-transform: uppercase;
+        font-weight:800;
+        margin-bottom: 15px;
+    }
+</style>
+<div class="col-md-1">
+
+</div>
+<div class="col-md-2 filter">
+    <h3>Sorting</h3>
+    <div>
+        <!--sorting-->
+        @using (Html.BeginForm(FormMethod.Get, new { id = "TheForm" }))
+        {
+            <input type="hidden" name="name" value="@ViewBag.name" />
+            <input type="hidden" name="pageAmount" value="@ViewBag.PageAmount" />
+            <input type="hidden" name="cardType" value="@ViewBag.cardType"/>
+
+            @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })
+
+            @*}*@
+            <!--catagorie filter-->
+            @*<form class="" method="get" asp-controller="Products" asp-action="Search">*@
+            <h3 class="FilterTitle">Categories</h3>
+            foreach (string categorie in ViewBag.totalCategory)
+            {
+
+                if (catagorielist == null || catagorielist.Count == 0)
+                {
+                    <div>
+                        <input type="checkbox" id="cats" name="catagorie" value=@categorie />
+                        <label for="cats">@categorie</label>
+                    </div>
+                }
+                else
+                {
+                    if (catagorielist.Contains(categorie))
+                    {
+                        <div>
+                            <input type="checkbox" id="cats" name="catagorie" value=@categorie checked="checked" />
+                            <label for="cats">@categorie</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <input type="checkbox" id="cats" name="catagorie" value=@categorie />
+                            <label for="cats">@categorie</label>
+                        </div>
+                    }
+                }
+
+
+
+            }
+            <h3 class="FilterTitle">Grades</h3>
+            foreach (string grade in ViewBag.Grade)
+            {
+                if (gradeslist.Contains(grade))
+                {
+                    <div>
+                        <input type="checkbox" id="grade" name="grades" value="@grade" checked="checked" />
+                        <label for="cats">@grade</label>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <input type="checkbox" id="grade" name="grades" value="@grade" />
+                        <label for="cats">@grade</label>
+                    </div>
+                }
+            }
+
+            <h3 class="FilterTitle">Price</h3>
+
+            <!--Price Range Slider-->
+            <div class="price-filter" style="padding-top: 10px; padding-bottom: 10px;">
+
+
+
+                € <input type="tel" data-facet="prijs" placeholder="0" value="@if (@ViewBag.PriceLow == 0) { } else {@ViewBag.PriceLow}" name="priceLow" style="width: 54px;">
+                to <input type="tel" data-facet="prijs" placeholder="10000" value="@if (@ViewBag.PriceHigh == 10000) { } else {@ViewBag.PriceHigh}" name="priceHigh" style="width: 54px;">
+
+            </div>
+
+            <div class="text-center">
+                <input type="submit" value="Filter" class="btn btn-primary btnRegister" style="margin-bottom: 15px;" />
+            </div>
+            @*</form>*@
+        }
+    </div>
+
+
+</div>

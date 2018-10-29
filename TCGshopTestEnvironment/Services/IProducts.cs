@@ -14,9 +14,9 @@ namespace TCGshopTestEnvironment.Services
         void Add(Products NewProduct);
         string GetName(int id);
 
-        IEnumerable<Products> GetbyCardType(string type);
+        IQueryable<Productscopy> GetbyCardType(string type);
 
-        IEnumerable<Products> GetByNameSearch(string name);
+        IQueryable<Productscopy> GetByNameSearch(string name);
 
         List<string> GetCardCatagory(IEnumerable<Products> cards);
 
