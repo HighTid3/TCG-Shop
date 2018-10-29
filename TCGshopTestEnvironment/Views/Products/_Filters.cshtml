@@ -14,7 +14,30 @@
 @using X.PagedList.Mvc.Core
 
 <!--filtering-->
-<div class="col-md-2">
+<style>
+    .filter {
+        margin-top: 12px;
+        border-radius: 10px;
+        padding-left: 10px;
+        background-color: #2973f6;
+    }
+    .filter h3 {
+        color: white;
+    }
+    label {
+        color: white;
+    }
+    .FilterTitle {
+        font-size: 17px;
+        text-transform: uppercase;
+        font-weight:800;
+        margin-bottom: 15px;
+    }
+</style>
+<div class="col-md-1">
+
+</div>
+<div class="col-md-2 filter">
     <h3>Sorting</h3>
     <div>
         <!--sorting-->
@@ -29,7 +52,7 @@
             @*}*@
             <!--catagorie filter-->
             @*<form class="" method="get" asp-controller="Products" asp-action="Search">*@
-            <h3>Categories</h3>
+            <h3 class="FilterTitle">Categories</h3>
             foreach (string categorie in ViewBag.totalCategory)
             {
 
@@ -61,7 +84,7 @@
 
 
             }
-            <h3>Grades</h3>
+            <h3 class="FilterTitle">Grades</h3>
             foreach (string grade in ViewBag.Grade)
             {
                 if (gradeslist.Contains(grade))
@@ -80,7 +103,7 @@
                 }
             }
 
-            <h3>Price</h3>
+            <h3 class="FilterTitle">Price</h3>
 
             <!--Price Range Slider-->
             <div class="price-filter" style="padding-top: 10px; padding-bottom: 10px;">
@@ -92,7 +115,7 @@
 
             </div>
 
-            <div class="col-md-12 text-center">
+            <div class="text-center">
                 <input type="submit" value="Search" class="btn btn-primary btnRegister" />
             </div>
             @*</form>*@
