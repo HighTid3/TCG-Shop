@@ -30,7 +30,7 @@ namespace TCGshopTestEnvironment.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int? page, int? pageAmount, string cardType, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
+        public async Task<IActionResult> Index(int? page, int? pageAmount, string cardType, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
         {
             ViewBag.page = page;
             ViewBag.PageAmount = pageAmount;
@@ -99,7 +99,15 @@ namespace TCGshopTestEnvironment.Controllers
             //if(!String.IsNullOrEmpty(catagorie)) listingResult = listingResult.Where(x => x.CardCatagoryList.Contains(catagorie));
             if (catagorie.Count > 0)
             {
-                listingResult = listingResult.Where(x => x.CardCatagoryList.Intersect(catagorie).Any());
+                if (catagorie.Count == 1 && catagorie.Contains(cardType))
+                {
+
+                }
+                else
+                {
+                    listingResult = listingResult.Where(x => x.CardCatagoryList.Intersect(catagorie).Any());
+                }
+
             }
 
             ViewBag.Grade = listingResult.Select(x => x.Grade).Distinct();
@@ -132,8 +140,7 @@ namespace TCGshopTestEnvironment.Controllers
                     break;
             }
 
-
-            var onePageOfProducts = listingResult.ToPagedList(pageNumber, pageAmnt);
+            var onePageOfProducts = await listingResult.AsNoTracking().ToPagedListAsync(pageNumber, pageAmnt);
             ViewBag.OnePageOfProducts = onePageOfProducts;
 
             if (cardType == "Pokemon")
@@ -170,7 +177,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
+        public async Task<IActionResult> Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
         {
             if (!String.IsNullOrEmpty(name))
             {
@@ -264,7 +271,7 @@ namespace TCGshopTestEnvironment.Controllers
                 }
 
 
-                var onePageOfProducts = listingResult.ToPagedList(pageNmber, pageAmnt);
+                var onePageOfProducts = await listingResult.AsNoTracking().ToPagedListAsync(pageNmber, pageAmnt);
                 ViewBag.OnePageOfProducts = onePageOfProducts;
                 return View();
             }
