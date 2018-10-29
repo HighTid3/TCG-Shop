@@ -48,12 +48,13 @@ namespace TCGshopTestEnvironment.Controllers
 
             //queries to get items and catagories from database
             var assetModels = _assets.GetbyCardType(cardType);
-            var cardscategory = _assets.GetCardCatagory(assetModels);
+            var cardscategory = assetModels.Select(x => x.Catnames).ToList().Distinct();
+            var cardModels = assetModels.Select(x => x.prods);
 
-            if (cardType == "Default")
-            {
-                assetModels = _assets.GetAll();
-            }
+            //if (cardType == "Default")
+            //{
+            //    assetModels = _assets.GetAll();
+            //}
 
 
             //viewbags to send to the view
@@ -81,7 +82,7 @@ namespace TCGshopTestEnvironment.Controllers
             ViewBag.sortBy = sortBy;
 
 
-            var listingResult = assetModels
+            var listingResult = cardModels
                 .Select(result => new ProductsViewModel
                 {
                     Id = result.ProductId,
