@@ -16,7 +16,7 @@ namespace TCGshopTestEnvironment.Services
 
         IQueryable<Productscopy> GetbyCardType(string type);
 
-        IEnumerable<Products> GetByNameSearch(string name);
+        IQueryable<Productscopy> GetByNameSearch(string name);
 
         List<string> GetCardCatagory(IEnumerable<Products> cards);
 

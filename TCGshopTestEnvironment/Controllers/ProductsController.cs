@@ -49,7 +49,7 @@ namespace TCGshopTestEnvironment.Controllers
             //queries to get items and catagories from database
             var assetModels = _assets.GetbyCardType(cardType);
             var cardscategory = assetModels.Select(x => x.Catnames).ToList().Distinct();
-            var cardModels = assetModels.Select(x => x.prods);
+            //var cardModels = assetModels.Select(x => x.prods);
 
             //if (cardType == "Default")
             //{
@@ -82,16 +82,16 @@ namespace TCGshopTestEnvironment.Controllers
             ViewBag.sortBy = sortBy;
 
 
-            var listingResult = cardModels
+            var listingResult = assetModels
                 .Select(result => new ProductsViewModel
                 {
-                    Id = result.ProductId,
-                    Name = result.Name.Length < 20 ? result.Name : result.Name.Substring(0, 15) + "...",
-                    Price = result.Price,
-                    ImageUrl = result.ImageUrl,
-                    Grade = result.Grade,
-                    Stock = result.Stock,
-                    CardCatagoryList = _context.ProductCategory.Where(x => x.ProductId == result.ProductId).Select(x => x.CategoryName).ToList()
+                    Id = result.prods.ProductId,
+                    Name = result.prods.Name.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",
+                    Price = result.prods.Price,
+                    ImageUrl = result.prods.ImageUrl,
+                    Grade = result.prods.Grade,
+                    Stock = result.prods.Stock,
+                    CardCatagoryList = _context.ProductCategory.Where(x => x.ProductId == result.prods.ProductId).Select(x => x.CategoryName).ToList()
 
                 });
 
@@ -183,7 +183,8 @@ namespace TCGshopTestEnvironment.Controllers
 
                 //queries to get items and catagories from database
                 var assetmodel = _assets.GetByNameSearch(name.ToLower());
-                var cardscategory = _assets.GetCardCatagory(assetmodel);
+                var cardscategory = assetmodel.Select(x => x.Catnames).Distinct();
+                var cardmodel = assetmodel.Select(x => x.prods);
 
                 //viewbags to send to the view
                 ViewBag.page = page;
@@ -211,7 +212,7 @@ namespace TCGshopTestEnvironment.Controllers
 
 
                 // bind all products from database to productviewmodel
-                var listingResult = assetmodel
+                var listingResult = cardmodel
                     .Select(result => new ProductsViewModel
                     {
                         Id = result.ProductId,
@@ -276,7 +277,7 @@ namespace TCGshopTestEnvironment.Controllers
         public JsonResult CardAutoCompleteResult(string text)
         {
 
-            IEnumerable<string> cardname = _assets.GetByNameSearch(text).Select(x => x.Name).ToList();
+            IEnumerable<string> cardname = _assets.GetByNameSearch(text).Select(x => x.prods.Name).ToList();
 
             return Json(cardname);
         }

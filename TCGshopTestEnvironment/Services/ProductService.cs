@@ -58,11 +58,12 @@ namespace TCGshopTestEnvironment.Services
             }
         }
 
-        public IEnumerable<Products> GetByNameSearch(string name)
+        public IQueryable<Productscopy> GetByNameSearch(string name)
         {
             return from p in _context.products
-                where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
-                select p;
+                join c in _context.ProductCategory on p.ProductId equals c.ProductId
+                   where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
+                select new Productscopy { prods = p, Catnames = c.CategoryName };
         }
 
         public List<string> GetCardCatagory(IEnumerable<Products> cards)
