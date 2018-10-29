@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using TCGshopTestEnvironment.Models;
+using TCGshopTestEnvironment.ViewModels;
 
 namespace TCGshopTestEnvironment.Services
 {
@@ -41,29 +42,29 @@ namespace TCGshopTestEnvironment.Services
             return _context.products.FirstOrDefault(product => product.ProductId == id).Name;
         }
 
-        public IQueryable<Productscopy> GetbyCardType(string type)
+        public IQueryable<Productsandcategorie> GetbyCardType(string type)
         {
             if (type != "Default")
             {
                 return from p in _context.products
                     join c in _context.ProductCategory on p.ProductId equals c.ProductId
                     where c.CategoryName == type
-                    select new Productscopy { prods = p, Catnames = c.CategoryName };
+                    select new Productsandcategorie { prods = p, Catnames = c.CategoryName };
             }
             else
             {
                 return from p in _context.products
                     join c in _context.ProductCategory on p.ProductId equals c.ProductId
-                    select new Productscopy { prods = p, Catnames = c.CategoryName };
+                    select new Productsandcategorie { prods = p, Catnames = c.CategoryName };
             }
         }
 
-        public IQueryable<Productscopy> GetByNameSearch(string name)
+        public IQueryable<Productsandcategorie> GetByNameSearch(string name)
         {
             return from p in _context.products
                 join c in _context.ProductCategory on p.ProductId equals c.ProductId
                    where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
-                select new Productscopy { prods = p, Catnames = c.CategoryName };
+                select new Productsandcategorie { prods = p, Catnames = c.CategoryName };
         }
 
         public List<string> GetCardCatagory(IEnumerable<Products> cards)

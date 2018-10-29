@@ -59,8 +59,8 @@
                 if (catagorielist == null || catagorielist.Count == 0)
                 {
                     <div>
-                        <input type="checkbox" id="cats" name="catagorie" value=@categorie />
-                        <label for="cats">@categorie</label>
+                        <input type="checkbox" id="@categorie" name="catagorie" value=@categorie />
+                        <label for="@categorie">@categorie</label>
                     </div>
                 }
                 else
@@ -68,15 +68,15 @@
                     if (catagorielist.Contains(categorie))
                     {
                         <div>
-                            <input type="checkbox" id="cats" name="catagorie" value=@categorie checked="checked" />
-                            <label for="cats">@categorie</label>
+                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie checked="checked" />
+                            <label for="@categorie">@categorie</label>
                         </div>
                     }
                     else
                     {
                         <div>
-                            <input type="checkbox" id="cats" name="catagorie" value=@categorie />
-                            <label for="cats">@categorie</label>
+                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie />
+                            <label for="@categorie">@categorie</label>
                         </div>
                     }
                 }
@@ -90,15 +90,15 @@
                 if (gradeslist.Contains(grade))
                 {
                     <div>
-                        <input type="checkbox" id="grade" name="grades" value="@grade" checked="checked" />
-                        <label for="cats">@grade</label>
+                        <input type="checkbox" id="@grade" name="grades" value="@grade" checked="checked" />
+                        <label for="@grade">@grade</label>
                     </div>
                 }
                 else
                 {
                     <div>
-                        <input type="checkbox" id="grade" name="grades" value="@grade" />
-                        <label for="cats">@grade</label>
+                        <input type="checkbox" id="@grade" name="grades" value="@grade" />
+                        <label for="@grade">@grade</label>
                     </div>
                 }
             }

@@ -6,11 +6,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Models.JoinTables;
 
-namespace TCGshopTestEnvironment.Models
+namespace TCGshopTestEnvironment.ViewModels
 {
-    public class Productscopy
+    public class Productsandcategorie
     {
         public string Catnames { get; set; }
 
