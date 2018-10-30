@@ -59,7 +59,7 @@
                 if (catagorielist == null || catagorielist.Count == 0)
                 {
                     <div>
-                        <input type="checkbox" id="@categorie" name="catagorie" value=@categorie />
+                        <input type="checkbox" id="@categorie" name="catagorie" value=@categorie onchange="document.getElementById('TheForm').submit();"/>
                         <label for="@categorie">@categorie</label>
                     </div>
                 }
@@ -68,14 +68,14 @@
                     if (catagorielist.Contains(categorie))
                     {
                         <div>
-                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie checked="checked" />
+                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie checked="checked" onchange="document.getElementById('TheForm').submit();"/>
                             <label for="@categorie">@categorie</label>
                         </div>
                     }
                     else
                     {
                         <div>
-                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie />
+                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie onchange="document.getElementById('TheForm').submit();"/>
                             <label for="@categorie">@categorie</label>
                         </div>
                     }
@@ -90,14 +90,14 @@
                 if (gradeslist.Contains(grade))
                 {
                     <div>
-                        <input type="checkbox" id="@grade" name="grades" value="@grade" checked="checked" />
+                        <input type="checkbox" id="@grade" name="grades" value="@grade" checked="checked" onchange="document.getElementById('TheForm').submit();"/>
                         <label for="@grade">@grade</label>
                     </div>
                 }
                 else
                 {
                     <div>
-                        <input type="checkbox" id="@grade" name="grades" value="@grade" />
+                        <input type="checkbox" id="@grade" name="grades" value="@grade" onchange="document.getElementById('TheForm').submit();"/>
                         <label for="@grade">@grade</label>
                     </div>
                 }
@@ -112,7 +112,6 @@
 
                 € <input type="tel" data-facet="prijs" placeholder="0" value="@if (@ViewBag.PriceLow == 0) { } else {@ViewBag.PriceLow}" name="priceLow" style="width: 54px;">
                 to <input type="tel" data-facet="prijs" placeholder="10000" value="@if (@ViewBag.PriceHigh == 10000) { } else {@ViewBag.PriceHigh}" name="priceHigh" style="width: 54px;">
-
             </div>
 
             <div class="text-center">
@@ -121,6 +120,4 @@
             @*</form>*@
         }
     </div>
-
-
 </div>
