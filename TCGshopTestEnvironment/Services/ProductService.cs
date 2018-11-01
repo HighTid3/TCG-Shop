@@ -48,14 +48,20 @@ namespace TCGshopTestEnvironment.Services
             {
                 return from p in _context.products
                     join c in _context.ProductCategory on p.ProductId equals c.ProductId
-                    where c.CategoryName == type
-                    select new Productsandcategorie { prods = p, Catnames = c.CategoryName };
+                    let categorienames = from d in _context.ProductCategory
+                        where p.ProductId == d.ProductId && d.CategoryName == type
+                        select d.CategoryName
+                       where c.CategoryName == type
+                    select new Productsandcategorie { prods = p, Catnames = categorienames.ToList() };
             }
             else
             {
                 return from p in _context.products
                     join c in _context.ProductCategory on p.ProductId equals c.ProductId
-                    select new Productsandcategorie { prods = p, Catnames = c.CategoryName };
+                    let categorienames = from d in _context.ProductCategory
+                        where p.ProductId == d.ProductId
+                        select d.CategoryName
+                       select new Productsandcategorie { prods = p, Catnames = categorienames.ToList() };
             }
         }
 
@@ -64,7 +70,11 @@ namespace TCGshopTestEnvironment.Services
             return from p in _context.products
                 join c in _context.ProductCategory on p.ProductId equals c.ProductId
                    where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
-                select new Productsandcategorie { prods = p, Catnames = c.CategoryName };
+                         let categorienames = from d in _context.ProductCategory
+                                              where p.ProductId == d.ProductId
+                                              select d.CategoryName
+
+                select new Productsandcategorie { prods = p, Catnames = categorienames.ToList() };
         }
 
         public List<string> GetCardCatagory(IEnumerable<Products> cards)
