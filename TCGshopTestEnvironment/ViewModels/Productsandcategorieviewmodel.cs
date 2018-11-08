@@ -13,7 +13,7 @@ namespace TCGshopTestEnvironment.ViewModels
 {
     public class Productsandcategorie
     {
-        public string Catnames { get; set; }
+        public List<string> Catnames { get; set; }
 
         public Products prods { get; set; }
     }

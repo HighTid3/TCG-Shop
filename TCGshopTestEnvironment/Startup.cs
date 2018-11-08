@@ -108,6 +108,10 @@ namespace TCGshopTestEnvironment
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+
+            //sessions configuration for shopping basket
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -125,7 +129,7 @@ namespace TCGshopTestEnvironment
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseMvc(routes =>
             {

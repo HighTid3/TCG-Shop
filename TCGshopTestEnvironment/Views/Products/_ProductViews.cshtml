@@ -1,4 +1,5 @@
-﻿@foreach (var asset in ViewBag.OnePageOfProducts)
+﻿@model TCGshopTestEnvironment.ViewModels.ProductsShopCartViewModel
+@foreach (var asset in ViewBag.OnePageOfProducts)
 {
     <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 450px; width: 270px;">
         <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
@@ -10,7 +11,14 @@
             <br>
             @*@asset.Stock*@
             <h4>€@asset.Price</h4>
-            <button class="btn btn-primary btnSignIn AddCart" style="margin-bottom:10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+            @*<form>
+                <input asp-for="Name" id="Name" type="hidden" value="@asset.Name" />
+                <input asp-for="ImageUrl" id="ImageUrl" type="hidden" value="@asset.ImageUrl" />
+                <input asp-for="Price" id="Price" type="hidden" value="@asset.Price" />
+                <input asp-for="Grade" id="Grade" type="hidden" value="@asset.Grade" />
+                <input asp-for="Amount" id="Amount" type="hidden" value=1 />*@
+                <button onclick="AddToCart('@asset.Id', '@asset.Name',  '@asset.ImageUrl', '@asset.Price', '@asset.Grade', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+            @*</form>*@
         </div>
     </div>
 }
