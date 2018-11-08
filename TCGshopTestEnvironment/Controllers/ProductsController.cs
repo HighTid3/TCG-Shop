@@ -44,7 +44,14 @@ namespace TCGshopTestEnvironment.Controllers
             List<string> cardscategory = new List<string>();
             foreach (var item in assetModels.Select(x => x.Catnames).Distinct())
             {
-                cardscategory = item;
+                foreach (var catagory in item.Distinct())
+                {
+                    if (!cardscategory.Contains(catagory))
+                    {
+                        cardscategory.Add(catagory);
+                    }
+                }
+
             }
 
             //viewbags to send to the view
@@ -81,7 +88,7 @@ namespace TCGshopTestEnvironment.Controllers
                     ImageUrl = result.prods.ImageUrl,
                     Grade = result.prods.Grade,
                     Stock = result.prods.Stock,
-                    CardCatagoryList = _context.ProductCategory.Where(x => x.ProductId == result.prods.ProductId).Select(x => x.CategoryName).ToList()
+                    CardCatagoryList = result.Catnames
 
                 });
 
@@ -229,7 +236,7 @@ namespace TCGshopTestEnvironment.Controllers
                         ImageUrl = result.prods.ImageUrl,
                         Grade = result.prods.Grade,
                         Stock = result.prods.Stock,
-                        CardCatagoryList = _context.ProductCategory.Where(x => x.ProductId == result.prods.ProductId).Select(x => x.CategoryName).ToList()
+                        CardCatagoryList = result.Catnames
                         
                     });
 

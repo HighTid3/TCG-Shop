@@ -19,7 +19,5 @@ namespace TCGshopTestEnvironment.Services
 
         IQueryable<Productsandcategorie> GetByNameSearch(string name);
 
-        List<string> GetCardCatagory(IEnumerable<Products> cards);
-
     }
 }
