@@ -19,6 +19,7 @@ namespace TCGshopTestEnvironment.Controllers
         public const string TotalCartProducts = "_count";
         private DBModel _context;
 
+        
         public ShoppingController(DBModel context)
         {
             _context = context;
@@ -54,6 +55,12 @@ namespace TCGshopTestEnvironment.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public IActionResult ShoppingCart()
+        {
+
+            return View();
+        }
 
 
 
@@ -73,4 +80,7 @@ namespace TCGshopTestEnvironment.Controllers
             return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
         }
     }
+
+
+
 }
