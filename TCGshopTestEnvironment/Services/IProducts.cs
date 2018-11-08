@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TCGshopTestEnvironment.Models;
+using TCGshopTestEnvironment.ViewModels;
 
 namespace TCGshopTestEnvironment.Services
 {
@@ -14,11 +15,9 @@ namespace TCGshopTestEnvironment.Services
         void Add(Products NewProduct);
         string GetName(int id);
 
-        IQueryable<Productscopy> GetbyCardType(string type);
+        IQueryable<Productsandcategorie> GetbyCardType(string type);
 
-        IQueryable<Productscopy> GetByNameSearch(string name);
-
-        List<string> GetCardCatagory(IEnumerable<Products> cards);
+        IQueryable<Productsandcategorie> GetByNameSearch(string name);
 
     }
 }

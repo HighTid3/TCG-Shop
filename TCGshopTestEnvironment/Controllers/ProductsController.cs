@@ -18,10 +18,9 @@ namespace TCGshopTestEnvironment.Controllers
 {
     public class ProductsController : Controller
     {
-        private IProducts _assets;
-        private DBModel dbModel;
+        private readonly IProducts _assets;
 
-        private DBModel _context;
+        private readonly DBModel _context;
 
 
         public ProductsController(IProducts assets, DBModel context)
@@ -30,12 +29,9 @@ namespace TCGshopTestEnvironment.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int? page, int? pageAmount, string cardType, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
+        public async Task<IActionResult> Index(int? page, int? pageAmount, string cardType, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
         {
-            ViewBag.page = page;
-            ViewBag.PageAmount = pageAmount;
-            ViewBag.CardType = cardType;
-
+            //if page/pageamount/price parameters are empty, fill with standard value
             var pageNumber = page ?? 1;
             var pageAmnt = pageAmount ?? 16;
 
@@ -43,19 +39,20 @@ namespace TCGshopTestEnvironment.Controllers
             float priceH = priceHigh ?? 10000;
 
 
-
-
-
-            //queries to get items and catagories from database
+            //queries to get cards and catagories from database
             var assetModels = _assets.GetbyCardType(cardType);
-            var cardscategory = assetModels.Select(x => x.Catnames).ToList().Distinct();
-            //var cardModels = assetModels.Select(x => x.prods);
+            List<string> cardscategory = new List<string>();
+            foreach (var item in assetModels.Select(x => x.Catnames).Distinct())
+            {
+                foreach (var catagory in item.Distinct())
+                {
+                    if (!cardscategory.Contains(catagory))
+                    {
+                        cardscategory.Add(catagory);
+                    }
+                }
 
-            //if (cardType == "Default")
-            //{
-            //    assetModels = _assets.GetAll();
-            //}
-
+            }
 
             //viewbags to send to the view
             ViewBag.page = page;
@@ -69,19 +66,19 @@ namespace TCGshopTestEnvironment.Controllers
             ViewBag.PriceHigh = priceH;
             ViewBag.cardType = cardType;
 
-            // sorting list
-            List<SelectListItem> Sorting = new List<SelectListItem>
+            // sorting list for product sorting
+            var sorting = new List<SelectListItem>
                 {
                     new SelectListItem {Text = "Name A-Z", Value = "name"},
                     new SelectListItem {Text = "Name Z-A", Value = "name_desc"},
-                    new SelectListItem() {Text = "Price High-Low", Value = "Price"},
-                    new SelectListItem() {Text = "Price Low-High", Value = "price_desc"}
+                    new SelectListItem {Text = "Price High-Low", Value = "Price"},
+                    new SelectListItem {Text = "Price Low-High", Value = "price_desc"}
                 };
-            ViewBag.Sorting = Sorting;
+            ViewBag.Sorting = sorting;
             ViewBag.SelectSort = sortBy ?? "Name A-Z";
             ViewBag.sortBy = sortBy;
 
-
+            //bind products from query(assetModels) to productviewmodel(listingResult) that is used in the view.
             var listingResult = assetModels
                 .Select(result => new ProductsViewModel
                 {
@@ -91,22 +88,23 @@ namespace TCGshopTestEnvironment.Controllers
                     ImageUrl = result.prods.ImageUrl,
                     Grade = result.prods.Grade,
                     Stock = result.prods.Stock,
-                    CardCatagoryList = _context.ProductCategory.Where(x => x.ProductId == result.prods.ProductId).Select(x => x.CategoryName).ToList()
+                    CardCatagoryList = result.Catnames
 
                 });
 
             //filters
-            //if(!String.IsNullOrEmpty(catagorie)) listingResult = listingResult.Where(x => x.CardCatagoryList.Contains(catagorie));
             if (catagorie.Count > 0)
             {
-                listingResult = listingResult.Where(x => x.CardCatagoryList.Intersect(catagorie).Any());
-            }
+                //if statement to make sure when in catagorie if you select same catagorie name it doesn't run any code, for performance
+                if (catagorie.Count == 1 && catagorie.Contains(cardType))
+                {
 
-            ViewBag.Grade = listingResult.Select(x => x.Grade).Distinct();
+                }
+                else
+                {
+                    listingResult = listingResult.Where(x => x.CardCatagoryList.Intersect(catagorie).Any());
+                }
 
-            if (grades.Count > 0 && listingResult.Count(x => grades.Contains(x.Grade)) > 0)
-            {
-                listingResult = listingResult.Where(x => grades.Contains(x.Grade));
             }
 
             if (priceL > 0 || priceH < 10000)
@@ -114,6 +112,13 @@ namespace TCGshopTestEnvironment.Controllers
                 listingResult = listingResult.Where(x => x.Price >= priceL && x.Price <= priceH);
             }
 
+            //viewbag for the view with all the grades in it.
+            ViewBag.Grade = listingResult.Select(x => x.Grade).Distinct();
+
+            if (grades.Count > 0 && listingResult.Count(x => grades.Contains(x.Grade)) > 0)
+            {
+                listingResult = listingResult.Where(x => grades.Contains(x.Grade));
+            }
 
             //sorting
             switch (sortBy)
@@ -132,8 +137,7 @@ namespace TCGshopTestEnvironment.Controllers
                     break;
             }
 
-
-            var onePageOfProducts = listingResult.ToPagedList(pageNumber, pageAmnt);
+            var onePageOfProducts = await listingResult.AsNoTracking().ToPagedListAsync(pageNumber, pageAmnt);
             ViewBag.OnePageOfProducts = onePageOfProducts;
 
             if (cardType == "Pokemon")
@@ -170,7 +174,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
+        public async Task<IActionResult> Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
         {
             if (!String.IsNullOrEmpty(name))
             {
@@ -183,8 +187,19 @@ namespace TCGshopTestEnvironment.Controllers
 
                 //queries to get items and catagories from database
                 var assetmodel = _assets.GetByNameSearch(name.ToLower());
-                var cardscategory = assetmodel.Select(x => x.Catnames).Distinct();
-                var cardmodel = assetmodel.Select(x => x.prods);
+                List<string> cardscategory = new List<string>();
+                foreach (var item in assetmodel.Select(x => x.Catnames).Distinct())
+                {
+                    foreach (string item2 in item)
+                    {
+                        if (!cardscategory.Contains(item2))
+                        {
+                            cardscategory.Add(item2);
+                        }
+                    }
+                    
+                }
+
 
                 //viewbags to send to the view
                 ViewBag.page = page;
@@ -212,39 +227,39 @@ namespace TCGshopTestEnvironment.Controllers
 
 
                 // bind all products from database to productviewmodel
-                var listingResult = cardmodel
+                var listingResult = assetmodel
                     .Select(result => new ProductsViewModel
                     {
-                        Id = result.ProductId,
-                        Name = result.Name.Length < 20 ? result.Name : result.Name.Substring(0, 15) + "...",
-                        Price = result.Price,
-                        ImageUrl = result.ImageUrl,
-                        Grade = result.Grade,
-                        Stock = result.Stock,
-                        CardCatagoryList = _context.ProductCategory.Where(x => x.ProductId == result.ProductId).Select(x => x.CategoryName).ToList()
+                        Id = result.prods.ProductId,
+                        Name = result.prods.Name.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",
+                        Price = result.prods.Price,
+                        ImageUrl = result.prods.ImageUrl,
+                        Grade = result.prods.Grade,
+                        Stock = result.prods.Stock,
+                        CardCatagoryList = result.Catnames
                         
                     });
 
                 
                 //filters
-                //if(!String.IsNullOrEmpty(catagorie)) listingResult = listingResult.Where(x => x.CardCatagoryList.Contains(catagorie));
                 if (catagorie.Count > 0)
                 {
                     listingResult = listingResult.Where(x => x.CardCatagoryList.Intersect(catagorie).Any());
                 }
 
-                ViewBag.Grade = listingResult.Select(x => x.Grade).Distinct();
-
-                if (grades.Count > 0 && listingResult.Count(x => grades.Contains(x.Grade)) > 0)
-                {
-                    listingResult = listingResult.Where(x => grades.Contains(x.Grade));
-                }
 
                 if (priceL > 0 || priceH < 10000)
                 {
                     listingResult = listingResult.Where(x => x.Price >= priceL && x.Price <= priceH);
                 }
 
+                //viewbag for the view with all the grades in it.
+                ViewBag.Grade = listingResult.Select(x => x.Grade).Distinct();
+
+                if (grades.Count > 0 && listingResult.Count(x => grades.Contains(x.Grade)) > 0)
+                {
+                    listingResult = listingResult.Where(x => grades.Contains(x.Grade));
+                }
 
                 //sorting
                 switch (sortBy)
@@ -264,7 +279,7 @@ namespace TCGshopTestEnvironment.Controllers
                 }
 
 
-                var onePageOfProducts = listingResult.ToPagedList(pageNmber, pageAmnt);
+                var onePageOfProducts = await listingResult.AsNoTracking().ToPagedListAsync(pageNmber, pageAmnt);
                 ViewBag.OnePageOfProducts = onePageOfProducts;
                 return View();
             }

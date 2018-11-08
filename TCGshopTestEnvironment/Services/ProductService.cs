@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using TCGshopTestEnvironment.Models;
+using TCGshopTestEnvironment.ViewModels;
 
 namespace TCGshopTestEnvironment.Services
 {
@@ -41,44 +42,38 @@ namespace TCGshopTestEnvironment.Services
             return _context.products.FirstOrDefault(product => product.ProductId == id).Name;
         }
 
-        public IQueryable<Productscopy> GetbyCardType(string type)
+        public IQueryable<Productsandcategorie> GetbyCardType(string type)
         {
             if (type != "Default")
             {
                 return from p in _context.products
                     join c in _context.ProductCategory on p.ProductId equals c.ProductId
-                    where c.CategoryName == type
-                    select new Productscopy { prods = p, Catnames = c.CategoryName };
+                    let categorienames = (from d in _context.ProductCategory
+                                          where p.ProductId == d.ProductId && d.CategoryName == type
+                                          select d.CategoryName).ToList()
+                       where c.CategoryName == type
+                    select new Productsandcategorie { prods = p, Catnames = categorienames };
             }
             else
             {
                 return from p in _context.products
-                    join c in _context.ProductCategory on p.ProductId equals c.ProductId
-                    select new Productscopy { prods = p, Catnames = c.CategoryName };
+                        let categorienames = (from d in _context.ProductCategory
+                                             where p.ProductId == d.ProductId
+                                             select d.CategoryName).ToList()
+                       select new Productsandcategorie { prods = p, Catnames = categorienames };
             }
         }
 
-        public IQueryable<Productscopy> GetByNameSearch(string name)
+        public IQueryable<Productsandcategorie> GetByNameSearch(string name)
         {
             return from p in _context.products
-                join c in _context.ProductCategory on p.ProductId equals c.ProductId
                    where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
-                select new Productscopy { prods = p, Catnames = c.CategoryName };
+                         let categorienames = (from d in _context.ProductCategory
+                                              where p.ProductId == d.ProductId
+                                              select d.CategoryName).ToList()
+
+                select new Productsandcategorie { prods = p, Catnames = categorienames };
         }
 
-        public List<string> GetCardCatagory(IEnumerable<Products> cards)
-        {
-            List<string>categoriesList = new List<string>();
-            List<string>catagorieresResultList = new List<string>();
-            foreach (var card in cards)
-            {
-                categoriesList = _context.ProductCategory.Where(x => x.ProductId == card.ProductId).Select(x => x.CategoryName).Concat(categoriesList).Distinct().ToList();
-
-            }
-
-            return categoriesList;
-        }
     }
     }
-
-
