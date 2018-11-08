@@ -68,15 +68,24 @@ function AddToCart(id, name, imageUrl, price, grade, count) {
 
     console.log($.inArray(product, shoppingCart));
 
-    if ($.inArray(product, shoppingCart)) {
-        shoppingCart.push(product);
-        console.table(shoppingCart);
+    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name == product.Name))
+
+    a = JSON.stringify(shoppingCart[shoppingCartindex]) 
+    b = JSON.stringify(shoppingCart)
+
+    c = b.indexOf(a)
+
+    if (c != -1) {
+        shoppingCart[shoppingCartindex].Count = (parseInt(shoppingCart[shoppingCartindex].Count) + 1)
+        localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
     else {
-        console.log("Card was already added");
+        shoppingCart.push(product);
+        console.table(shoppingCart);
+        localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
 
-    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+    
 }
 
 
