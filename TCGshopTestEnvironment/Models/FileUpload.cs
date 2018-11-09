@@ -6,7 +6,6 @@ namespace TCGshopTestEnvironment.Models
     public class FileUpload
     {
         [Required]
-        [Display(Name = "Public Schedule")]
-        public IFormFile UploadPublicSchedule { get; set; }
+        public IFormFile CardImageUpload { get; set; }
     }
 }

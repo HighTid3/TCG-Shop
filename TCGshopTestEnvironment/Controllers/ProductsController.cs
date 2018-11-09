@@ -20,6 +20,7 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 using Amazon.S3.Transfer;
 using System.IO;
+using System.Net;
 
 namespace TCGshopTestEnvironment.Controllers
 {
@@ -415,27 +416,58 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> FileUpload(FileUpload fp)
+        public async Task<IActionResult> FileUpload(FileUpload formFile)
         {
             // Perform an initial check to catch FileUpload class attribute violations.
             if (!ModelState.IsValid)
+
             {
-                return Ok();
+                return Json(new { status = "error", message = "The model is not correct" });
             }
 
-            string ext = System.IO.Path.GetExtension(fp.UploadPublicSchedule.FileName);
 
-            var myUniqueFileName = string.Format(@"{0}.{1}", Guid.NewGuid(), ext);
+            //Check MIME
+            if (formFile.CardImageUpload.ContentType.ToLower() != "image/png")
+                return Json(new
+                {
+                    status = "error",
+                    message = "The file mime must be image/png"
+                });
 
+            //Check if size is between 0 and 10MB
+            if (formFile.CardImageUpload.Length == 0)
+            {
+                return Json(new
+                {
+                    status = "error",
+                    message = "Upload Failed. The selected file is empty."
+                });
+            }
+            else if (formFile.CardImageUpload.Length > 10485760)
+            {
+                return Json(new
+                {
+                    status = "error",
+                    message = "The selected file exceeds 10 MB."
+                });
+            }
 
-            var filePath = "uploads/" + myUniqueFileName;
+            //Generate Random Name
+            //string ext = System.IO.Path.GetExtension(formFile.CardImageUpload.FileName); //Get the file extension
+
+            
+            var filePath = System.IO.Path.GetTempFileName() + Guid.NewGuid() + ".png"; //Create Temp File with Random GUID
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
-                await fp.UploadPublicSchedule.CopyToAsync(fileStream);
+                await formFile.CardImageUpload.CopyToAsync(fileStream);
             }
 
-            return View();
+            return Json(new
+            {
+                status = "Uploaded",
+                message = filePath
+            });
         }
 
         [HttpGet]

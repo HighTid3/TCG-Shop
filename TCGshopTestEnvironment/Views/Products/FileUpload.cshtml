@@ -3,14 +3,15 @@
     ViewData["Title"] = "Upload";
 }
 
-
-<h3>Upload File</h3>
-<div class="row">
+<div class="row justify-content-center">
+    <div class="col-md-4"></div>
+    
     <div class="col-md-4">
+        <h3>Upload File</h3>
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <input asp-for="UploadPublicSchedule" type="file" class="form-control" style="height:auto" />
-                <span asp-validation-for="UploadPublicSchedule" class="text-danger"></span>
+                <input asp-for="CardImageUpload" type="file" class="form-control" style="height: auto" />
+                <span asp-validation-for="CardImageUpload" class="text-danger"></span>
             </div>
             <input type="submit" value="Upload" class="btn btn-default" />
         </form>

@@ -45,10 +45,10 @@ namespace TCGshopTestEnvironment.Services
             var fileName = WebUtility.HtmlEncode(
                 Path.GetFileName(formFile.FileName));
 
-            if (formFile.ContentType.ToLower() != "text/plain")
+            if (formFile.ContentType.ToLower() != "image/png")
             {
                 modelState.AddModelError(formFile.Name,
-                    $"The {fieldDisplayName}file ({fileName}) must be a text file.");
+                    $"The {fieldDisplayName}file ({fileName}) must be a png file.");
             }
 
             // Check the file length and don't bother attempting to
@@ -65,7 +65,7 @@ namespace TCGshopTestEnvironment.Services
             else if (formFile.Length > 10485760)
             {
                 modelState.AddModelError(formFile.Name,
-                    $"The {fieldDisplayName}file ({fileName}) exceeds 1 MB.");
+                    $"The {fieldDisplayName}file ({fileName}) exceeds 10 MB.");
             }
             else
             {
@@ -105,7 +105,7 @@ namespace TCGshopTestEnvironment.Services
                 {
                     modelState.AddModelError(formFile.Name,
                         $"The {fieldDisplayName}file ({fileName}) upload failed. " +
-                        $"Please contact the Help Desk for support. Error: {ex.Message}");
+                        $"Error: {ex.Message}");
                     // Log the exception
                 }
             }
