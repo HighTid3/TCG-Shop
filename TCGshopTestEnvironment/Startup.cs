@@ -72,9 +72,9 @@ namespace TCGshopTestEnvironment
             services.AddSingleton(Configuration);
             services.AddScoped<IProducts, ProductService>();
 
-            var connection = @"User ID=postgres;Password=test;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
-            
-            
+            var connection = @"User ID=pgadmin;Password=Koetse;Host=10.0.0.10;Port=5432;Database=tcg;Pooling=true;";
+
+
             // Heroku provides PostgreSQL connection URL via env variable
             var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 

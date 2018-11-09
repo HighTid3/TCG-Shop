@@ -321,11 +321,12 @@ namespace TCGshopTestEnvironment.Controllers
         {
             if (ModelState.IsValid)
             {
+                var ImageUrl = vm.ImageUrl;
 
                 Products Product = new Products
                 {
                     Name = vm.Name,
-                    ImageUrl = vm.ImageUrl,
+                    
                     Price = vm.Price,
                     Grade = vm.Grade,
                     Stock = vm.Stock,

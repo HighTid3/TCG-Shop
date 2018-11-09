@@ -68,15 +68,15 @@ function AddToCart(id, name, imageUrl, price, grade, count) {
 
     console.log($.inArray(product, shoppingCart));
 
-    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name == product.Name))
+    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name == product.Name));
 
-    a = JSON.stringify(shoppingCart[shoppingCartindex]) 
-    b = JSON.stringify(shoppingCart)
+    a = JSON.stringify(shoppingCart[shoppingCartindex]);
+    b = JSON.stringify(shoppingCart);
 
-    c = b.indexOf(a)
+    c = b.indexOf(a);
 
     if (c != -1) {
-        shoppingCart[shoppingCartindex].Count = (parseInt(shoppingCart[shoppingCartindex].Count) + 1)
+        shoppingCart[shoppingCartindex].Count = (parseInt(shoppingCart[shoppingCartindex].Count) + 1);
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
     else {
