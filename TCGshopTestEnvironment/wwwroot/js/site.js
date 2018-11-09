@@ -120,11 +120,10 @@ function AddToCart(id, name, imageUrl, price, grade, count) {
 
 
 $('.qty').click(function () {
-    var label = $('#productStock');
     var $t = $(this),
         $in = $('input[name="'+$t.data('field')+'"]'),
         val = parseInt($in.val()),
-        valMax = label.attr('value'),
+        valMax = $('#productStock').attr('value'),
         valMin = 0;
 
     // Check if a number is in the field first
