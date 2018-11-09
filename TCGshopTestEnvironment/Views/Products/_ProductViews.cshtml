@@ -11,14 +11,8 @@
             <br>
             @*@asset.Stock*@
             <h4>€@asset.Price</h4>
-            @*<form>
-                <input asp-for="Name" id="Name" type="hidden" value="@asset.Name" />
-                <input asp-for="ImageUrl" id="ImageUrl" type="hidden" value="@asset.ImageUrl" />
-                <input asp-for="Price" id="Price" type="hidden" value="@asset.Price" />
-                <input asp-for="Grade" id="Grade" type="hidden" value="@asset.Grade" />
-                <input asp-for="Amount" id="Amount" type="hidden" value=1 />*@
-                <button onclick="AddToCart('@asset.Id', '@asset.Name',  '@asset.ImageUrl', '@asset.Price', '@asset.Grade', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
-            @*</form>*@
+            <button id="AddCartBtn" onclick="AddToCart('@asset.Id', '@asset.Name',  '@asset.ImageUrl', '@asset.Price', '@asset.Grade', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+            @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
         </div>
     </div>
 }
