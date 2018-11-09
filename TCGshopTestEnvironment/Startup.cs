@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.S3;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +21,10 @@ namespace TCGshopTestEnvironment
 {
     public class Startup
     {
+        //S3
+        public const string accessKey = "GWNTXOWWJ0FUTECK224A";
+        public const string secretKey = "Hq9R6mPPVpE+OTCofSUBBmN8ILU2OIKnOpmgY5Cl"; // do not store secret key hardcoded in your production source code!
+        //S3
 
         public static string storagePath = "https://cdn.tcg.sale/tcg/";
 
@@ -112,6 +118,7 @@ namespace TCGshopTestEnvironment
             //sessions configuration for shopping basket
             services.AddDistributedMemoryCache();
             services.AddSession();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

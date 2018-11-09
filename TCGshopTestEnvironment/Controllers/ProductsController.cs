@@ -13,6 +13,13 @@ using X.PagedList;
 using Microsoft.EntityFrameworkCore;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Models.JoinTables;
+using Amazon.S3;
+using Amazon;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Hosting;
+using Amazon.S3.Transfer;
+using System.IO;
 
 namespace TCGshopTestEnvironment.Controllers
 {
@@ -21,6 +28,16 @@ namespace TCGshopTestEnvironment.Controllers
         private readonly IProducts _assets;
 
         private readonly DBModel _context;
+
+        //S3
+        public static AmazonS3Config config = new AmazonS3Config
+        {
+            RegionEndpoint = RegionEndpoint.USEast1, // MUST set this before setting ServiceURL and it should match the `MINIO_REGION` enviroment variable.
+            ServiceURL = "http://10.0.0.10:9000", // replace http://localhost:9000 with URL of your minio server
+            ForcePathStyle = true // MUST be true to work correctly with Minio server
+        };
+        public static AmazonS3Client amazonS3Client = new AmazonS3Client(Startup.accessKey, Startup.secretKey, config);
+        //S3
 
 
         public ProductsController(IProducts assets, DBModel context)
@@ -371,6 +388,95 @@ namespace TCGshopTestEnvironment.Controllers
             return View();
         }
 
+        //Uploading Image
+        [HttpGet]
+        public async Task<IActionResult> S3Test()
+        {
+            // uncomment the following line if you like to troubleshoot communication with S3 storage and implement private void OnAmazonS3Exception(object sender, Amazon.Runtime.ExceptionEventArgs e)
+            // amazonS3Client.ExceptionEvent += OnAmazonS3Exception;
+            var listBucketResponse = await amazonS3Client.ListBucketsAsync();
+            var response = new List<string>();
+            foreach (var bucket in listBucketResponse.Buckets)
+            {
+                response.Add("bucket '" + bucket.BucketName + "' created at " + bucket.CreationDate);
+            }
+            if (listBucketResponse.Buckets.Count > 0)
+            {
+                var bucketName = listBucketResponse.Buckets[0].BucketName;
+
+                var listObjectsResponse = await amazonS3Client.ListObjectsAsync(bucketName);
+
+                foreach (var obj in listObjectsResponse.S3Objects)
+                {
+                    response.Add("key = '" + obj.Key + "' | size = " + obj.Size + " | tags = '" + obj.ETag + "' | modified = " + obj.LastModified);
+                }
+            }
+            return Json(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FileUpload(FileUpload fp)
+        {
+            // Perform an initial check to catch FileUpload class attribute violations.
+            if (!ModelState.IsValid)
+            {
+                return Ok();
+            }
+
+            string ext = System.IO.Path.GetExtension(fp.UploadPublicSchedule.FileName);
+
+            var myUniqueFileName = string.Format(@"{0}.{1}", Guid.NewGuid(), ext);
+
+
+            var filePath = "uploads/" + myUniqueFileName;
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await fp.UploadPublicSchedule.CopyToAsync(fileStream);
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult FileUpload()
+        {
+            return View();
+
+        }
+
+
+
+
+
+
+        //public IActionResult UploadFiles(List<IFormFile> files)
+        //{
+        //    long size = files.Sum(f => f.Length);
+
+        //    foreach (var formFile in files)
+        //    {
+        //        if (formFile.Length > 0)
+        //        {
+        //            var filename = ContentDispositionHeaderValue
+        //                .Parse(formFile.ContentDisposition)
+        //                .FileName
+        //                .TrimStart().ToString();
+        //            filename = _hostingEnvironment.WebRootPath + $@"\uploads" + $@"\{formFile.FileName}";
+        //            size += formFile.Length;
+        //            using (var fs = System.IO.File.Create(filename))
+        //            {
+        //                formFile.CopyTo(fs);
+        //                fs.Flush();
+        //            }//these code snippets saves the uploaded files to the project directory
+
+        //            uploadToS3(filename);//this is the method to upload saved file to S3
+
+        //        }
+        //    }
+
+        //    return Ok(true);
+        //}
     }
 }
 

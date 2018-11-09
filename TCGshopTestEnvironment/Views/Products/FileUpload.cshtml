@@ -1,0 +1,18 @@
+﻿@model TCGshopTestEnvironment.Models.FileUpload
+@{
+    ViewData["Title"] = "Upload";
+}
+
+
+<h3>Upload File</h3>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <input asp-for="UploadPublicSchedule" type="file" class="form-control" style="height:auto" />
+                <span asp-validation-for="UploadPublicSchedule" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Upload" class="btn btn-default" />
+        </form>
+    </div>
+</div>
