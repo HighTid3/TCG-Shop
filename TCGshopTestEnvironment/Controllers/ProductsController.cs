@@ -42,17 +42,17 @@ namespace TCGshopTestEnvironment.Controllers
             //queries to get cards and catagories from database
             var assetModels = _assets.GetbyCardType(cardType);
             List<string> cardscategory = new List<string>();
-            foreach (var item in assetModels.Select(x => x.Catnames).Distinct())
-            {
-                foreach (var catagory in item.Distinct())
-                {
-                    if (!cardscategory.Contains(catagory))
-                    {
-                        cardscategory.Add(catagory);
-                    }
-                }
+            //foreach (var item in assetModels.Select(x => x.Catnames).Distinct())
+            //{
+            //    foreach (var catagory in item.Distinct())
+            //    {
+            //        if (!cardscategory.Contains(catagory))
+            //        {
+            //            cardscategory.Add(catagory);
+            //        }
+            //    }
 
-            }
+            //}
 
             //viewbags to send to the view
             ViewBag.page = page;
