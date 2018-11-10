@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Session;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using Newtonsoft.Json;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Models.JoinTables;
+using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels;
 
 namespace TCGshopTestEnvironment.Controllers
@@ -19,11 +22,16 @@ namespace TCGshopTestEnvironment.Controllers
         public const string SessionKeyName = "_Cart";
         public const string TotalCartProducts = "_count";
         private DBModel _context;
+        private IShopping _assets;
+        private readonly UserManager<UserAccount> _userManager;
+        private readonly SignInManager<UserAccount> _signInManager;
 
-        
-        public ShoppingController(DBModel context)
+        public ShoppingController(DBModel context, IShopping assets, UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager)
         {
             _context = context;
+            _assets = assets;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
 
@@ -58,18 +66,41 @@ namespace TCGshopTestEnvironment.Controllers
         //}
 
         [HttpGet]
-        public IActionResult ShoppingCart()
+        public async Task<IActionResult> ShoppingCart()
         {
-
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return View();
+            }
+            else
+            {
+                var cartproducts = _assets.ShoppinCartItems(user.UserName).ToList();
+                return View(cartproducts);
+            }
         }
+
 
         [HttpPost]
         public IActionResult AddToShoppingcart(string userId, int productId, int Amount)
         {
-            var cart = new ShoppingBasket {UserId = userId, ProductsId = productId, Amount = Amount};
-            _context.Basket.Add(cart);
-            _context.SaveChanges();
+            var assetModel = _assets.ShoppingbasketByName(userId).ToList();
+            if (assetModel.Select(x => x.ProductsId).Contains(productId))
+            {
+
+                ShoppingBasket updatedmodel = assetModel.FirstOrDefault(x => x.ProductsId == productId);
+                updatedmodel.Amount += Amount;
+                _context.Update(updatedmodel);
+                _context.SaveChanges();
+
+            }
+            else
+            {
+                var cart = new ShoppingBasket { UserId = userId, ProductsId = productId, Amount = Amount };
+                _context.Basket.Add(cart);
+                _context.SaveChanges();
+            }
+
 
             return Json(new { success = true });
         }

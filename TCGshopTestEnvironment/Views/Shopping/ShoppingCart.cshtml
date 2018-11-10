@@ -1,12 +1,52 @@
-﻿@model TCGshopTestEnvironment.ViewModels.ProductsShopCartViewModel
+﻿@using TCGshopTestEnvironment.ViewModels
+@model List<ProductsShopCartViewModel>
 @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.css">
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.js' defer='defer'></script>*@
 
+@inject SignInManager<UserAccount> SignInManager
+@inject UserManager<UserAccount> UserManager
 
-<div id="ShoppingCart"></div>
+@*check if user is logged in*@
+@if (SignInManager.IsSignedIn(User))
+{
+<div id="productsTable">
+    <table class="table table-condensed" id="productsIndexTable">
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Grade</th>
+            <th>Price</th>
+            <th>Amount</th>
+            <th>Total Price</th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var asset in @Model)
+            {
+            <tr class="assetRow">
+                <td class="">
+                    <img src="@(Startup.storagePath + asset.ImageUrl+ ".png")" class="imageCell" />
+                </td>
+                <td class="">@asset.Name</td>
+                <td class="">@asset.Grade</td>
+                <td class="">€@asset.Price</td>
+                <td class="">@asset.Amount</td>
+                <td class="">@(@asset.Amount*@asset.Price)</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}
 
-<table id="my-ajax-table" class="table table-condensed">
-    <thead>
+//load shoppingcart products from the localstorage using ajax if user is not logged in.
+else
+{
+    <div id="ShoppingCart"></div>
+
+    <table id="my-ajax-table" class="table table-condensed">
+        <thead>
         <tr>
             <th>Id</th>
             <th>Name</th>
@@ -15,9 +55,10 @@
             <th>Grade</th>
             <th>Count</th>
         </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+        </thead>
+        <tbody></tbody>
+    </table>
+}
+
 
 <script type='text/javascript' src='/js/ShoppingCart.js' defer='defer'></script>*

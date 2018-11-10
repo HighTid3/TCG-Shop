@@ -151,7 +151,7 @@ $('.qty').click(function () {
 });
 
 //post method for adding products
-function postToCart(userId, productId, imageUrl, amount) {
+function postToCart(productId,userId, imageUrl, amount) {
 
     if (userId, productId) {
         $.ajax
