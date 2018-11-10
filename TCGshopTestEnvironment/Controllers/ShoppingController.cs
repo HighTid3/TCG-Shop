@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Session;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using Newtonsoft.Json;
 using TCGshopTestEnvironment.Models;
+using TCGshopTestEnvironment.Models.JoinTables;
 using TCGshopTestEnvironment.ViewModels;
 
 namespace TCGshopTestEnvironment.Controllers
@@ -25,35 +26,36 @@ namespace TCGshopTestEnvironment.Controllers
             _context = context;
         }
 
-        public ActionResult Add(ProductsShopCartViewModel product)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
-            {
-                List<ProductsShopCartViewModel> CartProducts = new List<ProductsShopCartViewModel>();
 
-                CartProducts.Add(product);
-                HttpContext.Session.SetObjectAsJson(SessionKeyName,CartProducts);
-                ViewBag.cart = CartProducts.Count();
+        //public ActionResult Add(ProductsShopCartViewModel product)
+        //{
+        //    if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
+        //    {
+        //        List<ProductsShopCartViewModel> CartProducts = new List<ProductsShopCartViewModel>();
 
-                HttpContext.Session.SetInt32(TotalCartProducts, 1);
+        //        CartProducts.Add(product);
+        //        HttpContext.Session.SetObjectAsJson(SessionKeyName,CartProducts);
+        //        ViewBag.cart = CartProducts.Count();
 
-            }
+        //        HttpContext.Session.SetInt32(TotalCartProducts, 1);
 
-            else
-            {
-                List<ProductsShopCartViewModel> CartProducts = HttpContext.Session.GetObjectFromJson<List<ProductsShopCartViewModel>>(SessionKeyName);
-                CartProducts.Add(product);
-                HttpContext.Session.SetObjectAsJson(SessionKeyName, CartProducts);
-                ViewBag.cart = CartProducts.Count();
+        //    }
 
-                var count = HttpContext.Session.GetInt32(TotalCartProducts);
+        //    else
+        //    {
+        //        List<ProductsShopCartViewModel> CartProducts = HttpContext.Session.GetObjectFromJson<List<ProductsShopCartViewModel>>(SessionKeyName);
+        //        CartProducts.Add(product);
+        //        HttpContext.Session.SetObjectAsJson(SessionKeyName, CartProducts);
+        //        ViewBag.cart = CartProducts.Count();
 
-                HttpContext.Session.SetInt32(TotalCartProducts, Convert.ToInt32(HttpContext.Session.GetInt32(TotalCartProducts) + 1) );
+        //        var count = HttpContext.Session.GetInt32(TotalCartProducts);
 
-            }
+        //        HttpContext.Session.SetInt32(TotalCartProducts, Convert.ToInt32(HttpContext.Session.GetInt32(TotalCartProducts) + 1) );
 
-            return RedirectToAction("Index", "Home");
-        }
+        //    }
+
+        //    return RedirectToAction("Index", "Home");
+        //}
 
         [HttpGet]
         public IActionResult ShoppingCart()
@@ -62,24 +64,33 @@ namespace TCGshopTestEnvironment.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult AddToShoppingcart(string userId, int productId, int Amount)
+        {
+            var cart = new ShoppingBasket {UserId = userId, ProductsId = productId, Amount = Amount};
+            _context.Basket.Add(cart);
+            _context.SaveChanges();
+
+            return Json(new { success = true });
+        }
 
 
     }
 
-    public static class SessionExtensions
-    {
-        public static void SetObjectAsJson(this ISession session, string key, object value)
-        {
-            session.SetString(key, JsonConvert.SerializeObject(value));
-        }
+    //public static class SessionExtensions
+    //{
+    //    public static void SetObjectAsJson(this ISession session, string key, object value)
+    //    {
+    //        session.SetString(key, JsonConvert.SerializeObject(value));
+    //    }
 
-        public static T GetObjectFromJson<T>(this ISession session, string key)
-        {
-            var value = session.GetString(key);
+    //    public static T GetObjectFromJson<T>(this ISession session, string key)
+    //    {
+    //        var value = session.GetString(key);
 
-            return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
-        }
-    }
+    //        return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
+    //    }
+    //}
 
 
 

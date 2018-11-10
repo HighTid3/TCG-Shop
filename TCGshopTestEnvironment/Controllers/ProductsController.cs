@@ -41,18 +41,7 @@ namespace TCGshopTestEnvironment.Controllers
 
             //queries to get cards and catagories from database
             var assetModels = _assets.GetbyCardType(cardType);
-            List<string> cardscategory = new List<string>();
-            //foreach (var item in assetModels.Select(x => x.Catnames).Distinct())
-            //{
-            //    foreach (var catagory in item.Distinct())
-            //    {
-            //        if (!cardscategory.Contains(catagory))
-            //        {
-            //            cardscategory.Add(catagory);
-            //        }
-            //    }
-
-            //}
+            List<string> cardscategory = assetModels.SelectMany(x => x.Catnames).Distinct().ToList();
 
             //viewbags to send to the view
             ViewBag.page = page;
@@ -187,19 +176,7 @@ namespace TCGshopTestEnvironment.Controllers
 
                 //queries to get items and catagories from database
                 var assetmodel = _assets.GetByNameSearch(name.ToLower());
-                List<string> cardscategory = new List<string>();
-                foreach (var item in assetmodel.Select(x => x.Catnames).Distinct())
-                {
-                    foreach (string item2 in item)
-                    {
-                        if (!cardscategory.Contains(item2))
-                        {
-                            cardscategory.Add(item2);
-                        }
-                    }
-                    
-                }
-
+                List<string> cardscategory = assetmodel.SelectMany(x => x.Catnames).Distinct().ToList();
 
                 //viewbags to send to the view
                 ViewBag.page = page;

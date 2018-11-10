@@ -61,7 +61,38 @@ if (localStorage.getItem("shoppingCart") === null) {
     //Fill Table
 }
 
+function ModalBox(imageUrl) {
+    //modal popup box
 
+    //add img to the modal
+    document.getElementById("productaddimg").src = storagePath + imageUrl + ".png";
+
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    var continueshop = document.getElementById('Continueshop');
+
+    modal.style.display = "block";
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks on continue shopping button, close the modal
+    continueshop.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+}
 
 function AddToCart(id, name, imageUrl, price, grade, count) {
     var product = { 'Id': id, 'Name': name, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Count': count }
@@ -85,37 +116,8 @@ function AddToCart(id, name, imageUrl, price, grade, count) {
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
 
-    //modal popup box
+    ModalBox(imageUrl);
 
-    //add img to the modal
-    document.getElementById("productaddimg").src = "https://cdn.tcg.sale/tcg/" + imageUrl + ".png";
-
-    // Get the modal
-    var modal = document.getElementById('myModal');
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-    var continueshop = document.getElementById('Continueshop');
-
-    modal.style.display = "block";
-    
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks on continue shopping button, close the modal
-    continueshop.onclick = function () {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-    
 }
 
 
@@ -147,3 +149,27 @@ $('.qty').click(function () {
         if(val > valMin) $in.val(val - 1);
     }
 });
+
+//post method for adding products
+function postToCart(userId, productId, imageUrl, amount) {
+
+    if (userId, productId) {
+        $.ajax
+        ({
+            type: 'POST',
+            url: '/Shopping/AddToShoppingcart',
+            data:
+            {
+                userId: userId,
+                productId: productId,
+                Amount: amount
+            },
+            success: function (response) {
+                ModalBox(imageUrl);
+
+            }
+        });
+    }
+
+    return false;
+}
