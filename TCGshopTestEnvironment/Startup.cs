@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Amazon;
-using Amazon.S3;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,8 +20,10 @@ namespace TCGshopTestEnvironment
     public class Startup
     {
         //S3
-        public const string accessKey = "GWNTXOWWJ0FUTECK224A";
-        public const string secretKey = "Hq9R6mPPVpE+OTCofSUBBmN8ILU2OIKnOpmgY5Cl"; // do not store secret key hardcoded in your production source code!
+
+        public static string accessKey = Environment.GetEnvironmentVariable("accessKey");
+        public static string secretKey = Environment.GetEnvironmentVariable("secretKey");
+        public static string s3Server = Environment.GetEnvironmentVariable("s3Server");
         //S3
 
         public static string storagePath = "https://cdn.tcg.sale/tcg/";

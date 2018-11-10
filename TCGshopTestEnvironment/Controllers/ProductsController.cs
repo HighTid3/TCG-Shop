@@ -13,14 +13,15 @@ using X.PagedList;
 using Microsoft.EntityFrameworkCore;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Models.JoinTables;
-using Amazon.S3;
-using Amazon;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
-using Amazon.S3.Transfer;
 using System.IO;
 using System.Net;
+using Minio;
+using Minio.DataModel;
+using Minio.Exceptions;
+
 
 namespace TCGshopTestEnvironment.Controllers
 {
@@ -31,14 +32,19 @@ namespace TCGshopTestEnvironment.Controllers
         private readonly DBModel _context;
 
         //S3
-        public static AmazonS3Config config = new AmazonS3Config
-        {
-            RegionEndpoint = RegionEndpoint.USEast1, // MUST set this before setting ServiceURL and it should match the `MINIO_REGION` enviroment variable.
-            ServiceURL = "http://10.0.0.10:9000", // replace http://localhost:9000 with URL of your minio server
-            ForcePathStyle = true // MUST be true to work correctly with Minio server
-        };
-        public static AmazonS3Client amazonS3Client = new AmazonS3Client(Startup.accessKey, Startup.secretKey, config);
+        //public static AmazonS3Config config = new AmazonS3Config
+        //{
+        //    RegionEndpoint = RegionEndpoint.USEast1, // MUST set this before setting ServiceURL and it should match the `MINIO_REGION` enviroment variable.
+        //    ServiceURL = "http://10.0.0.10:9000", // replace http://localhost:9000 with URL of your minio server
+        //    ForcePathStyle = true // MUST be true to work correctly with Minio server
+        //};
+        //public static AmazonS3Client amazonS3Client = new AmazonS3Client(Startup.accessKey, Startup.secretKey, config);
         //S3
+
+        //Minio
+        // Initialize the client with access credentials.
+        private static MinioClient minio = new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey).WithSSL();
+        //Minio
 
 
         public ProductsController(IProducts assets, DBModel context)
@@ -47,7 +53,8 @@ namespace TCGshopTestEnvironment.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? page, int? pageAmount, string cardType, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
+        public async Task<IActionResult> Index(int? page, int? pageAmount, string cardType, string sortBy,
+            [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
         {
             //if page/pageamount/price parameters are empty, fill with standard value
             var pageNumber = page ?? 1;
@@ -69,7 +76,6 @@ namespace TCGshopTestEnvironment.Controllers
                         cardscategory.Add(catagory);
                     }
                 }
-
             }
 
             //viewbags to send to the view
@@ -86,12 +92,12 @@ namespace TCGshopTestEnvironment.Controllers
 
             // sorting list for product sorting
             var sorting = new List<SelectListItem>
-                {
-                    new SelectListItem {Text = "Name A-Z", Value = "name"},
-                    new SelectListItem {Text = "Name Z-A", Value = "name_desc"},
-                    new SelectListItem {Text = "Price High-Low", Value = "Price"},
-                    new SelectListItem {Text = "Price Low-High", Value = "price_desc"}
-                };
+            {
+                new SelectListItem {Text = "Name A-Z", Value = "name"},
+                new SelectListItem {Text = "Name Z-A", Value = "name_desc"},
+                new SelectListItem {Text = "Price High-Low", Value = "Price"},
+                new SelectListItem {Text = "Price Low-High", Value = "price_desc"}
+            };
             ViewBag.Sorting = sorting;
             ViewBag.SelectSort = sortBy ?? "Name A-Z";
             ViewBag.sortBy = sortBy;
@@ -101,13 +107,14 @@ namespace TCGshopTestEnvironment.Controllers
                 .Select(result => new ProductsViewModel
                 {
                     Id = result.prods.ProductId,
-                    Name = result.prods.Name.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",
+                    Name = result.prods.Name.Length < 20
+                        ? result.prods.Name
+                        : result.prods.Name.Substring(0, 15) + "...",
                     Price = result.prods.Price,
                     ImageUrl = result.prods.ImageUrl,
                     Grade = result.prods.Grade,
                     Stock = result.prods.Stock,
                     CardCatagoryList = result.Catnames
-
                 });
 
             //filters
@@ -116,13 +123,11 @@ namespace TCGshopTestEnvironment.Controllers
                 //if statement to make sure when in catagorie if you select same catagorie name it doesn't run any code, for performance
                 if (catagorie.Count == 1 && catagorie.Contains(cardType))
                 {
-
                 }
                 else
                 {
                     listingResult = listingResult.Where(x => x.CardCatagoryList.Intersect(catagorie).Any());
                 }
-
             }
 
             if (priceL > 0 || priceH < 10000)
@@ -162,16 +167,18 @@ namespace TCGshopTestEnvironment.Controllers
             {
                 return View("~/Views/Products/Pokemon/Pokemon.cshtml");
             }
+
             if (cardType == "YuGiOh")
             {
                 return View("~/Views/Products/YuGiOh/YuGiOh.cshtml");
             }
+
             if (cardType == "Magic")
             {
                 return View("~/Views/Products/Magic/Magic.cshtml");
             }
+
             return View();
-            
         }
 
         public IActionResult Detail(int id)
@@ -186,13 +193,13 @@ namespace TCGshopTestEnvironment.Controllers
                 Price = asset.Price,
                 Stock = asset.Stock,
                 ImageUrl = asset.ImageUrl,
-
             };
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
+        public async Task<IActionResult> Search(int? page, int? pageAmount, string name, string sortBy,
+            [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
         {
             if (!String.IsNullOrEmpty(name))
             {
@@ -215,7 +222,6 @@ namespace TCGshopTestEnvironment.Controllers
                             cardscategory.Add(item2);
                         }
                     }
-                    
                 }
 
 
@@ -249,16 +255,17 @@ namespace TCGshopTestEnvironment.Controllers
                     .Select(result => new ProductsViewModel
                     {
                         Id = result.prods.ProductId,
-                        Name = result.prods.Name.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",
+                        Name = result.prods.Name.Length < 20
+                            ? result.prods.Name
+                            : result.prods.Name.Substring(0, 15) + "...",
                         Price = result.prods.Price,
                         ImageUrl = result.prods.ImageUrl,
                         Grade = result.prods.Grade,
                         Stock = result.prods.Stock,
                         CardCatagoryList = result.Catnames
-                        
                     });
 
-                
+
                 //filters
                 if (catagorie.Count > 0)
                 {
@@ -303,19 +310,16 @@ namespace TCGshopTestEnvironment.Controllers
             }
             else
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
         }
 
         public JsonResult CardAutoCompleteResult(string text)
         {
-
             IEnumerable<string> cardname = _assets.GetByNameSearch(text).Select(x => x.prods.Name).ToList();
 
             return Json(cardname);
         }
-
-
 
 
         //Adding New product
@@ -323,7 +327,6 @@ namespace TCGshopTestEnvironment.Controllers
         public IActionResult NewProduct()
         {
             return View();
-
         }
 
         [HttpGet]
@@ -331,7 +334,6 @@ namespace TCGshopTestEnvironment.Controllers
         {
             IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
             return Json(categories);
-
         }
 
         [HttpPost]
@@ -344,7 +346,7 @@ namespace TCGshopTestEnvironment.Controllers
                 Products Product = new Products
                 {
                     Name = vm.Name,
-                    
+
                     Price = vm.Price,
                     Grade = vm.Grade,
                     Stock = vm.Stock,
@@ -357,7 +359,6 @@ namespace TCGshopTestEnvironment.Controllers
                     if (categories.Contains(TestCategory))
                     {
                         Console.WriteLine("Category: " + TestCategory + "is in database");
-
                     }
                     else
                     {
@@ -380,39 +381,11 @@ namespace TCGshopTestEnvironment.Controllers
                     };
                     _context.Add(productCategory);
                 }
-                
-                _context.SaveChanges();
-                
 
+                _context.SaveChanges();
             }
 
             return View();
-        }
-
-        //Uploading Image
-        [HttpGet]
-        public async Task<IActionResult> S3Test()
-        {
-            // uncomment the following line if you like to troubleshoot communication with S3 storage and implement private void OnAmazonS3Exception(object sender, Amazon.Runtime.ExceptionEventArgs e)
-            // amazonS3Client.ExceptionEvent += OnAmazonS3Exception;
-            var listBucketResponse = await amazonS3Client.ListBucketsAsync();
-            var response = new List<string>();
-            foreach (var bucket in listBucketResponse.Buckets)
-            {
-                response.Add("bucket '" + bucket.BucketName + "' created at " + bucket.CreationDate);
-            }
-            if (listBucketResponse.Buckets.Count > 0)
-            {
-                var bucketName = listBucketResponse.Buckets[0].BucketName;
-
-                var listObjectsResponse = await amazonS3Client.ListObjectsAsync(bucketName);
-
-                foreach (var obj in listObjectsResponse.S3Objects)
-                {
-                    response.Add("key = '" + obj.Key + "' | size = " + obj.Size + " | tags = '" + obj.ETag + "' | modified = " + obj.LastModified);
-                }
-            }
-            return Json(response);
         }
 
         [HttpPost]
@@ -422,7 +395,7 @@ namespace TCGshopTestEnvironment.Controllers
             if (!ModelState.IsValid)
 
             {
-                return Json(new { status = "error", message = "The model is not correct" });
+                return Json(new {status = "error", message = "The model is not correct"});
             }
 
 
@@ -455,60 +428,55 @@ namespace TCGshopTestEnvironment.Controllers
             //Generate Random Name
             //string ext = System.IO.Path.GetExtension(formFile.CardImageUpload.FileName); //Get the file extension
 
-            
-            var filePath = System.IO.Path.GetTempFileName() + Guid.NewGuid() + ".png"; //Create Temp File with Random GUID
+            string objectName = Guid.NewGuid() + ".png";
+
+
+            var filePath = System.IO.Path.GetTempFileName() + objectName; //Create Temp File with Random GUID
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 await formFile.CardImageUpload.CopyToAsync(fileStream);
             }
 
-            return Json(new
+            //Prepare S3 Upload
+            var bucketName = "tcg-upload";
+            var location = "us-east-1";
+            var contentType = formFile.CardImageUpload.ContentType.ToLower();
+
+            try
             {
-                status = "Uploaded",
-                message = filePath
-            });
+                // Make a bucket on the server, if not already present.
+                bool found = await minio.BucketExistsAsync(bucketName);
+                if (!found)
+                {
+                    await minio.MakeBucketAsync(bucketName, location);
+                }
+
+                // Upload a file to bucket.
+                await minio.PutObjectAsync(bucketName, objectName, filePath, contentType);
+                Console.Out.WriteLine("Successfully uploaded " + objectName);
+
+                return Json(new
+                {
+                    status = "Ok",
+                    message = "Successfully uploaded " + objectName
+                });
+            }
+            catch (MinioException e)
+            {
+                return Json(new
+                {
+                    status = "Error",
+                    message = "File Upload Error:" + e.Message
+                });
+        }
+
         }
 
         [HttpGet]
         public IActionResult FileUpload()
         {
             return View();
-
         }
-
-
-
-
-
-
-        //public IActionResult UploadFiles(List<IFormFile> files)
-        //{
-        //    long size = files.Sum(f => f.Length);
-
-        //    foreach (var formFile in files)
-        //    {
-        //        if (formFile.Length > 0)
-        //        {
-        //            var filename = ContentDispositionHeaderValue
-        //                .Parse(formFile.ContentDisposition)
-        //                .FileName
-        //                .TrimStart().ToString();
-        //            filename = _hostingEnvironment.WebRootPath + $@"\uploads" + $@"\{formFile.FileName}";
-        //            size += formFile.Length;
-        //            using (var fs = System.IO.File.Create(filename))
-        //            {
-        //                formFile.CopyTo(fs);
-        //                fs.Flush();
-        //            }//these code snippets saves the uploaded files to the project directory
-
-        //            uploadToS3(filename);//this is the method to upload saved file to S3
-
-        //        }
-        //    }
-
-        //    return Ok(true);
-        //}
     }
 }
-
