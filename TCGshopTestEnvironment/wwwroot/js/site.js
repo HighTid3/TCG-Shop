@@ -85,7 +85,65 @@ function AddToCart(id, name, imageUrl, price, grade, count) {
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
 
+    //modal popup box
+
+    //add img to the modal
+    document.getElementById("productaddimg").src = "https://cdn.tcg.sale/tcg/" + imageUrl + ".png";
+
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    var continueshop = document.getElementById('Continueshop');
+
+    modal.style.display = "block";
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks on continue shopping button, close the modal
+    continueshop.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
     
 }
 
 
+$('.qty').click(function () {
+    var $t = $(this),
+        $in = $('input[name="'+$t.data('field')+'"]'),
+        val = parseInt($in.val()),
+        valMax = $('#productStock').attr('value'),
+        valMin = 0;
+
+    // Check if a number is in the field first
+    if(isNaN(val) || val < valMin) {
+        // If field value is NOT a number, or
+        // if field value is less than minimum,
+        // ...set value to 0 and exit function
+        $in.val(valMin);
+        return false;
+    } else if (val > valMax) {
+        // If field value exceeds maximum,
+        // ...set value to max
+        $in.val(valMax);
+        return false;
+    }
+
+    // Perform increment or decrement logic
+    if($t.data('func') == 'plus') {
+        if(val < valMax) $in.val(val + 1);
+    } else {
+        if(val > valMin) $in.val(val - 1);
+    }
+});
