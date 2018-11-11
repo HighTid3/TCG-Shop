@@ -26,7 +26,7 @@ namespace TCGshopTestEnvironment
         public static string s3Server = Environment.GetEnvironmentVariable("s3Server");
         //S3
 
-        public static string storagePath = "https://cdn.tcg.sale/tcg/";
+        public static string storagePath = "https://cdn.tcg.sale/tcg-upload/";
 
         public Startup(IConfiguration configuration)
         {

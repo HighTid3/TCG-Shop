@@ -10,7 +10,7 @@ namespace TCGshopTestEnvironment.ViewModels
     public class ProductsNewProductViewModel
     {
         public string Name { get; set; }
-        public IFormFile ImageUrl { get; set; }
+        public string ImageUrl { get; set; }
         public float Price { get; set; }
         public string Grade { get; set; }
         public int Stock { get; set; }

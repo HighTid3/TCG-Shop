@@ -341,12 +341,11 @@ namespace TCGshopTestEnvironment.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ImageUrl = vm.ImageUrl;
-
+                
                 Products Product = new Products
                 {
                     Name = vm.Name,
-
+                    ImageUrl = vm.ImageUrl,
                     Price = vm.Price,
                     Grade = vm.Grade,
                     Stock = vm.Stock,
@@ -459,7 +458,8 @@ namespace TCGshopTestEnvironment.Controllers
                 return Json(new
                 {
                     status = "Ok",
-                    message = "Successfully uploaded " + objectName
+                    message = "Successfully uploaded " + objectName,
+                    image = objectName
                 });
             }
             catch (MinioException e)
