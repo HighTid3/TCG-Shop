@@ -17,5 +17,7 @@ namespace TCGshopTestEnvironment.Models.JoinTables
         public int ProductsId { get; set; }
 
         public int Amount { get; set; }
+
+        public DateTime DateCreated { get; set; }
     }
 }

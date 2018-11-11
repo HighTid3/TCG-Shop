@@ -82,8 +82,13 @@ namespace TCGshopTestEnvironment.Controllers
 
 
         [HttpPost]
-        public IActionResult AddToShoppingcart(string userId, int productId, int Amount)
+        public async Task<IActionResult> AddToShoppingcart(string userId, int productId, int Amount)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (userId != user.UserName)
+            {
+                return Json(new { error = "userId did not match with the session" });
+            }
             var assetModel = _assets.ShoppingbasketByName(userId).ToList();
             if (assetModel.Select(x => x.ProductsId).Contains(productId))
             {
@@ -96,7 +101,7 @@ namespace TCGshopTestEnvironment.Controllers
             }
             else
             {
-                var cart = new ShoppingBasket { UserId = userId, ProductsId = productId, Amount = Amount };
+                var cart = new ShoppingBasket { UserId = userId, ProductsId = productId, Amount = Amount, DateCreated = DateTime.Now};
                 _context.Basket.Add(cart);
                 _context.SaveChanges();
             }
@@ -104,6 +109,37 @@ namespace TCGshopTestEnvironment.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpPost]
+        public ActionResult RemoveFromCart(int id)
+        {
+            var cartItem = _context.Basket.FirstOrDefault(x => x.Id == id);
+            int itemCount = 0;
+
+            if (cartItem != null)
+            {
+                if (cartItem.Amount > 1)
+                {
+                    cartItem.Amount--;
+                    itemCount = cartItem.Amount;
+                }
+                else
+                {
+                    _context.Basket.Remove(cartItem);
+                }
+                // Save changes
+                _context.SaveChanges();
+            }
+            var results = new ShoppingCartRemoveViewModel
+            {
+
+                DeleteId = id,
+                ItemCount = itemCount
+                
+            };
+            return Json(results);
+        }
+
 
 
     }

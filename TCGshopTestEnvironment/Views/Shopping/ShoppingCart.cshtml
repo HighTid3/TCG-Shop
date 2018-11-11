@@ -7,6 +7,9 @@
 @inject UserManager<UserAccount> UserManager
 
 @*check if user is logged in*@
+
+
+
 @if (SignInManager.IsSignedIn(User))
 {
 <div id="productsTable">
@@ -24,15 +27,22 @@
         <tbody>
             @foreach (var asset in @Model)
             {
-            <tr class="assetRow">
+            <tr class="assetRow" id="row-@asset.CartID">
                 <td class="">
                     <img src="@(Startup.storagePath + asset.ImageUrl+ ".png")" class="imageCell" />
                 </td>
                 <td class="">@asset.Name</td>
                 <td class="">@asset.Grade</td>
                 <td class="">€@asset.Price</td>
-                <td class="">@asset.Amount</td>
+                <td class="" id="item-count-@asset.CartID">@asset.Amount</td>
                 <td class="">@(@asset.Amount*@asset.Price)</td>
+                <td class="">
+                    <a href="#" class="RemoveLink"
+                       data-id="@asset.CartID">
+                        Remove
+                        from cart
+                    </a>
+                </td>
             </tr>
             }
         </tbody>

@@ -30,6 +30,7 @@ namespace TCGshopTestEnvironment.Services
                 where b.UserId == name && p.ProductId == b.ProductsId
                 select new ProductsShopCartViewModel
                 {
+                    CartID = b.Id,
                     Amount = b.Amount,
                     ProductId = b.ProductsId,
                     ImageUrl = p.ImageUrl,
