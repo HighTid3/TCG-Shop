@@ -111,7 +111,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpPost]
-        public ActionResult RemoveFromCart(int id)
+        public ActionResult RemoveFromCart(int id, float price)
         {
             var cartItem = _context.Basket.FirstOrDefault(x => x.Id == id);
             int itemCount = 0;
@@ -134,7 +134,9 @@ namespace TCGshopTestEnvironment.Controllers
             {
 
                 DeleteId = id,
-                ItemCount = itemCount
+                ItemCount = itemCount,
+                CartTotal = Math.Round((itemCount * price),2, MidpointRounding.AwayFromZero)
+               
                 
             };
             return Json(results);

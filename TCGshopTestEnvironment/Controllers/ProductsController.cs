@@ -72,8 +72,8 @@ namespace TCGshopTestEnvironment.Controllers
                 .Select(result => new ProductsViewModel
                 {
                     Id = result.prods.ProductId,
-                    Name = result.prods.Name.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",
-                    Price = result.prods.Price,
+                    Name = result.prods.Name,/*.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",*/
+                    Price = (decimal)result.prods.Price,
                     ImageUrl = result.prods.ImageUrl,
                     Grade = result.prods.Grade,
                     Stock = result.prods.Stock,
@@ -98,7 +98,7 @@ namespace TCGshopTestEnvironment.Controllers
 
             if (priceL > 0 || priceH < 10000)
             {
-                listingResult = listingResult.Where(x => x.Price >= priceL && x.Price <= priceH);
+                listingResult = listingResult.Where(x => x.Price >= (decimal)priceL && x.Price <= (decimal)priceH);
             }
 
             //viewbag for the view with all the grades in it.
@@ -208,8 +208,8 @@ namespace TCGshopTestEnvironment.Controllers
                     .Select(result => new ProductsViewModel
                     {
                         Id = result.prods.ProductId,
-                        Name = result.prods.Name.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",
-                        Price = result.prods.Price,
+                        Name = result.prods.Name,/*.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",*/
+                        Price = (decimal)result.prods.Price,
                         ImageUrl = result.prods.ImageUrl,
                         Grade = result.prods.Grade,
                         Stock = result.prods.Stock,
@@ -227,7 +227,7 @@ namespace TCGshopTestEnvironment.Controllers
 
                 if (priceL > 0 || priceH < 10000)
                 {
-                    listingResult = listingResult.Where(x => x.Price >= priceL && x.Price <= priceH);
+                    listingResult = listingResult.Where(x => x.Price >= (decimal)priceL && x.Price <= (decimal)priceH);
                 }
 
                 //viewbag for the view with all the grades in it.

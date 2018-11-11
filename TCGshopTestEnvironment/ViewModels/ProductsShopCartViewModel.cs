@@ -16,7 +16,7 @@ namespace TCGshopTestEnvironment.ViewModels
 
         public int Amount { get; set; }
 
-        public float TotalPrice { get; set; } 
+        public double TotalPrice { get; set; } 
     }
     
 }

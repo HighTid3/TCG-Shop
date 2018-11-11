@@ -37,6 +37,7 @@ namespace TCGshopTestEnvironment.Services
                     Name = p.Name,
                     Price = p.Price,
                     Grade = p.Grade,
+                    TotalPrice = Math.Round((p.Price * b.Amount),2, MidpointRounding.AwayFromZero)
                 };
 
         }

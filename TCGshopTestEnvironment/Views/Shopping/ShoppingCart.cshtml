@@ -35,10 +35,10 @@
                 <td class="">@asset.Grade</td>
                 <td class="">€@asset.Price</td>
                 <td class="" id="item-count-@asset.CartID">@asset.Amount</td>
-                <td class="">@(@asset.Amount*@asset.Price)</td>
+                <td class="" id="item-total-@asset.CartID">@asset.TotalPrice</td>
                 <td class="">
                     <a href="#" class="RemoveLink"
-                       data-id="@asset.CartID">
+                       data-id='["@asset.CartID","@asset.Price"]'>
                         Remove
                         from cart
                     </a>
