@@ -23,6 +23,8 @@ namespace TCGshopTestEnvironment.Models
 
         public DbSet<ProductCategory> ProductCategory { get; set; }
 
+        public DbSet<ProductsCat> ProductsCat { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -19,7 +19,7 @@ namespace TCGshopTestEnvironment.Controllers
         public const string TotalCartProducts = "_count";
         private DBModel _context;
 
-        
+
         public ShoppingController(DBModel context)
         {
             _context = context;
@@ -32,7 +32,7 @@ namespace TCGshopTestEnvironment.Controllers
                 List<ProductsShopCartViewModel> CartProducts = new List<ProductsShopCartViewModel>();
 
                 CartProducts.Add(product);
-                HttpContext.Session.SetObjectAsJson(SessionKeyName,CartProducts);
+                HttpContext.Session.SetObjectAsJson(SessionKeyName, CartProducts);
                 ViewBag.cart = CartProducts.Count();
 
                 HttpContext.Session.SetInt32(TotalCartProducts, 1);
@@ -41,14 +41,16 @@ namespace TCGshopTestEnvironment.Controllers
 
             else
             {
-                List<ProductsShopCartViewModel> CartProducts = HttpContext.Session.GetObjectFromJson<List<ProductsShopCartViewModel>>(SessionKeyName);
+                List<ProductsShopCartViewModel> CartProducts =
+                    HttpContext.Session.GetObjectFromJson<List<ProductsShopCartViewModel>>(SessionKeyName);
                 CartProducts.Add(product);
                 HttpContext.Session.SetObjectAsJson(SessionKeyName, CartProducts);
                 ViewBag.cart = CartProducts.Count();
 
                 var count = HttpContext.Session.GetInt32(TotalCartProducts);
 
-                HttpContext.Session.SetInt32(TotalCartProducts, Convert.ToInt32(HttpContext.Session.GetInt32(TotalCartProducts) + 1) );
+                HttpContext.Session.SetInt32(TotalCartProducts,
+                    Convert.ToInt32(HttpContext.Session.GetInt32(TotalCartProducts) + 1));
 
             }
 
@@ -62,8 +64,19 @@ namespace TCGshopTestEnvironment.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult CheckOut()
+        {
 
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> CheckOut(ProductsShopCartViewModel vm)
+        {
+
+            return View();
+        }
     }
 
     public static class SessionExtensions
