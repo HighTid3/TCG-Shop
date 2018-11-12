@@ -77,6 +77,7 @@ namespace TCGshopTestEnvironment
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton(Configuration);
             services.AddScoped<IProducts, ProductService>();
+            services.AddScoped<IShopping, ShoppingService>();
 
             var connection = @"User ID=pgadmin;Password=Koetse;Host=10.0.0.10;Port=5432;Database=tcg;Pooling=true;";
 

@@ -66,17 +66,7 @@ namespace TCGshopTestEnvironment.Controllers
 
             //queries to get cards and catagories from database
             var assetModels = _assets.GetbyCardType(cardType);
-            List<string> cardscategory = new List<string>();
-            foreach (var item in assetModels.Select(x => x.Catnames).Distinct())
-            {
-                foreach (var catagory in item.Distinct())
-                {
-                    if (!cardscategory.Contains(catagory))
-                    {
-                        cardscategory.Add(catagory);
-                    }
-                }
-            }
+            List<string> cardscategory = assetModels.SelectMany(x => x.Catnames).Distinct().ToList();
 
             //viewbags to send to the view
             ViewBag.page = page;
@@ -107,10 +97,8 @@ namespace TCGshopTestEnvironment.Controllers
                 .Select(result => new ProductsViewModel
                 {
                     Id = result.prods.ProductId,
-                    Name = result.prods.Name.Length < 20
-                        ? result.prods.Name
-                        : result.prods.Name.Substring(0, 15) + "...",
-                    Price = result.prods.Price,
+                    Name = result.prods.Name,/*.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",*/
+                    Price = (decimal)result.prods.Price,
                     ImageUrl = result.prods.ImageUrl,
                     Grade = result.prods.Grade,
                     Stock = result.prods.Stock,
@@ -132,7 +120,7 @@ namespace TCGshopTestEnvironment.Controllers
 
             if (priceL > 0 || priceH < 10000)
             {
-                listingResult = listingResult.Where(x => x.Price >= priceL && x.Price <= priceH);
+                listingResult = listingResult.Where(x => x.Price >= (decimal)priceL && x.Price <= (decimal)priceH);
             }
 
             //viewbag for the view with all the grades in it.
@@ -160,7 +148,7 @@ namespace TCGshopTestEnvironment.Controllers
                     break;
             }
 
-            var onePageOfProducts = await listingResult.AsNoTracking().ToPagedListAsync(pageNumber, pageAmnt);
+            var onePageOfProducts = await listingResult.ToPagedListAsync(pageNumber, pageAmnt);
             ViewBag.OnePageOfProducts = onePageOfProducts;
 
             if (cardType == "Pokemon")
@@ -212,18 +200,7 @@ namespace TCGshopTestEnvironment.Controllers
 
                 //queries to get items and catagories from database
                 var assetmodel = _assets.GetByNameSearch(name.ToLower());
-                List<string> cardscategory = new List<string>();
-                foreach (var item in assetmodel.Select(x => x.Catnames).Distinct())
-                {
-                    foreach (string item2 in item)
-                    {
-                        if (!cardscategory.Contains(item2))
-                        {
-                            cardscategory.Add(item2);
-                        }
-                    }
-                }
-
+                List<string> cardscategory = assetmodel.SelectMany(x => x.Catnames).Distinct().ToList();
 
                 //viewbags to send to the view
                 ViewBag.page = page;
@@ -255,10 +232,8 @@ namespace TCGshopTestEnvironment.Controllers
                     .Select(result => new ProductsViewModel
                     {
                         Id = result.prods.ProductId,
-                        Name = result.prods.Name.Length < 20
-                            ? result.prods.Name
-                            : result.prods.Name.Substring(0, 15) + "...",
-                        Price = result.prods.Price,
+                        Name = result.prods.Name,/*.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",*/
+                        Price = (decimal)result.prods.Price,
                         ImageUrl = result.prods.ImageUrl,
                         Grade = result.prods.Grade,
                         Stock = result.prods.Stock,
@@ -275,7 +250,7 @@ namespace TCGshopTestEnvironment.Controllers
 
                 if (priceL > 0 || priceH < 10000)
                 {
-                    listingResult = listingResult.Where(x => x.Price >= priceL && x.Price <= priceH);
+                    listingResult = listingResult.Where(x => x.Price >= (decimal)priceL && x.Price <= (decimal)priceH);
                 }
 
                 //viewbag for the view with all the grades in it.
