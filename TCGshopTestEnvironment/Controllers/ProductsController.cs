@@ -13,6 +13,15 @@ using X.PagedList;
 using Microsoft.EntityFrameworkCore;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Models.JoinTables;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Net;
+using Minio;
+using Minio.DataModel;
+using Minio.Exceptions;
+
 
 namespace TCGshopTestEnvironment.Controllers
 {
@@ -22,6 +31,21 @@ namespace TCGshopTestEnvironment.Controllers
 
         private readonly DBModel _context;
 
+        //S3
+        //public static AmazonS3Config config = new AmazonS3Config
+        //{
+        //    RegionEndpoint = RegionEndpoint.USEast1, // MUST set this before setting ServiceURL and it should match the `MINIO_REGION` enviroment variable.
+        //    ServiceURL = "http://10.0.0.10:9000", // replace http://localhost:9000 with URL of your minio server
+        //    ForcePathStyle = true // MUST be true to work correctly with Minio server
+        //};
+        //public static AmazonS3Client amazonS3Client = new AmazonS3Client(Startup.accessKey, Startup.secretKey, config);
+        //S3
+
+        //Minio
+        // Initialize the client with access credentials.
+        private static MinioClient minio = new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey).WithSSL();
+        //Minio
+
 
         public ProductsController(IProducts assets, DBModel context)
         {
@@ -29,7 +53,8 @@ namespace TCGshopTestEnvironment.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? page, int? pageAmount, string cardType, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
+        public async Task<IActionResult> Index(int? page, int? pageAmount, string cardType, string sortBy,
+            [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
         {
             //if page/pageamount/price parameters are empty, fill with standard value
             var pageNumber = page ?? 1;
@@ -42,8 +67,6 @@ namespace TCGshopTestEnvironment.Controllers
             //queries to get cards and catagories from database
             var assetModels = _assets.GetbyCardType(cardType);
             List<string> cardscategory = assetModels.SelectMany(x => x.Catnames).Distinct().ToList();
-
-            //}
 
             //viewbags to send to the view
             ViewBag.page = page;
@@ -59,12 +82,12 @@ namespace TCGshopTestEnvironment.Controllers
 
             // sorting list for product sorting
             var sorting = new List<SelectListItem>
-                {
-                    new SelectListItem {Text = "Name A-Z", Value = "name"},
-                    new SelectListItem {Text = "Name Z-A", Value = "name_desc"},
-                    new SelectListItem {Text = "Price High-Low", Value = "Price"},
-                    new SelectListItem {Text = "Price Low-High", Value = "price_desc"}
-                };
+            {
+                new SelectListItem {Text = "Name A-Z", Value = "name"},
+                new SelectListItem {Text = "Name Z-A", Value = "name_desc"},
+                new SelectListItem {Text = "Price High-Low", Value = "Price"},
+                new SelectListItem {Text = "Price Low-High", Value = "price_desc"}
+            };
             ViewBag.Sorting = sorting;
             ViewBag.SelectSort = sortBy ?? "Name A-Z";
             ViewBag.sortBy = sortBy;
@@ -80,7 +103,6 @@ namespace TCGshopTestEnvironment.Controllers
                     Grade = result.prods.Grade,
                     Stock = result.prods.Stock,
                     CardCatagoryList = result.Catnames
-
                 });
 
             //filters
@@ -89,13 +111,11 @@ namespace TCGshopTestEnvironment.Controllers
                 //if statement to make sure when in catagorie if you select same catagorie name it doesn't run any code, for performance
                 if (catagorie.Count == 1 && catagorie.Contains(cardType))
                 {
-
                 }
                 else
                 {
                     listingResult = listingResult.Where(x => x.CardCatagoryList.Intersect(catagorie).Any());
                 }
-
             }
 
             if (priceL > 0 || priceH < 10000)
@@ -135,16 +155,18 @@ namespace TCGshopTestEnvironment.Controllers
             {
                 return View("~/Views/Products/Pokemon/Pokemon.cshtml");
             }
+
             if (cardType == "YuGiOh")
             {
                 return View("~/Views/Products/YuGiOh/YuGiOh.cshtml");
             }
+
             if (cardType == "Magic")
             {
                 return View("~/Views/Products/Magic/Magic.cshtml");
             }
+
             return View();
-            
         }
 
         public IActionResult Detail(int id)
@@ -159,13 +181,13 @@ namespace TCGshopTestEnvironment.Controllers
                 Price = asset.Price,
                 Stock = asset.Stock,
                 ImageUrl = asset.ImageUrl,
-
             };
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(int? page, int? pageAmount, string name, string sortBy, [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
+        public async Task<IActionResult> Search(int? page, int? pageAmount, string name, string sortBy,
+            [FromQuery] List<string> catagorie, [FromQuery] List<string> grades, float? priceLow, float? priceHigh)
         {
             if (!String.IsNullOrEmpty(name))
             {
@@ -216,10 +238,9 @@ namespace TCGshopTestEnvironment.Controllers
                         Grade = result.prods.Grade,
                         Stock = result.prods.Stock,
                         CardCatagoryList = result.Catnames
-                        
                     });
 
-                
+
                 //filters
                 if (catagorie.Count > 0)
                 {
@@ -264,19 +285,16 @@ namespace TCGshopTestEnvironment.Controllers
             }
             else
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
         }
 
         public JsonResult CardAutoCompleteResult(string text)
         {
-
             IEnumerable<string> cardname = _assets.GetByNameSearch(text).Select(x => x.prods.Name).ToList();
 
             return Json(cardname);
         }
-
-
 
 
         //Adding New product
@@ -284,7 +302,6 @@ namespace TCGshopTestEnvironment.Controllers
         public IActionResult NewProduct()
         {
             return View();
-
         }
 
         [HttpGet]
@@ -292,7 +309,6 @@ namespace TCGshopTestEnvironment.Controllers
         {
             IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
             return Json(categories);
-
         }
 
         [HttpPost]
@@ -300,7 +316,7 @@ namespace TCGshopTestEnvironment.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                
                 Products Product = new Products
                 {
                     Name = vm.Name,
@@ -317,7 +333,6 @@ namespace TCGshopTestEnvironment.Controllers
                     if (categories.Contains(TestCategory))
                     {
                         Console.WriteLine("Category: " + TestCategory + "is in database");
-
                     }
                     else
                     {
@@ -340,15 +355,103 @@ namespace TCGshopTestEnvironment.Controllers
                     };
                     _context.Add(productCategory);
                 }
-                
-                _context.SaveChanges();
-                
 
+                _context.SaveChanges();
             }
 
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> FileUpload(FileUpload formFile)
+        {
+            // Perform an initial check to catch FileUpload class attribute violations.
+            if (!ModelState.IsValid)
+
+            {
+                return Json(new {status = "error", message = "The model is not correct"});
+            }
+
+
+            //Check MIME
+            if (formFile.CardImageUpload.ContentType.ToLower() != "image/png")
+                return Json(new
+                {
+                    status = "error",
+                    message = "The file mime must be image/png"
+                });
+
+            //Check if size is between 0 and 10MB
+            if (formFile.CardImageUpload.Length == 0)
+            {
+                return Json(new
+                {
+                    status = "error",
+                    message = "Upload Failed. The selected file is empty."
+                });
+            }
+            else if (formFile.CardImageUpload.Length > 10485760)
+            {
+                return Json(new
+                {
+                    status = "error",
+                    message = "The selected file exceeds 10 MB."
+                });
+            }
+
+            //Generate Random Name
+            //string ext = System.IO.Path.GetExtension(formFile.CardImageUpload.FileName); //Get the file extension
+
+            string objectName = Guid.NewGuid() + ".png";
+
+
+            var filePath = System.IO.Path.GetTempFileName() + objectName; //Create Temp File with Random GUID
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await formFile.CardImageUpload.CopyToAsync(fileStream);
+            }
+
+            //Prepare S3 Upload
+            var bucketName = "tcg-upload";
+            var location = "us-east-1";
+            var contentType = formFile.CardImageUpload.ContentType.ToLower();
+
+            try
+            {
+                // Make a bucket on the server, if not already present.
+                bool found = await minio.BucketExistsAsync(bucketName);
+                if (!found)
+                {
+                    await minio.MakeBucketAsync(bucketName, location);
+                }
+
+                // Upload a file to bucket.
+                await minio.PutObjectAsync(bucketName, objectName, filePath, contentType);
+                Console.Out.WriteLine("Successfully uploaded " + objectName);
+
+                return Json(new
+                {
+                    status = "Ok",
+                    message = "Successfully uploaded " + objectName,
+                    image = objectName
+                });
+            }
+            catch (MinioException e)
+            {
+                return Json(new
+                {
+                    status = "Error",
+                    message = "File Upload Error:" + e.Message
+                });
+        }
+
+        }
+
+        [HttpGet]
+        public IActionResult FileUpload()
+        {
+            return View();
+        }
     }
 }
-
