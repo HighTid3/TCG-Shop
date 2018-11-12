@@ -71,6 +71,7 @@ namespace TCGshopTestEnvironment
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton(Configuration);
             services.AddScoped<IProducts, ProductService>();
+            services.AddScoped<IShopping, ShoppingService>();
 
             var connection = @"User ID=postgres;Password=test;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
             
