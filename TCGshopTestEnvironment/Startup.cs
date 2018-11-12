@@ -19,8 +19,14 @@ namespace TCGshopTestEnvironment
 {
     public class Startup
     {
+        //S3
 
-        public static string storagePath = "https://cdn.tcg.sale/tcg/";
+        public static string accessKey = Environment.GetEnvironmentVariable("accessKey");
+        public static string secretKey = Environment.GetEnvironmentVariable("secretKey");
+        public static string s3Server = Environment.GetEnvironmentVariable("s3Server");
+        //S3
+
+        public static string storagePath = "https://cdn.tcg.sale/tcg-upload/";
 
         public Startup(IConfiguration configuration)
         {
@@ -71,6 +77,7 @@ namespace TCGshopTestEnvironment
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton(Configuration);
             services.AddScoped<IProducts, ProductService>();
+            services.AddScoped<IShopping, ShoppingService>();
 
             var connection = @"User ID=postgres;Password=postgres;Host=localhost;Port=5433;Database=TCG;Pooling=true;";
 
@@ -112,6 +119,7 @@ namespace TCGshopTestEnvironment
             //sessions configuration for shopping basket
             services.AddDistributedMemoryCache();
             services.AddSession();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

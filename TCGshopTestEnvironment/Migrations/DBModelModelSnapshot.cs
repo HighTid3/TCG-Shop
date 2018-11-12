@@ -151,6 +151,24 @@ namespace TCGshopTestEnvironment.Migrations
                     b.ToTable("ProductCategory");
                 });
 
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.JoinTables.ShoppingBasket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Amount");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<int>("ProductsId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Basket");
+                });
+
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Orders", b =>
                 {
                     b.Property<int>("Order_ID")

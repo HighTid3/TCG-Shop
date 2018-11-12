@@ -11,61 +11,82 @@
 <div class="containerCenter">
     <div class="row justify-content-center">
 
-        <div class="col-md-12">
-            <h2>@ViewData["Title"]</h2>
+        @*<div class="col-md-12">*@
+        @*<h2>@ViewData["Title"]</h2>*@
 
-            <form method="post" asp-action="NewProduct" asp-controller="Products" id="NewProduct">
-                <div asp-validation-summary="All"></div>
+        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: auto; width: 500px; margin-bottom:10px;">
+            <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
                 <div class="form-group">
-                    <label asp-for="Name"></label>
-                    <input asp-for="Name" size="10" class="form-control" />
-                    <span asp-validation-for="Name"></span>
-                </div>
+                    <form method="post" asp-action="NewProduct" asp-controller="Products" id="NewProduct">
+                        <div asp-validation-summary="All"></div>
+                        <div class="form-group">
+                            <label asp-for="Name"></label> <input asp-for="Name" size="10" class="form-control"/> <span asp-validation-for="Name"></span>
+                        </div>
 
-                <div class="form-group">
-                    <label asp-for="ImageUrl"></label>
-                    <input asp-for="ImageUrl" size="10" class="form-control" />
-                    <span asp-validation-for="ImageUrl"></span>
-                </div>
+                        <div class="form-group">
+
+                            <input type="file" class="form-control" style="height: auto" data-val="true" data-val-required="The CardImageUpload field is required." id="CardImageUpload">
+                            <div id="progress-wrp">
+                                <div class="progress-bar"></div>
+                                <div class="status">0%</div>
+                            </div>
+                            <input asp-for="ImageUrl" type="hidden" value=""/>
+                            <span asp-validation-for="ImageUrl"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Price"></label>
+                            <input asp-for="Price" size="10" class="form-control" />
+                            <span asp-validation-for="Price"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Grade"></label>
+                            <input asp-for="Grade" size="10" class="form-control" type="text" />
+                            <span asp-validation-for="Grade"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Category"></label>
+                            <div class="chips chips-autocomplete catagory-chips" id="NewProductChip"></div>
+                            <div id="HiddenCategroyInput">
 
 
-                <div class="form-group">
-                    <label asp-for="Price"></label>
-                    <input asp-for="Price" size="10" class="form-control" />
-                    <span asp-validation-for="Price"></span>
-                </div>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label asp-for="Grade"></label>
-                    <input asp-for="Grade" size="10" class="form-control" type="text" />
-                    <span asp-validation-for="Grade"></span>
-                </div>
+                        <div class="form-group">
+                            <label asp-for="Stock"></label>
+                            <input asp-for="Stock" size="10" class="form-control" />
+                            <span asp-validation-for="Stock"></span>
+                        </div>
 
-                <div class="form-group">
-                    <label asp-for="Category"></label>
-                    <div class="chips chips-autocomplete catagory-chips"></div>
-                    <div id="HiddenCategroyInput">
+                        <button class="btn btn-primary btnNewProduct btnLogin" type="submit" value="Add Product" name="action">
+                            Add New Product
+                        </button>
 
 
+                        <!--<p><input type="submit" value="Add Product" class="btn btn-default btnLogin" /></p>-->
+                        </form>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label asp-for="Stock"></label>
-                    <input asp-for="Stock" size="10" class="form-control" />
-                    <span asp-validation-for="Stock"></span>
+        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: auto; width: 270px;">
+            <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
+
+                <h1 class="ProductTitleCat" id="NewProductName">Name</h1>
+                <label class="GradeText" id="NewProductGrade">Grade</label><br/>
+                <div class="Category" id="NewProductCategory">
                 </div>
+                <img src="@(Startup.storagePath + "100.png")" class="imageCell" id="cardImagePreview"/>
+                <br>
+                <h4 id="NewProductPrice">€100</h4>
 
-                <button class="btn btn-primary btnNewProduct btnLogin" type="submit" value="Add Product" name="action">
-                    Add New Product
-                </button>
-
-
-                <!--<p><input type="submit" value="Add Product" class="btn btn-default btnLogin" /></p>-->
-                <div class="form-group">
-                </div>
-            </form>
+            </div>
         </div>
+
+
     </div>
 </div>
 
