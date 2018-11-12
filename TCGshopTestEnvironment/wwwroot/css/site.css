@@ -6,13 +6,33 @@ for details on configuring this project to bundle and minify static web assets. 
 .price-filter {
     color:white;
 }
-
-
-
-body {
-    margin: 0;
-    padding: 0;
+/* Override imageCell for ShoppingCart images*/
+.shoppingCartImg img{
+    width: 100px !important;
+    height: 125px !important;
 }
+.name::first-line {
+    font-size: 2.5rem;
+    margin-bottom:25px;
+    font-weight: 400;
+}
+.ShoppingImage {
+    padding-bottom: 10px;
+    padding-right: 20px;
+}
+.ShoppingPrice {
+    font-weight: 400;
+}
+    .ShoppingQuant {
+        padding-left: 5px;
+        width: 39px;
+        text-align:center;
+        border-radius: 15px;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+    }
 
 .logo-image {
     margin-left: 0px;
