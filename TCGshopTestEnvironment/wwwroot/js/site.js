@@ -63,28 +63,6 @@ if (localStorage.getItem("shoppingCart") === null) {
 
 
 
-function AddToCart(id, name, imageUrl, price, grade, count) {
-    var product = { 'Id': id, 'Name': name, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Count': count }
-
-    console.log($.inArray(product, shoppingCart));
-
-    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name == product.Name));
-
-    a = JSON.stringify(shoppingCart[shoppingCartindex]);
-    b = JSON.stringify(shoppingCart);
-
-    c = b.indexOf(a);
-
-    if (c != -1) {
-        shoppingCart[shoppingCartindex].Count = (parseInt(shoppingCart[shoppingCartindex].Count) + 1);
-        localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-    }
-    else {
-        shoppingCart.push(product);
-        console.table(shoppingCart);
-        localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-    }
-
 function ModalBox(imageUrl) {
     //modal popup box
 
