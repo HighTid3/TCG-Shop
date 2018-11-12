@@ -24,7 +24,7 @@ namespace TCGshopTestEnvironment.Services
         {
             _context.Add(NewProduct);
             _context.SaveChanges();
-            
+
         }
 
         public IEnumerable<Products> GetAll()
@@ -34,7 +34,7 @@ namespace TCGshopTestEnvironment.Services
 
         public Products GetByID(int id)
         {
-            
+
             return _context.products
                     .FirstOrDefault(product => product.ProductId == id);
         }
@@ -90,46 +90,130 @@ namespace TCGshopTestEnvironment.Services
 
                         ProductsAndCategories.Add(new Productsandcategorie { prods = Prods, Catnames = CatNames });
                     }
-
                 }
-
-                return ProductsAndCategories;
-
-
-
-                //return from p in _context.products
-                //       join c in _context.ProductCategory on p.ProductId equals c.ProductId
-                //       let categorienames = (from d in _context.ProductCategory
-                //                             where p.ProductId == d.ProductId && d.CategoryName == type
-                //                             select d.CategoryName).ToList()
-                //       where c.CategoryName == type
-                //       select new Productsandcategorie { prods = p, Catnames = categorienames };
-
-
-
-
-
+            
+            return ProductsAndCategories;
             }
             else
             {
-                return from p in _context.products
-                        let categorienames = (from d in _context.ProductCategory
-                                             where p.ProductId == d.ProductId
-                                             select d.CategoryName).ToList()
-                       select new Productsandcategorie { prods = p, Catnames = categorienames };
+                IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
+                                                "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
+                                                "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
+                                                "GROUP BY products.\"ProductId\"").ToArray();
+
+                List<Productsandcategorie> ProductsAndCategories = new List<Productsandcategorie>();
+
+                foreach (var ProductsCat in results)
+                {
+
+                    List<string> CatNames = new List<string>();
+
+                    try
+                    {
+                        CatNames = ProductsCat.CategoryName.Split(',').ToList();
+                    }
+                    catch (Exception e)
+                    {
+                        CatNames = new List<string> { "" };
+                    }
+
+
+                    
+                        Products Prods = new Products
+                        {
+                            ProductId = ProductsCat.ProductId,
+                            Name = ProductsCat.Name,
+                            Owner = ProductsCat.Owner,
+                            Price = ProductsCat.Price,
+                            Description = ProductsCat.Description,
+                            Grade = ProductsCat.Grade,
+                            Stock = ProductsCat.Stock,
+                            DateCreated = ProductsCat.DateCreated,
+                            DateUpdated = ProductsCat.DateUpdated,
+                            ViewsListed = ProductsCat.ViewsListed,
+                            ViewsDetails = ProductsCat.ViewsDetails,
+                            ImageUrl = ProductsCat.ImageUrl
+                        };
+
+                        ProductsAndCategories.Add(new Productsandcategorie { prods = Prods, Catnames = CatNames });
+                    
+                }
+
+                return ProductsAndCategories;
             }
+
+            //(type != "Default")
+            //return from p in _context.products
+            //       join c in _context.ProductCategory on p.ProductId equals c.ProductId
+            //       let categorienames = (from d in _context.ProductCategory
+            //                             where p.ProductId == d.ProductId && d.CategoryName == type
+            //                             select d.CategoryName).ToList()
+            //       where c.CategoryName == type
+            //       select new Productsandcategorie { prods = p, Catnames = categorienames };
+            //}
+            //else
+            //{
+            //    return from p in _context.products
+            //            let categorienames = (from d in _context.ProductCategory
+            //                                 where p.ProductId == d.ProductId
+            //                                 select d.CategoryName).ToList()
+            //           select new Productsandcategorie { prods = p, Catnames = categorienames };
+            //}
         }
 
-        public IQueryable<Productsandcategorie> GetByNameSearch(string name)
+        public IEnumerable<Productsandcategorie> GetByNameSearch(string name)
         {
-            return from p in _context.products
-                   where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
-                         let categorienames = (from d in _context.ProductCategory
-                                              where p.ProductId == d.ProductId
-                                              select d.CategoryName).ToList()
+            IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
+                                                "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
+                                                "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
+                                                "GROUP BY products.\"ProductId\"").ToArray();
 
-                select new Productsandcategorie { prods = p, Catnames = categorienames };
+            List<Productsandcategorie> ProductsAndCategories = new List<Productsandcategorie>();
+
+
+            foreach (var ProductsCat in results)
+            {
+                if (ProductsCat.Name.ToLower().Contains(name.ToLower()) || ProductsCat.Name.ToLower() == name.ToLower())
+                {
+
+
+                    List<string> CatNames = new List<string>();
+                    try
+                    {
+                        CatNames = ProductsCat.CategoryName.Split(',').ToList();
+                    }
+                    catch (Exception e)
+                    {
+                        CatNames = new List<string> { "" };
+                    }
+
+                    Products Prods = new Products
+                    {
+                        ProductId = ProductsCat.ProductId,
+                        Name = ProductsCat.Name,
+                        Owner = ProductsCat.Owner,
+                        Price = ProductsCat.Price,
+                        Description = ProductsCat.Description,
+                        Grade = ProductsCat.Grade,
+                        Stock = ProductsCat.Stock,
+                        DateCreated = ProductsCat.DateCreated,
+                        DateUpdated = ProductsCat.DateUpdated,
+                        ViewsListed = ProductsCat.ViewsListed,
+                        ViewsDetails = ProductsCat.ViewsDetails,
+                        ImageUrl = ProductsCat.ImageUrl
+                    };
+                    ProductsAndCategories.Add(new Productsandcategorie { prods = Prods, Catnames = CatNames });
+                }
+            }
+            return ProductsAndCategories;
+
+            //return from p in _context.products
+            //       where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
+            //             let categorienames = (from d in _context.ProductCategory
+            //                                  where p.ProductId == d.ProductId
+            //                                  select d.CategoryName).ToList()
+
+            //    select new Productsandcategorie { prods = p, Catnames = categorienames };
         }
-
     }
-    }
+}
