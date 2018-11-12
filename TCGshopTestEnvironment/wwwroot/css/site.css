@@ -27,6 +27,10 @@ img.imageCell {
     font-size: 1.5rem;
     font-weight: 600;
     color: #3c76ee;
+    overflow: hidden;
+    width: -webkit-fill-available;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .imagePokemonCell {
     width: 190px;
