@@ -43,6 +43,8 @@ namespace TCGshopTestEnvironment.Controllers
             var assetModels = _assets.GetbyCardType(cardType);
             List<string> cardscategory = assetModels.SelectMany(x => x.Catnames).Distinct().ToList();
 
+            //}
+
             //viewbags to send to the view
             ViewBag.page = page;
             ViewBag.PageAmount = pageAmount;
@@ -126,7 +128,7 @@ namespace TCGshopTestEnvironment.Controllers
                     break;
             }
 
-            var onePageOfProducts = await listingResult.AsNoTracking().ToPagedListAsync(pageNumber, pageAmnt);
+            var onePageOfProducts = await listingResult.ToPagedListAsync(pageNumber, pageAmnt);
             ViewBag.OnePageOfProducts = onePageOfProducts;
 
             if (cardType == "Pokemon")

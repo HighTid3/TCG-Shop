@@ -13,7 +13,6 @@ namespace TCGshopTestEnvironment.ViewModels
         public string ImageUrl { get; set; }
         public float Price { get; set; }
         public string Grade { get; set; }
-
         public int Amount { get; set; }
 
         public double TotalPrice { get; set; } 

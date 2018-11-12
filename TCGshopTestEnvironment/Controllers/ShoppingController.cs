@@ -142,8 +142,19 @@ namespace TCGshopTestEnvironment.Controllers
             return Json(results);
         }
 
+        [HttpGet]
+        public IActionResult CheckOut()
+        {
 
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> CheckOut(ProductsShopCartViewModel vm)
+        {
+
+            return View();
+        }
     }
 
     //public static class SessionExtensions
