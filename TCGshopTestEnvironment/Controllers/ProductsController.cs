@@ -279,7 +279,7 @@ namespace TCGshopTestEnvironment.Controllers
                 }
 
 
-                var onePageOfProducts = await listingResult.AsNoTracking().ToPagedListAsync(pageNmber, pageAmnt);
+                var onePageOfProducts = await listingResult.ToPagedListAsync(pageNmber, pageAmnt);
                 ViewBag.OnePageOfProducts = onePageOfProducts;
                 return View();
             }
