@@ -103,18 +103,26 @@ function AddToCart(id, productname, imageUrl, price, grade, count) {
 
     shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === product.Name));
 
+    var totalproductamount = 0;
+    var index, len;
+    for (index = 0, len = shoppingCart.length; index < len; index++) {
+        totalproductamount += parseInt(shoppingCart[index].Amount);
+    }
+    document.getElementById('shopcartamountbadge').innerHTML = totalproductamount;
+
     a = JSON.stringify(shoppingCart[shoppingCartindex]) 
     b = JSON.stringify(shoppingCart)
-
     c = b.indexOf(a)
 
     if (c != -1) {
         shoppingCart[shoppingCartindex].Amount = (parseInt(shoppingCart[shoppingCartindex].Amount) + parseInt(count));
+        ShoppingcartBadge();
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
     else {
         shoppingCart.push(product);
         console.table(shoppingCart);
+        ShoppingcartBadge();
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
 
@@ -214,3 +222,15 @@ $("#loginform").submit(function (e) {
 
     e.preventDefault(); // avoid to execute the actual submit of the form.
 });
+
+
+function ShoppingcartBadge() {
+    var totalproductamount = 0;
+    var index, len;
+    for (index = 0, len = shoppingCart.length; index < len; index++) {
+        totalproductamount += parseInt(shoppingCart[index].Amount);
+    }
+    document.getElementById('shopcartamountbadge').innerHTML = totalproductamount;
+}
+// shoppingcart badge amount
+ShoppingcartBadge();
