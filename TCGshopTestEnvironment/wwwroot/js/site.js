@@ -128,7 +128,7 @@ $('.qty').click(function () {
         $in = $('input[name="'+$t.data('field')+'"]'),
         val = parseInt($in.val()),
         valMax = $('#productStock').attr('value'),
-        valMin = 0;
+        valMin = 1;
 
     // Check if a number is in the field first
     if(isNaN(val) || val < valMin) {
@@ -154,16 +154,16 @@ $('.qty').click(function () {
 
 
 //post method for adding products
-function postToCart(productId,userId, imageUrl, amount) {
+function postToCart(productId, userName, imageUrl, amount) {
 
-    if (userId, productId) {
+    if (userName, productId) {
         $.ajax
         ({
             type: 'POST',
             url: '/Shopping/AddToShoppingcart',
             data:
             {
-                userId: userId,
+                userName: userName,
                 productId: productId,
                 Amount: amount
             },
@@ -191,8 +191,7 @@ function AddLocalCartToDatabase() {
             success: function () {
                 shoppingCart = [];
                 localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-                //go to index page after adding products to database
-                window.location.href = "/";
+                window.location.href = "/"; //go to index page after adding products to database
             }
         });
     }
@@ -209,28 +208,9 @@ $("#loginform").submit(function (e) {
         url: urls,
         data: form.serialize(), // serializes the form's elements.
         success: function () {
-            //perform the add local cart items to database cart
-            AddLocalCartToDatabase();
+            AddLocalCartToDatabase();  //perform the add local cart items to database cart
         }
     });
 
     e.preventDefault(); // avoid to execute the actual submit of the form.
-});
-
-
-$.ajax({
-    type: "post",
-    url: "ajax/example.php",
-    data: 'page=' + btn_page,
-    success: function (data) {
-        var a = data; // This line shows error.
-        $.ajax({
-            type: "post",
-            url: "example.php",
-            data: 'page=' + a,
-            success: function (data) {
-
-            }
-        });
-    }
 });
