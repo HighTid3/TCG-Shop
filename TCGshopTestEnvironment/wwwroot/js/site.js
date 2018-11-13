@@ -103,12 +103,7 @@ function AddToCart(id, productname, imageUrl, price, grade, count) {
 
     shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === product.Name));
 
-    var totalproductamount = 0;
-    var index, len;
-    for (index = 0, len = shoppingCart.length; index < len; index++) {
-        totalproductamount += parseInt(shoppingCart[index].Amount);
-    }
-    document.getElementById('shopcartamountbadge').innerHTML = totalproductamount;
+    ShoppingcartBadge()
 
     a = JSON.stringify(shoppingCart[shoppingCartindex]) 
     b = JSON.stringify(shoppingCart)
@@ -130,7 +125,7 @@ function AddToCart(id, productname, imageUrl, price, grade, count) {
 
 }
 
-//method for extracting/deleting productamounts in shoppingcart
+//method for setting amount in detailmodel
 $('.qty').click(function () {
     var $t = $(this),
         $in = $('input[name="'+$t.data('field')+'"]'),
@@ -162,7 +157,7 @@ $('.qty').click(function () {
 
 
 //post method for adding products
-function postToCart(productId, userName, imageUrl, amount) {
+function postToCart(productId, userName, imageUrl, productname, price, grade, amount) {
 
     if (userName, productId) {
         $.ajax
@@ -175,7 +170,8 @@ function postToCart(productId, userName, imageUrl, amount) {
                 productId: productId,
                 Amount: amount
             },
-            success: function (response) {
+                success: function (response) {
+                    AddToCart(productId, productname, imageUrl, price, grade, amount);
                 ModalBox(imageUrl);
 
             }
@@ -185,27 +181,27 @@ function postToCart(productId, userName, imageUrl, amount) {
     return false;
 }
 
-function AddLocalCartToDatabase() {
-    if (localStorage.getItem("shoppingCart") !== null) {
-        var local = shoppingCart;
-        $.ajax
-        ({
-            type: 'POST',
-            url: '/Shopping/AddLocalCartToDatabase',
-            data:
-            {
-                vm: local
-            },
-            success: function () {
-                shoppingCart = [];
-                localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-                window.location.href = "/"; //go to index page after adding products to database
-            }
-        });
-    }
+setTimeout(function AddLocalCartToDatabase() {
+        if (localStorage.getItem("shoppingCart") !== null) {
+            var local = shoppingCart;
+            $.ajax
+            ({
+                type: 'POST',
+                url: '/Shopping/AddLocalCartToDatabase',
+                data:
+                {
+                    vm: local
+                },
+                success: function() {
+                    shoppingCart = [];
+                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+                }
+            });
+        }
 
-    return false;
-}
+        return false;
+    },
+    500);
 
 $("#loginform").submit(function (e) {
     var form = $(this);
@@ -220,7 +216,6 @@ $("#loginform").submit(function (e) {
         }
     });
 
-    e.preventDefault(); // avoid to execute the actual submit of the form.
 });
 
 

@@ -178,10 +178,10 @@ namespace TCGshopTestEnvironment.Controllers
         public async Task<ActionResult> AddLocalCartToDatabase(List<ProductsShopCartViewModel> vm)
         {
             var user = await _userManager.GetUserAsync(User);
-            var cartproducts = _assets.ShoppinCartItems(user.Id).ToList();
+            var cartproducts = _assets.ShoppingbasketByName(user.Id).ToList();
             foreach (var product in vm)
             {
-                if (!cartproducts.Select(x => x.ProductId).Contains(product.ProductId))
+                if (!cartproducts.Select(x => x.ProductsId).Contains(product.ProductId))
                 {
                     var cart = new ShoppingBasket
                     {
@@ -196,6 +196,13 @@ namespace TCGshopTestEnvironment.Controllers
                 }
                 else
                 {
+                    if (cartproducts.Select(x => x.ProductsId).Contains(product.ProductId))
+                    {
+                        ShoppingBasket updatedmodel = cartproducts.FirstOrDefault(x => x.ProductsId == product.ProductId);
+                        updatedmodel.Amount = product.Amount;
+                        _context.Update(updatedmodel);
+                    }
+
                 }
             }
             _context.SaveChanges();
