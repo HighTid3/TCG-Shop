@@ -7,6 +7,7 @@ namespace TCGshopTestEnvironment.ViewModels
 {
     public class ProductsDetailModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public float Price { get; set; }
 
@@ -17,5 +18,7 @@ namespace TCGshopTestEnvironment.ViewModels
         public int Stock { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public List<string> CardCatagoryList { get; set; }
     }
 }

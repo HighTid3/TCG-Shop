@@ -16,6 +16,8 @@
                 <br>
                 @*@asset.Stock*@
                 <h4>€@asset.Price</h4>
+
+                @*Button action handler, one for signed in users, one for guests*@
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>

@@ -65,6 +65,22 @@ namespace TCGshopTestEnvironment.Controllers
         //    return RedirectToAction("Index", "Home");
         //}
 
+        //public static class SessionExtensions
+        //{
+        //    public static void SetObjectAsJson(this ISession session, string key, object value)
+        //    {
+        //        session.SetString(key, JsonConvert.SerializeObject(value));
+        //    }
+
+        //    public static T GetObjectFromJson<T>(this ISession session, string key)
+        //    {
+        //        var value = session.GetString(key);
+
+        //        return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
+        //    }
+        //}
+
+        // get the shopping cart items from database and return it to view
         [HttpGet]
         public async Task<IActionResult> ShoppingCart()
         {
@@ -75,22 +91,23 @@ namespace TCGshopTestEnvironment.Controllers
             }
             else
             {
-                var cartproducts = _assets.ShoppinCartItems(user.UserName).ToList();
+                var cartproducts = _assets.ShoppinCartItems(user.Id).ToList();
                 return View(cartproducts);
             }
         }
 
-
+        //add items to the shopping cart
         [HttpPost]
-        public async Task<IActionResult> AddToShoppingcart(string userId, int productId, int Amount)
+        public async Task<IActionResult> AddToShoppingcart(string userName, int productId, int Amount)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (userId != user.UserName)
+            if (userName != user.UserName)
             {
                 return Json(new { error = "userId did not match with the session" });
             }
-            var assetModel = _assets.ShoppingbasketByName(userId).ToList();
-            if (assetModel.Select(x => x.ProductsId).Contains(productId))
+            var assetModel = _assets.ShoppingbasketByName(user.Id).ToList(); //gets the basket of the logged in user
+
+            if (assetModel.Select(x => x.ProductsId).Contains(productId)) // the basket already contains the product, add the amount by 1
             {
 
                 ShoppingBasket updatedmodel = assetModel.FirstOrDefault(x => x.ProductsId == productId);
@@ -99,9 +116,10 @@ namespace TCGshopTestEnvironment.Controllers
                 _context.SaveChanges();
 
             }
-            else
+
+            else // else add the product to the basket
             {
-                var cart = new ShoppingBasket { UserId = userId, ProductsId = productId, Amount = Amount, DateCreated = DateTime.Now};
+                var cart = new ShoppingBasket { UserId = user.Id, ProductsId = productId, Amount = Amount, DateCreated = DateTime.Now};
                 _context.Basket.Add(cart);
                 _context.SaveChanges();
             }
@@ -110,6 +128,7 @@ namespace TCGshopTestEnvironment.Controllers
             return Json(new { success = true });
         }
 
+        //decreases or removes items from shopping cart
         [HttpPost]
         public ActionResult RemoveFromCart(int id, float price)
         {
@@ -127,8 +146,8 @@ namespace TCGshopTestEnvironment.Controllers
                 {
                     _context.Basket.Remove(cartItem);
                 }
-                // Save changes
-                _context.SaveChanges();
+                
+                _context.SaveChanges(); // Save changes
             }
             var results = new ShoppingCartRemoveViewModel
             {
@@ -137,7 +156,6 @@ namespace TCGshopTestEnvironment.Controllers
                 ItemCount = itemCount,
                 CartTotal = Math.Round((itemCount * price),2, MidpointRounding.AwayFromZero)
                
-                
             };
             return Json(results);
         }
@@ -155,23 +173,33 @@ namespace TCGshopTestEnvironment.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public async Task<ActionResult> AddLocalCartToDatabase(List<ProductsShopCartViewModel> vm)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var cartproducts = _assets.ShoppinCartItems(user.Id).ToList();
+            foreach (var product in vm)
+            {
+                if (!cartproducts.Select(x => x.ProductId).Contains(product.ProductId))
+                {
+                    var cart = new ShoppingBasket
+                    {
+
+                        Amount = product.Amount,
+                        DateCreated = DateTime.Now,
+                        UserId = user.Id,
+                        ProductsId = product.ProductId
+
+                    };
+                    _context.Basket.Add(cart);
+                }
+                else
+                {
+                }
+            }
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
     }
-
-    //public static class SessionExtensions
-    //{
-    //    public static void SetObjectAsJson(this ISession session, string key, object value)
-    //    {
-    //        session.SetString(key, JsonConvert.SerializeObject(value));
-    //    }
-
-    //    public static T GetObjectFromJson<T>(this ISession session, string key)
-    //    {
-    //        var value = session.GetString(key);
-
-    //        return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
-    //    }
-    //}
-
-
-
 }

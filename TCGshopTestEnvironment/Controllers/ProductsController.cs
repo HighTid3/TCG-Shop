@@ -98,7 +98,7 @@ namespace TCGshopTestEnvironment.Controllers
                 {
                     Id = result.prods.ProductId,
                     Name = result.prods.Name,/*.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",*/
-                    Price = (decimal)result.prods.Price,
+                    Price = result.prods.Price,
                     ImageUrl = result.prods.ImageUrl,
                     Grade = result.prods.Grade,
                     Stock = result.prods.Stock,
@@ -175,12 +175,13 @@ namespace TCGshopTestEnvironment.Controllers
 
             var model = new ProductsDetailModel
             {
+                Id = asset.ProductId,
                 Description = asset.Description,
                 Grade = asset.Grade,
                 Name = asset.Name,
                 Price = asset.Price,
                 Stock = asset.Stock,
-                ImageUrl = asset.ImageUrl,
+                ImageUrl = asset.ImageUrl
             };
             return View(model);
         }
@@ -233,7 +234,7 @@ namespace TCGshopTestEnvironment.Controllers
                     {
                         Id = result.prods.ProductId,
                         Name = result.prods.Name,/*.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",*/
-                        Price = (decimal)result.prods.Price,
+                        Price = result.prods.Price,
                         ImageUrl = result.prods.ImageUrl,
                         Grade = result.prods.Grade,
                         Stock = result.prods.Stock,

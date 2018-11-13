@@ -62,7 +62,7 @@ if (localStorage.getItem("shoppingCart") === null) {
 }
 
 
-
+//modalbox for popup addtocart
 function ModalBox(imageUrl) {
     //modal popup box
 
@@ -96,12 +96,12 @@ function ModalBox(imageUrl) {
     }
 }
 
-function AddToCart(id, name, imageUrl, price, grade, count) {
-    var product = { 'Id': id, 'Name': name, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Count': count }
+function AddToCart(id, productname, imageUrl, price, grade, count) {
+    var product = { 'ProductId': id, 'Name': productname, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Amount': count }
 
     console.log($.inArray(product, shoppingCart));
 
-    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name == product.Name))
+    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === product.Name));
 
     a = JSON.stringify(shoppingCart[shoppingCartindex]) 
     b = JSON.stringify(shoppingCart)
@@ -109,7 +109,7 @@ function AddToCart(id, name, imageUrl, price, grade, count) {
     c = b.indexOf(a)
 
     if (c != -1) {
-        shoppingCart[shoppingCartindex].Count = (parseInt(shoppingCart[shoppingCartindex].Count) + 1)
+        shoppingCart[shoppingCartindex].Amount = (parseInt(shoppingCart[shoppingCartindex].Amount) + parseInt(count));
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
     else {
@@ -122,13 +122,13 @@ function AddToCart(id, name, imageUrl, price, grade, count) {
 
 }
 
-
+//method for extracting/deleting productamounts in shoppingcart
 $('.qty').click(function () {
     var $t = $(this),
         $in = $('input[name="'+$t.data('field')+'"]'),
         val = parseInt($in.val()),
         valMax = $('#productStock').attr('value'),
-        valMin = 0;
+        valMin = 1;
 
     // Check if a number is in the field first
     if(isNaN(val) || val < valMin) {
@@ -152,17 +152,18 @@ $('.qty').click(function () {
     }
 });
 
-//post method for adding products
-function postToCart(productId,userId, imageUrl, amount) {
 
-    if (userId, productId) {
+//post method for adding products
+function postToCart(productId, userName, imageUrl, amount) {
+
+    if (userName, productId) {
         $.ajax
         ({
             type: 'POST',
             url: '/Shopping/AddToShoppingcart',
             data:
             {
-                userId: userId,
+                userName: userName,
                 productId: productId,
                 Amount: amount
             },
@@ -175,3 +176,41 @@ function postToCart(productId,userId, imageUrl, amount) {
 
     return false;
 }
+
+function AddLocalCartToDatabase() {
+    if (localStorage.getItem("shoppingCart") !== null) {
+        var local = shoppingCart;
+        $.ajax
+        ({
+            type: 'POST',
+            url: '/Shopping/AddLocalCartToDatabase',
+            data:
+            {
+                vm: local
+            },
+            success: function () {
+                shoppingCart = [];
+                localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+                window.location.href = "/"; //go to index page after adding products to database
+            }
+        });
+    }
+
+    return false;
+}
+
+$("#loginform").submit(function (e) {
+    var form = $(this);
+    var urls = form.attr('action');
+
+    $.ajax({
+        type: "POST",
+        url: urls,
+        data: form.serialize(), // serializes the form's elements.
+        success: function () {
+            AddLocalCartToDatabase();  //perform the add local cart items to database cart
+        }
+    });
+
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+});

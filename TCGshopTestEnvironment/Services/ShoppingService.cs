@@ -16,18 +16,18 @@ namespace TCGshopTestEnvironment.Services
         {
             _context = context;
         }
-        public IQueryable<ShoppingBasket> ShoppingbasketByName(string name)
+        public IQueryable<ShoppingBasket> ShoppingbasketByName(string userid)
         {
             return from s in _context.Basket
-                where s.UserId == name
+                where s.UserId == userid
                 select new ShoppingBasket {Amount = s.Amount, Id = s.Id, ProductsId = s.ProductsId, UserId = s.UserId};
         }
 
-        public IQueryable<ProductsShopCartViewModel> ShoppinCartItems(string name)
+        public IQueryable<ProductsShopCartViewModel> ShoppinCartItems(string userid)
         {
             return from p in _context.products
                 from b in _context.Basket
-                where b.UserId == name && p.ProductId == b.ProductsId
+                where b.UserId == userid && p.ProductId == b.ProductsId
                 select new ProductsShopCartViewModel
                 {
                     CartID = b.Id,
