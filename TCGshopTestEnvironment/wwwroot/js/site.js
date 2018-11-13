@@ -101,7 +101,7 @@ function AddToCart(id, productname, imageUrl, price, grade, count) {
 
     console.log($.inArray(product, shoppingCart));
 
-    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name == product.Name))
+    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === product.Name));
 
     a = JSON.stringify(shoppingCart[shoppingCartindex]) 
     b = JSON.stringify(shoppingCart)
@@ -109,7 +109,7 @@ function AddToCart(id, productname, imageUrl, price, grade, count) {
     c = b.indexOf(a)
 
     if (c != -1) {
-        shoppingCart[shoppingCartindex].Amount = (parseInt(shoppingCart[shoppingCartindex].Amount) + 1)
+        shoppingCart[shoppingCartindex].Amount = (parseInt(shoppingCart[shoppingCartindex].Amount) + parseInt(count));
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
     else {
