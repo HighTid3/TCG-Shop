@@ -62,7 +62,7 @@ if (localStorage.getItem("shoppingCart") === null) {
 }
 
 
-
+//modalbox for popup addtocart
 function ModalBox(imageUrl) {
     //modal popup box
 
@@ -96,8 +96,8 @@ function ModalBox(imageUrl) {
     }
 }
 
-function AddToCart(id, name, imageUrl, price, grade, count) {
-    var product = { 'Id': id, 'Name': name, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Count': count }
+function AddToCart(id, productname, imageUrl, price, grade, count) {
+    var product = { 'ProductId': id, 'Name': productname, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Amount': count }
 
     console.log($.inArray(product, shoppingCart));
 
@@ -109,7 +109,7 @@ function AddToCart(id, name, imageUrl, price, grade, count) {
     c = b.indexOf(a)
 
     if (c != -1) {
-        shoppingCart[shoppingCartindex].Count = (parseInt(shoppingCart[shoppingCartindex].Count) + 1)
+        shoppingCart[shoppingCartindex].Amount = (parseInt(shoppingCart[shoppingCartindex].Amount) + 1)
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
     else {
@@ -122,7 +122,7 @@ function AddToCart(id, name, imageUrl, price, grade, count) {
 
 }
 
-
+//method for extracting/deleting productamounts in shoppingcart
 $('.qty').click(function () {
     var $t = $(this),
         $in = $('input[name="'+$t.data('field')+'"]'),
@@ -152,6 +152,7 @@ $('.qty').click(function () {
     }
 });
 
+
 //post method for adding products
 function postToCart(productId,userId, imageUrl, amount) {
 
@@ -175,3 +176,61 @@ function postToCart(productId,userId, imageUrl, amount) {
 
     return false;
 }
+
+function AddLocalCartToDatabase() {
+    if (localStorage.getItem("shoppingCart") !== null) {
+        var local = shoppingCart;
+        $.ajax
+        ({
+            type: 'POST',
+            url: '/Shopping/AddLocalCartToDatabase',
+            data:
+            {
+                vm: local
+            },
+            success: function () {
+                shoppingCart = [];
+                localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+                //go to index page after adding products to database
+                window.location.href = "/";
+            }
+        });
+    }
+
+    return false;
+}
+
+$("#loginform").submit(function (e) {
+    var form = $(this);
+    var urls = form.attr('action');
+
+    $.ajax({
+        type: "POST",
+        url: urls,
+        data: form.serialize(), // serializes the form's elements.
+        success: function () {
+            //perform the add local cart items to database cart
+            AddLocalCartToDatabase();
+        }
+    });
+
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+});
+
+
+$.ajax({
+    type: "post",
+    url: "ajax/example.php",
+    data: 'page=' + btn_page,
+    success: function (data) {
+        var a = data; // This line shows error.
+        $.ajax({
+            type: "post",
+            url: "example.php",
+            data: 'page=' + a,
+            success: function (data) {
+
+            }
+        });
+    }
+});

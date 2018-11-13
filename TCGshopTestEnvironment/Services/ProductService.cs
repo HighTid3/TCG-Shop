@@ -46,9 +46,6 @@ namespace TCGshopTestEnvironment.Services
 
         public IEnumerable<Productsandcategorie> GetbyCardType(string type)
         {
-            if (type != "Default")
-            {
-
                 IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
                                                                 "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
                                                                 "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
@@ -70,76 +67,29 @@ namespace TCGshopTestEnvironment.Services
                         CatNames = new List<string> { "" };
                     }
 
-                    if (CatNames.Contains(type))
+                    if (type != "All")
                     {
-                        Products Prods = new Products
+                        if (CatNames.Contains(type))
                         {
-                            ProductId = ProductsCat.ProductId,
-                            Name = ProductsCat.Name,
-                            Owner = ProductsCat.Owner,
-                            Price = ProductsCat.Price,
-                            Description = ProductsCat.Description,
-                            Grade = ProductsCat.Grade,
-                            Stock = ProductsCat.Stock,
-                            DateCreated = ProductsCat.DateCreated,
-                            DateUpdated = ProductsCat.DateUpdated,
-                            ViewsListed = ProductsCat.ViewsListed,
-                            ViewsDetails = ProductsCat.ViewsDetails,
-                            ImageUrl = ProductsCat.ImageUrl
-                        };
 
-                        ProductsAndCategories.Add(new Productsandcategorie { prods = Prods, Catnames = CatNames });
+                            ProductsAndCategories.Add(new Productsandcategorie
+                            {
+                                prods = ProductsCat,
+                                Catnames = CatNames
+                            });
+                        }
+                    }
+                    else
+                    {
+                        ProductsAndCategories.Add(new Productsandcategorie
+                        {
+                            prods = ProductsCat,
+                            Catnames = CatNames
+                        });
                     }
                 }
             
             return ProductsAndCategories;
-            }
-            else
-            {
-                IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
-                                                "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
-                                                "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
-                                                "GROUP BY products.\"ProductId\"").ToArray();
-
-                List<Productsandcategorie> ProductsAndCategories = new List<Productsandcategorie>();
-
-                foreach (var ProductsCat in results)
-                {
-
-                    List<string> CatNames = new List<string>();
-
-                    try
-                    {
-                        CatNames = ProductsCat.CategoryName.Split(',').ToList();
-                    }
-                    catch (Exception e)
-                    {
-                        CatNames = new List<string> { "" };
-                    }
-
-
-                    
-                        Products Prods = new Products
-                        {
-                            ProductId = ProductsCat.ProductId,
-                            Name = ProductsCat.Name,
-                            Owner = ProductsCat.Owner,
-                            Price = ProductsCat.Price,
-                            Description = ProductsCat.Description,
-                            Grade = ProductsCat.Grade,
-                            Stock = ProductsCat.Stock,
-                            DateCreated = ProductsCat.DateCreated,
-                            DateUpdated = ProductsCat.DateUpdated,
-                            ViewsListed = ProductsCat.ViewsListed,
-                            ViewsDetails = ProductsCat.ViewsDetails,
-                            ImageUrl = ProductsCat.ImageUrl
-                        };
-
-                        ProductsAndCategories.Add(new Productsandcategorie { prods = Prods, Catnames = CatNames });
-                    
-                }
-
-                return ProductsAndCategories;
             }
 
             //(type != "Default")
@@ -159,7 +109,7 @@ namespace TCGshopTestEnvironment.Services
             //                                 select d.CategoryName).ToList()
             //           select new Productsandcategorie { prods = p, Catnames = categorienames };
             //}
-        }
+        
 
         public IEnumerable<Productsandcategorie> GetByNameSearch(string name)
         {
@@ -175,8 +125,6 @@ namespace TCGshopTestEnvironment.Services
             {
                 if (ProductsCat.Name.ToLower().Contains(name.ToLower()) || ProductsCat.Name.ToLower() == name.ToLower())
                 {
-
-
                     List<string> CatNames = new List<string>();
                     try
                     {
@@ -187,33 +135,18 @@ namespace TCGshopTestEnvironment.Services
                         CatNames = new List<string> { "" };
                     }
 
-                    Products Prods = new Products
-                    {
-                        ProductId = ProductsCat.ProductId,
-                        Name = ProductsCat.Name,
-                        Owner = ProductsCat.Owner,
-                        Price = ProductsCat.Price,
-                        Description = ProductsCat.Description,
-                        Grade = ProductsCat.Grade,
-                        Stock = ProductsCat.Stock,
-                        DateCreated = ProductsCat.DateCreated,
-                        DateUpdated = ProductsCat.DateUpdated,
-                        ViewsListed = ProductsCat.ViewsListed,
-                        ViewsDetails = ProductsCat.ViewsDetails,
-                        ImageUrl = ProductsCat.ImageUrl
-                    };
-                    ProductsAndCategories.Add(new Productsandcategorie { prods = Prods, Catnames = CatNames });
+                    ProductsAndCategories.Add(new Productsandcategorie { prods = ProductsCat, Catnames = CatNames });
                 }
             }
             return ProductsAndCategories;
 
-            //return from p in _context.products
-            //       where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
-            //             let categorienames = (from d in _context.ProductCategory
-            //                                  where p.ProductId == d.ProductId
-            //                                  select d.CategoryName).ToList()
+                //      return from p in _context.products
+                //       where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
+                //             let categorienames = (from d in _context.ProductCategory
+                //                                  where p.ProductId == d.ProductId
+                //                                  select d.CategoryName).ToList()
 
-            //    select new Productsandcategorie { prods = p, Catnames = categorienames };
+                //    select new Productsandcategorie { prods = p, Catnames = categorienames };
         }
     }
 }

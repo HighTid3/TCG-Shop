@@ -15,6 +15,6 @@ namespace TCGshopTestEnvironment.ViewModels
     {
         public List<string> Catnames { get; set; }
 
-        public Products prods { get; set; }
+        public ProductsCat prods { get; set; }
     }
 }
