@@ -181,7 +181,7 @@ function postToCart(productId, userName, imageUrl, productname, price, grade, am
     return false;
 }
 
-setTimeout(function AddLocalCartToDatabase() {
+/*setTimeout(*/function AddLocalCartToDatabase() {
         if (localStorage.getItem("shoppingCart") !== null) {
             var local = shoppingCart;
             $.ajax
@@ -200,8 +200,8 @@ setTimeout(function AddLocalCartToDatabase() {
         }
 
         return false;
-    },
-    500);
+    }
+    /*,500)*/;
 
 $("#loginform").submit(function (e) {
     var form = $(this);
@@ -215,7 +215,6 @@ $("#loginform").submit(function (e) {
             AddLocalCartToDatabase();  //perform the add local cart items to database cart
         }
     });
-
 });
 
 

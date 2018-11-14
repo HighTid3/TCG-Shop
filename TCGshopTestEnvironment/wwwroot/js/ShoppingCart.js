@@ -43,19 +43,26 @@
     });
 
     function removecardfromLocalstorage(cardId) {
-        var cart = shoppingCart;
-        var index, len;
-        for (index = 0, len = shoppingCart.length; index < len; index++) {
-            if (shoppingCart[index].ProductId === cardId) {
-                if (shoppingCart[index].Amount > 1) {
-                    shoppingCart[index].Amount -= 1;
-                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-                } else {
-                    shoppingCart.splice(index, 1);
-                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-                }
-            }
+        var cartindex = shoppingCart.findIndex((obj => obj.ProductId === cardId));
+        if (shoppingCart[cartindex].Amount > 1) {
+            shoppingCart[cartindex].Amount -= 1;
+            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+        } else {
+            shoppingCart.splice(cartindex, 1);
+            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
         }
+        //var index, len;
+        //for (index = 0, len = shoppingCart.length; index < len; index++) {
+        //    if (shoppingCart[index].ProductId === cardId) {
+        //        if (shoppingCart[index].Amount > 1) {
+        //            shoppingCart[index].Amount -= 1;
+        //            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+        //        } else {
+        //            shoppingCart.splice(index, 1);
+        //            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+        //        }
+        //    }
+        //}
     }
 });
 
