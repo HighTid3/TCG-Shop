@@ -193,7 +193,7 @@ function postToCart(productId, userName, imageUrl, productname, price, grade, am
                     vm: local
                 },
                 success: function() {
-                    shoppingCart = [];
+                    //shoppingCart = [];
                     localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
                 }
             });
