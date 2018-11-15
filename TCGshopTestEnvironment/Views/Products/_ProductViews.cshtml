@@ -10,10 +10,20 @@
             <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
                 <div>
                     <h1 class="ProductTitleCat" title="@asset.Name">@asset.Name</h1>
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <span class="glyphicon glyphicon-star-empty" onclick="postToWishlist(@asset.Id)"></span>
-                }
+
+                    @*check if product is in wishlist or not, show icon accordingly*@
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        if (ViewBag.wishlist.Contains(asset.Id))
+                        {
+                            <span class="glyphicon glyphicon-star-empty clicked" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>
+                        }
+                        else
+                        {
+                            <span class="glyphicon glyphicon-star-empty" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>
+                        }
+
+                    }
                 </div>
                 <label class="GradeText">[@asset.Grade]</label><br/>
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">

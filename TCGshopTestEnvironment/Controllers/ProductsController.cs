@@ -21,15 +21,17 @@ using System.Net;
 using Minio;
 using Minio.DataModel;
 using Minio.Exceptions;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace TCGshopTestEnvironment.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly IProducts _assets;
-
+        private readonly IWishlist _wishlist;
         private readonly DBModel _context;
+        private readonly UserManager<UserAccount> _userManager;
+        private readonly SignInManager<UserAccount> _signInManager;
 
         //S3
         //public static AmazonS3Config config = new AmazonS3Config
@@ -47,10 +49,13 @@ namespace TCGshopTestEnvironment.Controllers
         //Minio
 
 
-        public ProductsController(IProducts assets, DBModel context)
+        public ProductsController(IProducts assets, DBModel context, UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager, IWishlist wishlist)
         {
             _assets = assets;
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _wishlist = wishlist;
         }
 
         public async Task<IActionResult> Index(int? page, int? pageAmount, string cardType, string sortBy,
@@ -67,9 +72,19 @@ namespace TCGshopTestEnvironment.Controllers
             //queries to get cards and catagories from database
             var assetModels = _assets.GetbyCardType(cardType);
             List<string> cardscategory = assetModels.SelectMany(x => x.Catnames).Distinct().ToList();
+            List<int> wishlistproducts = new List<int>();
 
-            //viewbags to send to the view
-            ViewBag.page = page;
+            //send wishlist items to view for wishlist icon toggle
+            ViewBag.wishlist = "";
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                wishlistproducts = _wishlist.WishlistByUserid(user.Id).Select(x => x.ProductId).ToList();
+                ViewBag.wishlist = wishlistproducts;
+            }
+
+                //viewbags to send to the view
+                ViewBag.page = page;
             ViewBag.PageAmount = pageAmount;
             ViewBag.name = "Name";
             ViewBag.totalCategory = cardscategory;
@@ -102,7 +117,9 @@ namespace TCGshopTestEnvironment.Controllers
                     ImageUrl = result.prods.ImageUrl,
                     Grade = result.prods.Grade,
                     Stock = result.prods.Stock,
-                    CardCatagoryList = result.Catnames
+                    CardCatagoryList = result.Catnames,
+                    Favorites = false,
+                    
                 });
 
             //filters
@@ -202,6 +219,16 @@ namespace TCGshopTestEnvironment.Controllers
                 //queries to get items and catagories from database
                 var assetmodel = _assets.GetByNameSearch(name.ToLower());
                 List<string> cardscategory = assetmodel.SelectMany(x => x.Catnames).Distinct().ToList();
+                List<int> wishlistproducts = new List<int>();
+
+                //send wishlist items to view for wishlist icon toggle
+                ViewBag.wishlist = "";
+                var user = await _userManager.GetUserAsync(User);
+                if (user != null)
+                {
+                    wishlistproducts = _wishlist.WishlistByUserid(user.Id).Select(x => x.ProductId).ToList();
+                    ViewBag.wishlist = wishlistproducts;
+                }
 
                 //viewbags to send to the view
                 ViewBag.page = page;

@@ -76,5 +76,19 @@ namespace TCGshopTestEnvironment.Controllers
             };
             return Json(results);
         }
+
+        public async Task<ActionResult> RemoveFromWishlistbyproduct(int productId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var wishlistitem = _context.wishlists.FirstOrDefault(x => x.UserId == user.Id && x.ProductId == productId);
+
+            if (wishlistitem != null)
+            {
+                _context.wishlists.Remove(wishlistitem);
+                _context.SaveChanges(); // Save changes
+            }
+            return Json(new { success = true });
+        }
+
     }
 }

@@ -249,3 +249,17 @@ function postToWishlist(productId) {
 
     return false;
 }
+
+function toggleWishlist(classId) {
+    var element = document.getElementById(classId);
+    if (document.getElementById(classId).classList.contains("clicked")) {
+        $.post("/Wishlist/RemoveFromWishlistbyproduct", { "productId": classId },
+            function () { })
+    }
+    else {
+        postToWishlist(classId);
+    }
+    element.classList.toggle("clicked");
+
+
+}
