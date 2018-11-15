@@ -34,52 +34,6 @@ namespace TCGshopTestEnvironment.Controllers
             _signInManager = signInManager;
         }
 
-
-        //public ActionResult Add(ProductsShopCartViewModel product)
-        //{
-        //    if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
-        //    {
-        //        List<ProductsShopCartViewModel> CartProducts = new List<ProductsShopCartViewModel>();
-
-        //        CartProducts.Add(product);
-        //        HttpContext.Session.SetObjectAsJson(SessionKeyName,CartProducts);
-        //        ViewBag.cart = CartProducts.Count();
-
-        //        HttpContext.Session.SetInt32(TotalCartProducts, 1);
-
-        //    }
-
-        //    else
-        //    {
-        //        List<ProductsShopCartViewModel> CartProducts = HttpContext.Session.GetObjectFromJson<List<ProductsShopCartViewModel>>(SessionKeyName);
-        //        CartProducts.Add(product);
-        //        HttpContext.Session.SetObjectAsJson(SessionKeyName, CartProducts);
-        //        ViewBag.cart = CartProducts.Count();
-
-        //        var count = HttpContext.Session.GetInt32(TotalCartProducts);
-
-        //        HttpContext.Session.SetInt32(TotalCartProducts, Convert.ToInt32(HttpContext.Session.GetInt32(TotalCartProducts) + 1) );
-
-        //    }
-
-        //    return RedirectToAction("Index", "Home");
-        //}
-
-        //public static class SessionExtensions
-        //{
-        //    public static void SetObjectAsJson(this ISession session, string key, object value)
-        //    {
-        //        session.SetString(key, JsonConvert.SerializeObject(value));
-        //    }
-
-        //    public static T GetObjectFromJson<T>(this ISession session, string key)
-        //    {
-        //        var value = session.GetString(key);
-
-        //        return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
-        //    }
-        //}
-
         // get the shopping cart items from database and return it to view
         [HttpGet]
         public async Task<IActionResult> ShoppingCart()
@@ -210,3 +164,50 @@ namespace TCGshopTestEnvironment.Controllers
         }
     }
 }
+
+
+
+//public ActionResult Add(ProductsShopCartViewModel product)
+//{
+//    if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
+//    {
+//        List<ProductsShopCartViewModel> CartProducts = new List<ProductsShopCartViewModel>();
+
+//        CartProducts.Add(product);
+//        HttpContext.Session.SetObjectAsJson(SessionKeyName,CartProducts);
+//        ViewBag.cart = CartProducts.Count();
+
+//        HttpContext.Session.SetInt32(TotalCartProducts, 1);
+
+//    }
+
+//    else
+//    {
+//        List<ProductsShopCartViewModel> CartProducts = HttpContext.Session.GetObjectFromJson<List<ProductsShopCartViewModel>>(SessionKeyName);
+//        CartProducts.Add(product);
+//        HttpContext.Session.SetObjectAsJson(SessionKeyName, CartProducts);
+//        ViewBag.cart = CartProducts.Count();
+
+//        var count = HttpContext.Session.GetInt32(TotalCartProducts);
+
+//        HttpContext.Session.SetInt32(TotalCartProducts, Convert.ToInt32(HttpContext.Session.GetInt32(TotalCartProducts) + 1) );
+
+//    }
+
+//    return RedirectToAction("Index", "Home");
+//}
+
+//public static class SessionExtensions
+//{
+//    public static void SetObjectAsJson(this ISession session, string key, object value)
+//    {
+//        session.SetString(key, JsonConvert.SerializeObject(value));
+//    }
+
+//    public static T GetObjectFromJson<T>(this ISession session, string key)
+//    {
+//        var value = session.GetString(key);
+
+//        return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
+//    }
+//}

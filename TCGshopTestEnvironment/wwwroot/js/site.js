@@ -228,3 +228,24 @@ function ShoppingcartBadge() {
 }
 // shoppingcart badge amount
 ShoppingcartBadge();
+
+//post method for adding products to favorites
+function postToWishlist(productId) {
+
+    if (productId) {
+        $.ajax
+        ({
+            type: 'POST',
+            url: '/Wishlist/AddToWishlist',
+            data:
+            {
+                productId: productId
+            },
+            success: function (response) {
+
+            }
+        });
+    }
+
+    return false;
+}

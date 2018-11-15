@@ -18,7 +18,7 @@ namespace TCGshopTestEnvironment.Models
         public DbSet<UserAccount> userAccounts { get; set; }
         public DbSet<Products> products { get; set; }
         public DbSet<Category> categories { get; set; }
-        public DbSet<Whishlist> whishlists { get; set; }
+        public DbSet<Wishlist> wishlists { get; set; }
         public DbSet<Orders> orders { get; set; }
         public DbSet<Statistics> statistics { get; set; }
         public DbSet<Pictures> pictures { get; set; }
@@ -44,6 +44,16 @@ namespace TCGshopTestEnvironment.Models
                 .WithMany(m => m.Category)
                 .HasForeignKey(ma => ma.ProductId);
 
+            modelBuilder.Entity<Wishlist>()
+                .HasKey(t => new { t.Id});
+            modelBuilder.Entity<Wishlist>()
+                .HasOne(ma => ma.User)
+                .WithMany(m => m.Products)
+                .HasForeignKey(ma => ma.UserId);
+            modelBuilder.Entity<Wishlist>()
+                .HasOne(ma => ma.Product)
+                .WithMany(m => m.User)
+                .HasForeignKey(ma => ma.ProductId);
 
 
         }
