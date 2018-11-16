@@ -10,12 +10,12 @@
         <div class="col-md-12">
 
             <form class="form-horizontal" id="AccountAndAddressForm">
-                <div class="form-group">
+                @*<div class="form-group">
                     <label for="Username" class="control-label col-xs-4">Username</label>
                     <div class="col-xs-8">
                         <div class="input-group">
                             <input id="Username" name="Username" type="text" aria-describedby="UsernameHelpBlock" class="form-control">
-                            <div class="input-group-addon">
+                            <div class="input-group-addon" id="UsernameExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
@@ -27,13 +27,13 @@
                     <div class="col-xs-8">
                         <div class="input-group">
                             <input id="Password" name="Password" type="text" aria-describedby="PasswordHelpBlock" class="form-control">
-                            <div class="input-group-addon">
+                            <div class="input-group-addon" id="PasswordExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
                         <span id="PasswordHelpBlock" class="help-block">Requires: Min length 5, Capital letter, Number</span>
                     </div>
-                </div>
+                </div>*@
                 <div class="form-group">
                     <label for="FirstName" class="control-label col-xs-4">First Name</label>
                     <div class="col-xs-8">
@@ -42,7 +42,7 @@
                                 <i class="fa fa-asterisk"></i>
                             </div>
                             <input id="FirstName" name="FirstName" placeholder="Pluk" type="text" aria-describedby="FirstNameHelpBlock" required="required" class="form-control">
-                            <div class="input-group-addon">
+                            <div class="input-group-addon" id="FirstNameExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                                 <i class="fa fa-asterisk"></i>
                             </div>
                             <input id="LastName" name="LastName" placeholder="van de petteflet" type="text" aria-describedby="LastNameHelpBlock" required="required" class="form-control">
-                            <div class="input-group-addon">
+                            <div class="input-group-addon" id="LastNameExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                                 <i class="fa fa-asterisk"></i>
                             </div>
                             <input id="PostalCode" name="PostalCode" placeholder="1234AB" type="text" aria-describedby="PostalCodeHelpBlock" required="required" class="form-control">
-                            <div class="input-group-addon">
+                            <div class="input-group-addon" id="PostalCodeExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                                 <i class="fa fa-asterisk"></i>
                             </div>
                             <input id="HouseNumber" name="HouseNumber" placeholder="5" type="text" aria-describedby="HouseNumberHelpBlock" required="required" class="form-control">
-                            <div class="input-group-addon">
+                            <div class="input-group-addon" id="HouseNumberExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                 <i class="fa fa-asterisk"></i>
                             </div>
                             <input id="Street" name="Street" placeholder="Banker Street" type="text" aria-describedby="StreetHelpBlock" required="required" class="form-control">
-                            <div class="input-group-addon">
+                            <div class="input-group-addon" id="StreetExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                                 <i class="fa fa-asterisk"></i>
                             </div>
                             <input id="City" name="City" placeholder="Greed City" type="text" aria-describedby="CityHelpBlock" required="required" class="form-control">
-                            <div class="input-group-addon">
+                            <div class="input-group-addon" id="CityExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
@@ -132,7 +132,7 @@
                                 <i class="fa fa-asterisk"></i>
                             </div>
                             <input id="State" name="State" placeholder="Southern Abyss of Pain" type="text" aria-describedby="StateHelpBlock" required="required" class="form-control">
-                            <div class="input-group-addon">
+                            <div class="input-group-addon" id="StateExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
@@ -147,7 +147,7 @@
                                 <i class="fa fa-asterisk"></i>
                             </div>
                             <input id="Country" name="Country" placeholder="The Void" type="text" aria-describedby="CountryHelpBlock" required="required" class="form-control">
-                            <div class="input-group-addon">
+                            <div class="input-group-addon" id="CountryExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
@@ -161,8 +161,8 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-asterisk"></i>
                             </div>
-                            <input id="Email" name="Email" placeholder="Pluk.Petterflet@The.Void" type="text" required="required" class="form-control" aria-describedby="EmailHelpBlock">
-                            <div class="input-group-addon">
+                            <input id="Email" type="email" name="Email" placeholder="Pluk.Petterflet@The.Void" type="text" required="required" class="form-control" aria-describedby="EmailHelpBlock">
+                            <div class="input-group-addon" id="EmailExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
@@ -184,6 +184,102 @@
 
 
 <script>
+    //Local Input Validation
+    $("input[id='FirstName']").keyup(function() {
+        if ($(this).val().length < 1) {
+            $("#FirstNameHelpBlock").text("First Name is required");
+            $("#FirstNameExclamation").show();
+        } else {
+            $("#FirstNameHelpBlock").text("");
+            $("#FirstNameExclamation").hide();
+        };
+    });
+
+    $("input[id='LastName']").keyup(function() {
+        if ($(this).val().length < 1) {
+            $("#LastNameHelpBlock").text("Last Name is required");
+            $("#LastNameExclamation").show();
+        } else {
+            $("#LastNameHelpBlock").text("");
+            $("#LastNameExclamation").hide();
+        };
+    });
+
+    $("input[id='PostalCode']").keyup(function() {
+        if ($(this).val().length < 1) {
+            $("#PostalCodeHelpBlock").text("Postal Code is required");
+            $("#PostalCodeExclamation").show();
+        } else {
+            $("#PostalCodeHelpBlock").text("");
+            $("#PostalCodeExclamation").hide();
+        };
+    });
+
+    $("input[id='HouseNumber']").keyup(function() {
+        if ($(this).val().length < 1) {
+            $("#HouseNumberHelpBlock").text("House Number is required");
+            $("#HouseNumberExclamation").show();
+        } else {
+            $("#HouseNumberHelpBlock").text("");
+            $("#HouseNumberExclamation").hide();
+        };
+    });
+
+    $("input[id='Street']").keyup(function() {
+        if ($(this).val().length < 1) {
+            $("#StreetHelpBlock").text("Street is required");
+            $("#StreetExclamation").show();
+        } else {
+            $("#StreetHelpBlock").text("");
+            $("#StreetExclamation").hide();
+        };
+    });
+
+    $("input[id='City']").keyup(function() {
+        if ($(this).val().length < 1) {
+            $("#CityHelpBlock").text("City is required");
+            $("#CityExclamation").show();
+        } else {
+            $("#CityHelpBlock").text("");
+            $("#CityExclamation").hide();
+        };
+    });
+
+    $("input[id='State']").keyup(function() {
+        if ($(this).val().length < 1) {
+            $("#StateHelpBlock").text("State is required");
+            $("#StateExclamation").show();
+        } else {
+            $("#StateHelpBlock").text("");
+            $("#StateExclamation").hide();
+        };
+    });
+
+    $("input[id='Country']").keyup(function() {
+        if ($(this).val().length < 1) {
+            $("#CountryHelpBlock").text("Country is required");
+            $("#CountryExclamation").show();
+        } else {
+            $("#CountryHelpBlock").text("");
+            $("#CountryExclamation").hide();
+        };
+    });
+
+    $("input[id='Email']").keyup(function() {
+        if ($(this).val().length < 1) {
+            $("#EmailHelpBlock").text("Email is required");
+            $("#EmailExclamation").show();
+        } else {
+            $("#EmailHelpBlock").text("");
+            $("#EmailExclamation").hide();
+        };
+    });
+
+
+
+
+
+    //Posting Date + Shopping Cart
     $("#AccountAndAddressForm").submit(function(e) {
 
 
@@ -223,6 +319,7 @@
     });
 
 
+
     //Autofill street based on postcode
     $("input[id='PostalCode']").keyup(function count() {
         var input = this.value;
@@ -231,7 +328,7 @@
             console.log(regex.test(input));
             $.ajax({
                 type: 'GET',
-                url: "/account/PostCodeApiFakeLong",
+                url: "/account/PostCodeApi",
                 data: {
                     postcode: $("input[id='PostalCode']").val()
                 },
@@ -250,6 +347,12 @@
                     $("input[id='State']").val(data["_embedded"]["addresses"][0]["province"]["label"])
                         .prop('readonly', true);
                     $("input[id='Country']").val("The Netherlands").prop('readonly', true);
+
+                    //Updating All the Auto Fields
+                    $("input[id='Street']").trigger("keyup");
+                    $("input[id='City']").trigger("keyup");
+                    $("input[id='State']").trigger("keyup");
+                    $("input[id='Country']").trigger("keyup");
 
 
                 }

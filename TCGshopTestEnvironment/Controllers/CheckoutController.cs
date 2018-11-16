@@ -43,36 +43,39 @@ namespace TCGshopTestEnvironment.Controllers
         [HttpPost]
         public async Task<IActionResult> AccountAndAddress([FromBody] AccountAndAddressViewModel OrderDetails)
         {
-            return Ok(OrderDetails);
+            //return Ok(OrderDetails);
 
-            //var values = OrderView;
-            //var order = new Order();
-            //var user = await _userManager.GetUserAsync(User);
+            
+            var values = OrderDetails.OrderViewModel;
 
-            //try
-            //{
-            //    order.Email = user.Email;
-            //    order.OrderDate = DateTime.Now;
-            //    order.FirstName = values.FirstName;
-            //    order.LastName = values.FirstName;
-            //    order.Address = values.Address;
-            //    order.City = values.City;
-            //    order.State = values.State;
-            //    order.PostalCode = values.PostalCode;
-            //    order.Country = values.Country;
+            var order = new Order();
+            var user = await _userManager.GetUserAsync(User);
+
+            try
+            {
+                order.Email = user.Email;
+                order.OrderDate = DateTime.Now;
+                order.FirstName = values[0].FirstName;
+                order.LastName = values[0].FirstName;
+                order.Address = values[0].Street + " " + values[0].HouseNumber;
+                order.City = values[0].City;
+                order.State = values[0].State;
+                order.PostalCode = values[0].PostalCode;
+                order.Country = values[0].Country;
+
+                //order.OrderDetails = OrderDetails.OrderDetails;
 
 
 
+                _context.Orders.Add(order);
+                return Ok();
 
-            //    _context.Orders.Add(order);
-            //    return Ok();
-
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e);
-            //    return Ok();
-            //}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Ok();
+            }
 
         }
 
