@@ -31,9 +31,13 @@ namespace TCGshopTestEnvironment.ViewModels
         [StringLength(160)]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Address is required")]
+        [Required(ErrorMessage = "House Number is required")]
         [StringLength(70)]
-        public string Address { get; set; }
+        public string HouseNumber { get; set; }
+
+        [Required(ErrorMessage = "Street is required")]
+        [StringLength(70)]
+        public string Street { get; set; }
 
         [Required(ErrorMessage = "City is required")]
         [StringLength(40)]
@@ -65,5 +69,8 @@ namespace TCGshopTestEnvironment.ViewModels
         public decimal Total { get; set; }
 
         public List<ProductsShopCartViewModel> OrderDetails { get; set; }
+
+        //public string Name { set; get; }
+        //public string Value { set; get; }
     }
 }

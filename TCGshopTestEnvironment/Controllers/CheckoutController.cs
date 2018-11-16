@@ -41,35 +41,38 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AccountAndAddress(OrderViewModel values)
+        public async Task<IActionResult> AccountAndAddress([FromBody] AccountAndAddressViewModel OrderDetails)
         {
-            var order = new Order();
-            var user = await _userManager.GetUserAsync(User);
+            return Ok(OrderDetails);
 
-            try
-            {
-                order.Email = user.Email;
-                order.OrderDate = DateTime.Now;
-                order.FirstName = values.FirstName;
-                order.LastName = values.FirstName;
-                order.Address = values.Address;
-                order.City = values.City;
-                order.State = values.State;
-                order.PostalCode = values.PostalCode;
-                order.Country = values.Country;
+            //var values = OrderView;
+            //var order = new Order();
+            //var user = await _userManager.GetUserAsync(User);
 
-                
+            //try
+            //{
+            //    order.Email = user.Email;
+            //    order.OrderDate = DateTime.Now;
+            //    order.FirstName = values.FirstName;
+            //    order.LastName = values.FirstName;
+            //    order.Address = values.Address;
+            //    order.City = values.City;
+            //    order.State = values.State;
+            //    order.PostalCode = values.PostalCode;
+            //    order.Country = values.Country;
 
 
-                _context.Orders.Add(order);
-                return Ok();
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return Ok();
-            }
+
+            //    _context.Orders.Add(order);
+            //    return Ok();
+
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e);
+            //    return Ok();
+            //}
 
         }
 
