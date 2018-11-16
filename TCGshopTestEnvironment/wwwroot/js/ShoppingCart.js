@@ -25,10 +25,14 @@
                         // Successful requests get here
                         // Update the page elements
                         if (data["itemCount"] == 0) {
+                            removecardfromLocalstorage(recordToDelete[2]);
                             $('#row-' + data["deleteId"]).fadeOut('slow');
+                            ShoppingcartBadge();
                         } else {
+                            removecardfromLocalstorage(recordToDelete[2]);
                             $('#item-count-' + data["deleteId"]).text(data["itemCount"]);
                             $('#item-total-' + data["deleteId"]).text(data["cartTotal"]);
+                            ShoppingcartBadge();
                         }
                         //$('#cart-total').text(data.CartTotal);
                         //$('#update-message').text(data.Message);
@@ -37,5 +41,28 @@
             }
         });
     });
+
+    function removecardfromLocalstorage(cardId) {
+        var cartindex = shoppingCart.findIndex((obj => obj.ProductId === cardId));
+        if (shoppingCart[cartindex].Amount > 1) {
+            shoppingCart[cartindex].Amount -= 1;
+            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+        } else {
+            shoppingCart.splice(cartindex, 1);
+            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+        }
+        //var index, len;
+        //for (index = 0, len = shoppingCart.length; index < len; index++) {
+        //    if (shoppingCart[index].ProductId === cardId) {
+        //        if (shoppingCart[index].Amount > 1) {
+        //            shoppingCart[index].Amount -= 1;
+        //            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+        //        } else {
+        //            shoppingCart.splice(index, 1);
+        //            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+        //        }
+        //    }
+        //}
+    }
 });
 

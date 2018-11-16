@@ -38,7 +38,7 @@
                 @*Button action handler, one for signed in users, one for guests*@
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <button id="AddCartBtn" onclick="postToCart('@Model.Id', '@User.Identity.Name', '@Model.ImageUrl', document.getElementById('SelectedAmount').value)" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+                    <button id="AddCartBtn" onclick="postToCart('@Model.Id', '@User.Identity.Name', '@Model.ImageUrl', '@Model.Name', '@Model.Price', '@Model.Grade', document.getElementById('SelectedAmount').value); AddLocalCartToDatabase()" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                     @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
                 }
                 else

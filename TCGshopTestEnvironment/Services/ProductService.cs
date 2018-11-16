@@ -27,11 +27,6 @@ namespace TCGshopTestEnvironment.Services
 
         }
 
-        public IEnumerable<Products> GetAll()
-        {
-            return _context.products;
-        }
-
         public Products GetByID(int id)
         {
 
@@ -39,10 +34,6 @@ namespace TCGshopTestEnvironment.Services
                     .FirstOrDefault(product => product.ProductId == id);
         }
 
-        public string GetName(int id)
-        {
-            return _context.products.FirstOrDefault(product => product.ProductId == id).Name;
-        }
 
         public IEnumerable<Productsandcategorie> GetbyCardType(string type)
         {

@@ -503,3 +503,7 @@ p.lead {
     display: inline-block;
     color: #000000;
 }
+
+.clicked {
+    color: #f5b740;
+}

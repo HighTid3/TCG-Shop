@@ -18,6 +18,6 @@ namespace TCGshopTestEnvironment.Models
         public string LastName { get; set; }
         public string FirstName { get; set; }
 
-        
+        public virtual List<Wishlist> Products { get; set; }
     }
 }
