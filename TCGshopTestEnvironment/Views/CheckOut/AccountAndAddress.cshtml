@@ -1,7 +1,17 @@
 ﻿@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">*@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<form class="form-horizontal" id="AccountAndAddressForm" style="width: 800px;">
+<style>
+    .input-group-addon, .input-group-btn {
+        width: auto !important;
+    }
+</style>
+
+<div class="container">
+<div class="row">
+<div class="col-md-12">
+
+<form class="form-horizontal" id="AccountAndAddressForm">
     <div class="form-group">
         <label for="Username" class="control-label col-xs-4">Username</label>
         <div class="col-xs-8">
@@ -167,6 +177,13 @@
         </div>
     </div>
 </form>
+
+
+</div>
+
+</div>
+    </div>
+
 
 <script>
     $("#AccountAndAddressForm").submit(function(e) {
