@@ -84,6 +84,7 @@ namespace TCGshopTestEnvironment
             
             // Heroku provides PostgreSQL connection URL via env variable
             var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            var dbSsl = Environment.GetEnvironmentVariable("DATABASE_SSL");
 
             var connStr = "";
 
@@ -107,7 +108,12 @@ namespace TCGshopTestEnvironment
                 var pgHost = pgHostPort.Split(":")[0];
                 var pgPort = pgHostPort.Split(":")[1];
 
-                connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
+                connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
+            }
+
+            if (string.IsNullOrEmpty(dbSsl))
+            {
+                connStr = connStr + "Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
             }
             
             services.AddDbContext<DBModel>(options => options.UseNpgsql(connStr));

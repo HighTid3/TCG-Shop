@@ -19,7 +19,7 @@ namespace TCGshopTestEnvironment.Models
 
         public UserAccount Owner { get; set; }
 
-        public float Price { get; set; }
+        public decimal Price { get; set; }
 
         public string Description { get; set; }
 
@@ -27,7 +27,6 @@ namespace TCGshopTestEnvironment.Models
 
         public int Stock { get; set; }
         public DateTime DateCreated { get; set; }
-        
 
         public DateTime DateUpdated { get; set; }
 
