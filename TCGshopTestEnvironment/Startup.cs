@@ -81,7 +81,7 @@ namespace TCGshopTestEnvironment
             services.AddScoped<IWishlist, WishlistService>();
 
 
-            var connection = @"User ID=veecnnbwltunor;Password=a6c8cd6bfb0cb30915f3980c7a83949232ba2051cfc06c894cae20d539f452bf;Host=ec2-54-247-79-32.eu-west-1.compute.amazonaws.com;Port=5432;Database=d4phdsktctlcgc;Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
+            var connection = @"User ID=postgres;Password=test;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
 
             
             // Heroku provides PostgreSQL connection URL via env variable

@@ -17,7 +17,7 @@ $('#my-ajax-table > tbody:last-child').append('<tr>');
 */
 
 
-        $('#my-ajax-table > tbody:last-child').append('<div class="container"><div class="row lineCart"><div class="col-md-2 imageShoppingJs"> ' + image + '</div><div class="col-md-4 CartTitleColomn" style=""padding-left:210px;padding-right:10px;><h1 class="ShoppingCartTitle">' + e.Name + '</h1> Amount: <button class="btn btn-default btn-minPlus">-</button> <input class="ShoppingQuant text-center" type="number" placeholder="'+ e.Amount +'" value="'+ e.Amount +'">  <button class="btn btn-default btn-minPlus" >+</button></div><div class="col-md-6 priceCart" style="font-size:2rem;">Price: € ' + e.Price + ' p/u<br><a href="#" style="font-size:1.5rem;">Remove</a></div></div><hr style="width:750px;float:left;">');
+        $('#my-ajax-table > tbody:last-child').append('<div class="container"><div class="row lineCart"><div class="col-md-2 imageShoppingJs"> ' + image + '</div><div class="col-md-4 CartTitleColomn" style=""padding-left:210px;padding-right:10px;><h1 class="ShoppingCartTitle">' + e.Name + '</h1> Amount: <button class="btn btn-default btn-minPlus" id="' + e.ProductId+ '">-</button> <input class="ShoppingQuant text-center" type="number" placeholder="'+ e.Amount +'" value="'+ e.Amount +'">  <button class="btn btn-default btn-minPlus" >+</button></div><div class="col-md-6 priceCart" style="font-size:2rem;">Price: € ' + e.Price + ' p/u<br><a href="#" style="font-size:1.5rem;">Remove</a></div></div><hr style="width:750px;float:left;">');
        });
 
 $(function() {
@@ -31,10 +31,12 @@ $(function() {
       var newVal = parseFloat(oldValue) + 1;
     } else {
        // Don't allow decrementing below zero
-      if (oldValue > 0) {
+      if (oldValue > 1) {
         var newVal = parseFloat(oldValue) - 1;
-        } else {
-        newVal = 0;
+      } else {
+          var id = $button.attr('id');
+          $button.parent().parent().fadeOut(300);
+          newVal = 0;
       }
       }
 
