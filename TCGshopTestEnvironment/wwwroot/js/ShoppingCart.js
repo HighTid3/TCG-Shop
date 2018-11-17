@@ -39,7 +39,7 @@
                     removecardfromLocalstorage(cardid);
                     ShoppingcartBadge();
                 } else {
-                    $button.parent().parent().parent().fadeOut(300);
+                    $button.parent().parent().parent().fadeOut('slow');
                     removecardfromLocalstorage(cardid);
                     ShoppingcartBadge();
                     newVal = 0;
@@ -116,7 +116,7 @@
         var cartindex = shoppingCart.findIndex((obj => obj.ProductId === cardId));
         shoppingCart.splice(cartindex, 1);
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-        $(this).parent().parent().parent().parent().fadeOut(300);
+        $(this).parent().parent().parent().parent().fadeOut('slow');
         ShoppingcartBadge();
     });
 });
