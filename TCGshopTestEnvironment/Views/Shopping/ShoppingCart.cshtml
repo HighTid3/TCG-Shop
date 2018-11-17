@@ -59,6 +59,7 @@ else
             <div id="ShoppingCart"></div>
             <table id="my-ajax-table" class="">
                 <h2 style="font-weight: 800;color:darkgrey;">Shopping Cart</h2>
+                <hr />
                 <thead>
                     <tr></tr>
                 </thead>
@@ -67,7 +68,8 @@ else
         </div>
         <div class="col-md-4">
             <div id="ShoppingCart">
-                <h2 style="font-weight: 800;color:darkgrey;padding-bottom:20px;">Share your list</h2>
+                <h2 style="font-weight: 800;color:darkgrey;padding-bottom:20px;">Empty Shopping Cart</h2>
+                <button class="btn btn-primary" id="clearall" onclick="window.location.reload()">Clear All</button>
                 <hr class="border-bottom" />
                 <i class="fa fa-facebook-square"></i>
             </div>
@@ -76,6 +78,16 @@ else
 </div>
 }
 
+
+<script type="text/javascript">
+document.getElementById("clearall").addEventListener('click', function () {
+  localStorage.clear();
+  while (div.firstChild) {
+    div.removeChild(div.firstChild);
+    window.location.reload();
+  }
+});
+</script>
 
 
 <script type='text/javascript' src='/js/ShoppingCart.js' defer='defer'></script>*
