@@ -12,41 +12,53 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+<div class="container">
+<div class="row">
+<div class="col-md-8">
+<h2>Shopping Cart <small>Logged in user</small> </h2>
 <div id="productsTable">
     <table class="table table-condensed" id="productsIndexTable">
-        <thead>
-        <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Grade</th>
-            <th>Price</th>
-            <th>Amount</th>
-            <th>Total Price</th>
-        </tr>
-        </thead>
+       
         <tbody>
+            <div class="container">
+            <div class="row">
             @foreach (var asset in @Model)
             {
-            <tr class="assetRow" id="row-@asset.CartID">
-                <td class="">
-                    <img src="@(Startup.storagePath + asset.ImageUrl+ ".png")" class="imageCell" />
-                </td>
-                <td class="">@asset.Name</td>
-                <td class="">@asset.Grade</td>
-                <td class="">€@asset.Price</td>
-                <td class="" id="item-count-@asset.CartID">@asset.Amount</td>
-                <td class="" id="item-total-@asset.CartID">@asset.TotalPrice</td>
-                <td class="">
+            <div class="row assetRow" id="row-@asset.CartID" style="padding-bottom:15px;">
+                <div class="col-md-2 text-center">
+                    <img src="@(Startup.storagePath + asset.ImageUrl+ ".png")" class="" width="125" />
+                </div>
+                <div class="col-md-2">
+                    <h2>@asset.Name</h2>
+                    <small style="text-transform:uppercase;"><strong>Grade:</strong> @asset.Grade</small><br /><br />
+                    Amount: <input type="number" value="@asset.Amount" class="ShoppingQuant"/><br /><br />
                     <a href="#" class="RemoveLink"
                        data-id='["@asset.CartID","@asset.Price","@asset.ProductId"]'>
                         Remove
                         from cart
                     </a>
-                </td>
-            </tr>
+                </div>
+                <div class="col-md-4 float-right text-right">
+                    <p><span class="priceperpiece">Price per peice</span> <br /> <span style="font-size:3.5rem;">€@asset.Price</span> </p>
+                    <p style="padding-top:10px;"><span class="priceperpiece">Total Price:</span>
+                    <span style="font-size:3.5rem;"><br />€@asset.TotalPrice</span></p>
+                </div>
+
+            </div>
             }
+            </div>
+            </div>
         </tbody>
     </table>
+</div>
+</div>
+    <div class="col-md-4">
+        <div class="outerShadow">
+            <h2 class="completed">Is it complete?</h2>
+            <a href="/checkout/start"><button class="btn btn-default btnSignIn" style="width: 100% !important;">Checkout</button></a>
+        </div>
+    </div>
+</div>
 </div>
 }
 
