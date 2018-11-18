@@ -19,15 +19,14 @@ namespace TCGshopTestEnvironment.Models
         public DbSet<Products> products { get; set; }
         public DbSet<Category> categories { get; set; }
         public DbSet<Wishlist> wishlists { get; set; }
-        public DbSet<Orders> orders { get; set; }
         public DbSet<Statistics> statistics { get; set; }
-        public DbSet<Pictures> pictures { get; set; }
-
         public DbSet<ShoppingBasket> Basket { get; set; }
-
         public DbSet<ProductCategory> ProductCategory { get; set; }
-
         public DbSet<ProductsCat> ProductsCat { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

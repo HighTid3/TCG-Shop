@@ -11,11 +11,10 @@ namespace TCGshopTestEnvironment.ViewModels
         public int ProductId { get; set; }
         public string Name { get; set; }
         public string ImageUrl { get; set; }
-        public float Price { get; set; }
+        public decimal Price { get; set; }
         public string Grade { get; set; }
         public int Amount { get; set; }
-
-        public double TotalPrice { get; set; } 
+        public decimal TotalPrice { get; set; } 
     }
     
 }

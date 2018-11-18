@@ -122,11 +122,35 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CheckOut(ProductsShopCartViewModel vm)
+        public async Task<IActionResult> CheckOut(List<ProductsShopCartViewModel> vm)
         {
+            List<ProductsShopCartViewModel> ShoppingCart = new List<ProductsShopCartViewModel>();
 
-            return View();
+            foreach (var product in vm)
+            {
+                var dbProduct = _context.products.Where(x => x.ProductId == product.ProductId).Select(x => x).SingleOrDefault();
+                
+                ShoppingCart.Add(new ProductsShopCartViewModel{
+                        ProductId = dbProduct.ProductId,
+                        Amount = product.Amount,
+                        Name = dbProduct.Name,
+                        ImageUrl = dbProduct.ImageUrl,
+                        Price = dbProduct.Price,
+                        Grade = dbProduct.Grade,
+                        TotalPrice = (dbProduct.Price * product.Amount)
+
+                    }
+                
+                );
+
+            }
+
+            _context.SaveChanges();
+            return Json(ShoppingCart);
         }
+
+
+
 
         [HttpPost]
         public async Task<ActionResult> AddLocalCartToDatabase(List<ProductsShopCartViewModel> vm)
