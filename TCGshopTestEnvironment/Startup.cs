@@ -93,6 +93,11 @@ namespace TCGshopTestEnvironment
             if (connUrl == null)
             {
                 connStr = connection;
+
+                if (string.IsNullOrEmpty(dbSsl))
+                {
+                    connStr = connStr + "Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
+                }
             }
             else
             {
@@ -113,10 +118,7 @@ namespace TCGshopTestEnvironment
                 connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
             }
 
-            if (string.IsNullOrEmpty(dbSsl))
-            {
-                connStr = connStr + "Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
-            }
+
             
             services.AddDbContext<DBModel>(options => options.UseNpgsql(connStr));
 
