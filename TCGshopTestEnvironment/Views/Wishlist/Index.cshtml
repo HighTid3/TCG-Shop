@@ -4,40 +4,59 @@
 @inject UserManager<UserAccount> UserManager
 
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h1 class="text-left" style="padding-left: 60px; font-size:3.5rem;">Favorites list</h1>
+            <hr />
+        </div>
+    </div>
+</div>
+
 @if (SignInManager.IsSignedIn(User))
 {
+    <div class="container">
+     <div class="row">
+         <div class="col-md-12 col-md-offset-2" style="background-color:transparent; margin-top:10px;">
     <div id="productsTable">
         <table class="table table-condensed" id="productsIndexTable">
             <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                </tr>
+                
             </thead>
             <tbody>
                 @foreach (var asset in @Model)
                 {
-                    <tr class="assetRow" id="row-@asset.WishlistId">
-                        <td class="">
-                            <img src="@(Startup.storagePath + asset.ImageUrl+ ".png")" class="imageCell" />
-                        </td>
-                        <td class="">@asset.Name</td>
-                        <td class="">
-                            <a href="#" class="Removefromwishlist"
-                               data-id='@asset.WishlistId'>
-                                Remove
-                                from Wishlist
-                            </a>
-                        </td>
-                        <td>
+                    <div class="container">
+                    <div class="row assetRow" id="row-@asset.WishlistId">
+                        <div class="col-md-2 text-center">
+                            <img src="@(Startup.storagePath + asset.ImageUrl+ ".png")" class="" width="100" />
+                        </div>
+                        <div class="col-md-2"> <h1>@asset.Name</h1> <small style="text-transform:uppercase;font-weight: 500;"> Grade: @asset.Grade</small></div>
+                        <div class="col-md-2">
+
+                        </div>
+                        <div class="col-md-3">
                             <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '@asset.Name', '@asset.Price', '@asset.Grade', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                             @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
-                        </td>
-                    </tr>
-                }
+
+                            <div class="pt-5 mt-5" style="padding-top:50px;">
+                                <a href="#" class="Removefromwishlist"
+                                   data-id='@asset.WishlistId'>Remove
+                                </a>
+                            </div>
+                        </div>
+
+                        </div>
+                            <hr style="width: 650px; float: left; clear: right;color:#666666 !important;"/>
+                       </div>
+
+                       }
             </tbody>
         </table>
     </div>
+</div>
+</div>
+</div>
 }
 
 <script type='text/javascript' src='/js/Wishlist.js' defer='defer'></script>*
