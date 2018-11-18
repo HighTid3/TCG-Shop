@@ -22,6 +22,8 @@ namespace TCGshopTestEnvironment.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public decimal Total { get; set; }
+        public bool Paid { get; set; }
+        public string paymentId { get; set; }
         public System.DateTime OrderDate { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
     }
