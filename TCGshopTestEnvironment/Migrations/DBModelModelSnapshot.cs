@@ -169,34 +169,62 @@ namespace TCGshopTestEnvironment.Migrations
                     b.ToTable("Basket");
                 });
 
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.Orders", b =>
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Order", b =>
                 {
-                    b.Property<int>("Order_ID")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Payment_Status");
+                    b.Property<string>("Address");
 
-                    b.Property<DateTime>("Purchage_Date");
+                    b.Property<string>("City");
 
-                    b.Property<DateTime>("Shipped_Date");
+                    b.Property<string>("Country");
 
-                    b.Property<string>("Shipping_Status");
+                    b.Property<string>("Email");
 
-                    b.HasKey("Order_ID");
+                    b.Property<string>("FirstName");
 
-                    b.ToTable("orders");
+                    b.Property<string>("LastName");
+
+                    b.Property<DateTime>("OrderDate");
+
+                    b.Property<bool>("Paid");
+
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("PostalCode");
+
+                    b.Property<string>("State");
+
+                    b.Property<decimal>("Total");
+
+                    b.Property<string>("paymentId");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.Pictures", b =>
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.OrderDetail", b =>
                 {
-                    b.Property<int>("Picture_ID")
+                    b.Property<int>("OrderDetailId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Picture");
+                    b.Property<int>("OrderId");
 
-                    b.HasKey("Picture_ID");
+                    b.Property<int>("ProductId");
 
-                    b.ToTable("pictures");
+                    b.Property<int>("Quantity");
+
+                    b.Property<decimal>("UnitPrice");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Products", b =>
@@ -218,7 +246,7 @@ namespace TCGshopTestEnvironment.Migrations
 
                     b.Property<string>("OwnerId");
 
-                    b.Property<float>("Price");
+                    b.Property<decimal>("Price");
 
                     b.Property<int>("Stock");
 
@@ -417,30 +445,24 @@ namespace TCGshopTestEnvironment.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.OrderDetail", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TCGshopTestEnvironment.Models.Products", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Products", b =>
                 {
                     b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");
-                });
-
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.ProductsCat", b =>
-                {
-                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId");
-                });
-
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.Wishlist", b =>
-                {
-                    b.HasOne("TCGshopTestEnvironment.Models.Products", "Product")
-                        .WithMany("User")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "User")
-                        .WithMany("Products")
-                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

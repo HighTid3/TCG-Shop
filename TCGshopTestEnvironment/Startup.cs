@@ -81,17 +81,19 @@ namespace TCGshopTestEnvironment
             services.AddScoped<IWishlist, WishlistService>();
 
 
-            var connection = @"User ID=veecnnbwltunor;Password=a6c8cd6bfb0cb30915f3980c7a83949232ba2051cfc06c894cae20d539f452bf;Host=ec2-54-247-79-32.eu-west-1.compute.amazonaws.com;Port=5432;Database=d4phdsktctlcgc;Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
+            var connection = @"User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
 
             
             // Heroku provides PostgreSQL connection URL via env variable
             var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            var dbSsl = Environment.GetEnvironmentVariable("DATABASE_SSL");
 
             var connStr = "";
 
             if (connUrl == null)
             {
                 connStr = connection;
+
             }
             else
             {
@@ -109,8 +111,16 @@ namespace TCGshopTestEnvironment
                 var pgHost = pgHostPort.Split(":")[0];
                 var pgPort = pgHostPort.Split(":")[1];
 
-                connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
+                connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
+
+                if (string.IsNullOrEmpty(dbSsl))
+                {
+                    connStr = connStr + "Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
+                }
+
             }
+
+
             
             services.AddDbContext<DBModel>(options => options.UseNpgsql(connStr));
 
