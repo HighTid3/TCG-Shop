@@ -122,7 +122,7 @@ namespace TCGshopTestEnvironment.Controllers
                 //Now We Need To Create A Mollie Payment Token
                 PaymentRequest paymentRequest = new PaymentRequest()
                 {
-                    Amount = new Amount(Currency.EUR, Total.ToString("0.##")),
+                    Amount = new Amount(Currency.EUR, Total.ToString("F")),
                     Description = "Payment for your mock purchase from TCG.Sale",
                     RedirectUrl = "http://TCG.sale" + Url.Action("Processing", "Checkout")
                 };
