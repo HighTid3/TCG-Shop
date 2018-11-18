@@ -103,18 +103,21 @@ function AddToCart(id, productname, imageUrl, price, grade, count) {
 
     shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === product.Name));
 
+    ShoppingcartBadge()
+
     a = JSON.stringify(shoppingCart[shoppingCartindex]) 
     b = JSON.stringify(shoppingCart)
-
     c = b.indexOf(a)
 
     if (c != -1) {
         shoppingCart[shoppingCartindex].Amount = (parseInt(shoppingCart[shoppingCartindex].Amount) + parseInt(count));
+        ShoppingcartBadge();
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
     else {
         shoppingCart.push(product);
         console.table(shoppingCart);
+        ShoppingcartBadge();
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
 
@@ -122,7 +125,7 @@ function AddToCart(id, productname, imageUrl, price, grade, count) {
 
 }
 
-//method for extracting/deleting productamounts in shoppingcart
+//method for setting amount in detailmodel
 $('.qty').click(function () {
     var $t = $(this),
         $in = $('input[name="'+$t.data('field')+'"]'),
@@ -154,7 +157,7 @@ $('.qty').click(function () {
 
 
 //post method for adding products
-function postToCart(productId, userName, imageUrl, amount) {
+function postToCart(productId, userName, imageUrl, productname, price, grade, amount) {
 
     if (userName, productId) {
         $.ajax
@@ -167,7 +170,8 @@ function postToCart(productId, userName, imageUrl, amount) {
                 productId: productId,
                 Amount: amount
             },
-            success: function (response) {
+                success: function (response) {
+                    AddToCart(productId, productname, imageUrl, price, grade, amount);
                 ModalBox(imageUrl);
 
             }
@@ -177,27 +181,27 @@ function postToCart(productId, userName, imageUrl, amount) {
     return false;
 }
 
-function AddLocalCartToDatabase() {
-    if (localStorage.getItem("shoppingCart") !== null) {
-        var local = shoppingCart;
-        $.ajax
-        ({
-            type: 'POST',
-            url: '/Shopping/AddLocalCartToDatabase',
-            data:
-            {
-                vm: local
-            },
-            success: function () {
-                shoppingCart = [];
-                localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-                window.location.href = "/"; //go to index page after adding products to database
-            }
-        });
-    }
+/*setTimeout(*/function AddLocalCartToDatabase() {
+        if (localStorage.getItem("shoppingCart") !== null) {
+            var local = shoppingCart;
+            $.ajax
+            ({
+                type: 'POST',
+                url: '/Shopping/AddLocalCartToDatabase',
+                data:
+                {
+                    vm: local
+                },
+                success: function() {
+                    //shoppingCart = [];
+                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+                }
+            });
+        }
 
-    return false;
-}
+        return false;
+    }
+    /*,500)*/;
 
 $("#loginform").submit(function (e) {
     var form = $(this);
@@ -211,6 +215,51 @@ $("#loginform").submit(function (e) {
             AddLocalCartToDatabase();  //perform the add local cart items to database cart
         }
     });
-
-    e.preventDefault(); // avoid to execute the actual submit of the form.
 });
+
+
+function ShoppingcartBadge() {
+    var totalproductamount = 0;
+    var index, len;
+    for (index = 0, len = shoppingCart.length; index < len; index++) {
+        totalproductamount += parseInt(shoppingCart[index].Amount);
+    }
+    document.getElementById('shopcartamountbadge').innerHTML = totalproductamount;
+}
+// shoppingcart badge amount
+ShoppingcartBadge();
+
+//post method for adding products to favorites
+function postToWishlist(productId) {
+
+    if (productId) {
+        $.ajax
+        ({
+            type: 'POST',
+            url: '/Wishlist/AddToWishlist',
+            data:
+            {
+                productId: productId
+            },
+            success: function (response) {
+
+            }
+        });
+    }
+
+    return false;
+}
+
+function toggleWishlist(classId) {
+    var element = document.getElementById(classId);
+    if (document.getElementById(classId).classList.contains("clicked")) {
+        $.post("/Wishlist/RemoveFromWishlistbyproduct", { "productId": classId },
+            function () { })
+    }
+    else {
+        postToWishlist(classId);
+    }
+    element.classList.toggle("clicked");
+
+
+}

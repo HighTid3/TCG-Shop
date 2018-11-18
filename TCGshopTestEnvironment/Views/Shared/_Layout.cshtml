@@ -31,7 +31,7 @@
             <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/logo.png" alt="Logo" class="img-responsive" width="125" /></a>
         </div>
         <div class="col-md-5">
-            <div class="containerCenter">
+            <div class="container">
                 <div class="search-bar">
                     <form class="form-inline" method="get" asp-action="Search" asp-controller="Products">
                         <div class="form-group mx-sm-12 text-center">
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 text-center loginRight">
+        <div class="col-md-4">
             @await Html.PartialAsync("_LoginPartial")
 
         </div>
@@ -106,7 +106,8 @@
                     <!-- ><li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li> -->
                     <li><a asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="All">Cards</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Shopping" asp-action="ShoppingCart">ShoppingCart</a></li>
+                    @await Html.PartialAsync("_shoppingBasket")
+                    
                 </ul>
 
             </div>

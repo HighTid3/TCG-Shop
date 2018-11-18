@@ -37,5 +37,7 @@ namespace TCGshopTestEnvironment.Models
         public string ImageUrl { get; set; }
 
         public virtual List<ProductCategory> Category { get; set; }
+
+        public virtual List<Wishlist> User { get; set; }
     }
 }

@@ -8,10 +8,26 @@
     {
         <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 450px; width: 270px;">
             <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
-                <h1 class="ProductTitleCat" title="@asset.Name">@asset.Name</h1>
-                <label class="GradeText">[@asset.Grade]</label><br />
+                <div>
+                    <h1 class="ProductTitleCat" title="@asset.Name">@asset.Name</h1>
+
+                    @*check if product is in wishlist or not, show icon accordingly*@
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        if (ViewBag.wishlist.Contains(asset.Id))
+                        {
+                            <span class="glyphicon glyphicon-star-empty clicked" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>
+                        }
+                        else
+                        {
+                            <span class="glyphicon glyphicon-star-empty" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>
+                        }
+
+                    }
+                </div>
+                <label class="GradeText">[@asset.Grade]</label><br/>
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                    <img src="@(Startup.storagePath + asset.ImageUrl + ".png")" class="imageCell" />
+                    <img src="@(Startup.storagePath + asset.ImageUrl + ".png")" class="imageCell"/>
                 </a>
                 <br>
                 @*@asset.Stock*@
@@ -20,12 +36,12 @@
                 @*Button action handler, one for signed in users, one for guests*@
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+                    <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '@asset.Name', '@asset.Price', '@asset.Grade', '1');AddLocalCartToDatabase()" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                     @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
                 }
                 else
                 {
-                    <button id="AddCartBtn" onclick="AddToCart('@asset.Id', '@asset.Name',  '@asset.ImageUrl', '@asset.Price', '@asset.Grade', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+                    <button id="AddCartBtn" onclick="AddToCart('@asset.Id', '@asset.Name', '@asset.ImageUrl', '@asset.Price', '@asset.Grade', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                     @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
                 }
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TCGshopTestEnvironment.Models;
@@ -9,9 +10,10 @@ using TCGshopTestEnvironment.Models;
 namespace TCGshopTestEnvironment.Migrations
 {
     [DbContext(typeof(DBModel))]
-    partial class DBModelModelSnapshot : ModelSnapshot
+    [Migration("20181115134029_wishlistrelations2")]
+    partial class wishlistrelations2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,62 +171,34 @@ namespace TCGshopTestEnvironment.Migrations
                     b.ToTable("Basket");
                 });
 
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.Order", b =>
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Orders", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("Order_ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Payment_Status");
 
-                    b.Property<string>("City");
+                    b.Property<DateTime>("Purchage_Date");
 
-                    b.Property<string>("Country");
+                    b.Property<DateTime>("Shipped_Date");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Shipping_Status");
 
-                    b.Property<string>("FirstName");
+                    b.HasKey("Order_ID");
 
-                    b.Property<string>("LastName");
-
-                    b.Property<DateTime>("OrderDate");
-
-                    b.Property<bool>("Paid");
-
-                    b.Property<string>("Phone");
-
-                    b.Property<string>("PostalCode");
-
-                    b.Property<string>("State");
-
-                    b.Property<decimal>("Total");
-
-                    b.Property<string>("paymentId");
-
-                    b.HasKey("OrderId");
-
-                    b.ToTable("Orders");
+                    b.ToTable("orders");
                 });
 
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.OrderDetail", b =>
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Pictures", b =>
                 {
-                    b.Property<int>("OrderDetailId")
+                    b.Property<int>("Picture_ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("OrderId");
+                    b.Property<string>("Picture");
 
-                    b.Property<int>("ProductId");
+                    b.HasKey("Picture_ID");
 
-                    b.Property<int>("Quantity");
-
-                    b.Property<decimal>("UnitPrice");
-
-                    b.HasKey("OrderDetailId");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderDetails");
+                    b.ToTable("pictures");
                 });
 
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Products", b =>
@@ -246,7 +220,7 @@ namespace TCGshopTestEnvironment.Migrations
 
                     b.Property<string>("OwnerId");
 
-                    b.Property<decimal>("Price");
+                    b.Property<float>("Price");
 
                     b.Property<int>("Stock");
 
@@ -445,24 +419,30 @@ namespace TCGshopTestEnvironment.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.OrderDetail", b =>
-                {
-                    b.HasOne("TCGshopTestEnvironment.Models.Order", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("TCGshopTestEnvironment.Models.Products", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Products", b =>
                 {
                     b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.ProductsCat", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Wishlist", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.Products", "Product")
+                        .WithMany("User")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

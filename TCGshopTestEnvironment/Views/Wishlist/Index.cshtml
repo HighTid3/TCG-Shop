@@ -1,0 +1,43 @@
+﻿@model List<TCGshopTestEnvironment.ViewModels.WishlistViewModel>
+
+@inject SignInManager<UserAccount> SignInManager
+@inject UserManager<UserAccount> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div id="productsTable">
+        <table class="table table-condensed" id="productsIndexTable">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var asset in @Model)
+                {
+                    <tr class="assetRow" id="row-@asset.WishlistId">
+                        <td class="">
+                            <img src="@(Startup.storagePath + asset.ImageUrl+ ".png")" class="imageCell" />
+                        </td>
+                        <td class="">@asset.Name</td>
+                        <td class="">
+                            <a href="#" class="Removefromwishlist"
+                               data-id='@asset.WishlistId'>
+                                Remove
+                                from Wishlist
+                            </a>
+                        </td>
+                        <td>
+                            <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '@asset.Name', '@asset.Price', '@asset.Grade', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+                            @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<script type='text/javascript' src='/js/Wishlist.js' defer='defer'></script>*

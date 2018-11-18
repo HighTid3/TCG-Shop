@@ -43,6 +43,16 @@ namespace TCGshopTestEnvironment.Models
                 .WithMany(m => m.Category)
                 .HasForeignKey(ma => ma.ProductId);
 
+            modelBuilder.Entity<Wishlist>()
+                .HasKey(t => new { t.Id});
+            modelBuilder.Entity<Wishlist>()
+                .HasOne(ma => ma.User)
+                .WithMany(m => m.Products)
+                .HasForeignKey(ma => ma.UserId);
+            modelBuilder.Entity<Wishlist>()
+                .HasOne(ma => ma.Product)
+                .WithMany(m => m.User)
+                .HasForeignKey(ma => ma.ProductId);
 
 
         }

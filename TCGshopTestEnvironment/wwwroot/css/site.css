@@ -1,10 +1,27 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 /*  Clearfix */
-
-
+.ShoppingCartTitle {
+    font-size: 3rem;
+}
+.col-md-6.priceCart {
+    padding-top: 45px;
+    font-size: 2.3rem !important;
+}
+.CartTitleColomn {
+    
+}
+.imageShoppingJs {
+    padding-right: 15px !important;
+}
+.margint25 {
+    margin-top: 25px;
+}
+.marginb25 {
+    margin-bottom: 25px;
+}
 .price-filter {
-    color:white;
+    color: white;
 }
 /* Override imageCell for ShoppingCart images*/
 .shoppingCartImg img{
@@ -16,6 +33,16 @@ for details on configuring this project to bundle and minify static web assets. 
     margin-bottom:25px;
     font-weight: 400;
 }
+.btn-minPlus {
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: #f5b740 !important;
+    border-color: #f5b740;
+    border-radius: 100%;
+    padding: 1px 12px;
+    font-size: 2.5rem;
+    color: #FFF;
+}
 .ShoppingImage {
     padding-bottom: 10px;
     padding-right: 20px;
@@ -23,12 +50,12 @@ for details on configuring this project to bundle and minify static web assets. 
 .ShoppingPrice {
     font-weight: 400;
 }
-    .ShoppingQuant {
-        padding-left: 5px;
-        width: 39px;
-        text-align:center;
-        border-radius: 15px;
-    }
+.ShoppingQuant {
+    padding-left: 5px;
+    width: 36px;
+    text-align: center;
+    border-radius: 10px;
+}
     body {
         margin: 0;
         padding: 0;
@@ -71,7 +98,7 @@ img.imageCell {
     box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     margin-bottom: 5px;
     border: 1px solid #B0B0B0;
-    border-radius: 15px;
+    border-radius: 10px;
     /*margin: 20px;
     height: 100%;
     width: 235px;*/
@@ -204,7 +231,7 @@ ul.nav.navbar-nav li {
 .btnLogin {
     background-color: #f5b740;
     border-color: #f5b740;
-    width: 82%;
+    width: 300px;
     padding: 10px;
     color: white;
     font-weight: 700;
@@ -502,4 +529,8 @@ p.lead {
     position: absolute;
     display: inline-block;
     color: #000000;
+}
+
+.clicked {
+    color: #f5b740;
 }
