@@ -9,6 +9,9 @@ namespace TCGshopTestEnvironment.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ProductsCat");
+
+            migrationBuilder.DropTable(
                 name: "whishlists");
 
             migrationBuilder.CreateTable(

@@ -18,7 +18,7 @@ namespace TCGshopTestEnvironment.Models
         public DbSet<UserAccount> userAccounts { get; set; }
         public DbSet<Products> products { get; set; }
         public DbSet<Category> categories { get; set; }
-        public DbSet<Whishlist> whishlists { get; set; }
+        public DbSet<Wishlist> wishlists { get; set; }
         public DbSet<Statistics> statistics { get; set; }
         public DbSet<ShoppingBasket> Basket { get; set; }
         public DbSet<ProductCategory> ProductCategory { get; set; }
