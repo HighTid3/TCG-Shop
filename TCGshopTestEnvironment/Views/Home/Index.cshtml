@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TCGshopTestEnvironment.Models.UserAccount>
+﻿@using Microsoft.AspNetCore.Http
+@model IEnumerable<TCGshopTestEnvironment.ViewModels.PopularViewModel>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -14,13 +15,13 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <div style="background-color: #f5b740; color: rgb(255, 255, 255);">
+            <div style="background-color: rgb(215, 215, 215); color: rgb(55, 55, 55);">
                 <div class="containerCenter">
                     <div class="promo">
                         <div class="row">
                             <div class="col-md-6 col-xl-6">
-                                <div class=text-center">
-                                    <center><img class="img-fluid text-center" src="https://via.placeholder.com/350x300" /></center>
+                                <div class="text-center">
+                                    <center><img class="img-fluid text-center" src="~/images/THC.png" /></center>
                                 </div>
                             </div>
                             <div class=col-md-6 col-xl-6>
@@ -49,13 +50,13 @@
         </div>
         <div class="item">
             <div class="item active">
-                <div style="background-color:#f5b740; color: rgb(255, 255, 255);">
+                <div style="background-color: rgb(215, 215, 215); color: rgb(55, 55, 55);">
                     <div class="containerCenter">
                         <div class="promo">
                             <div class="row">
                                 <div class="col-md-6 col-xl-6">
-                                    <div class=text-center">
-                                        <center><img class="img-fluid text-center" src="https://via.placeholder.com/350x300" /></center>
+                                    <div class="text-center">
+                                        <center><img class="img-fluid text-center" src="~/images/THC.png" /></center>
                                     </div>
                                 </div>
                                 <div class=col-md-6 col-xl-6>
@@ -85,13 +86,13 @@
         </div>
         <div class="item">
             <div class="item active">
-                <div style="background-color: #f5b740; color: rgb(255, 255, 255);">
+                <div style="background-color: rgb(215, 215, 215); color: rgb(55, 55, 55);">
                     <div class="containerCenter">
                         <div class="promo">
                             <div class="row">
                                 <div class="col-md-6 col-xl-6">
-                                    <div class=text-center">
-                                        <center><img class="img-fluid text-center" src="https://via.placeholder.com/350x300" /></center>
+                                    <div class="text-center">
+                                        <center><img class="img-fluid text-center" src="~/images/THC.png" /></center>
                                     </div>
                                 </div>
                                 <div class=col-md-6 col-xl-6>
@@ -128,4 +129,23 @@
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
+</div>
+<div class="containerCenter" style="height: 500px">
+    <h4>Popular Choices</h4>
+    @foreach (var product in @Model)
+    {
+        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 450px; width: 270px;">
+            <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
+                <div>
+                    <h1 class="ProductTitleCat" title="@product.Name">@product.Name</h1>
+                </div>
+                <a asp-controller="Products" asp-action="Detail" asp-route-id="@product.ProductId">
+                    <img src="@(Startup.storagePath + product.ImageUrl + ".png")" class="imageCell" />
+                </a>
+                <br>
+                @*@asset.Stock*@
+                <h4>€@product.Price</h4>
+            </div>
+        </div>
+    }
 </div>
