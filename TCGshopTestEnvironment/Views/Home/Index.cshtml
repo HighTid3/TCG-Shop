@@ -130,22 +130,25 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-<div class="containerCenter" style="height: 500px">
-    <h4>Popular Choices</h4>
-    @foreach (var product in @Model)
+<div style="height: 420px">
+    <div class="containerCenter" style="margin-top: 10px;">
+        <h4>Popular Choices</h4>
+    </div>
+    <div class="containerCenter">
+        @foreach (var product in @Model)
     {
-        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 450px; width: 270px;">
+        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 350px; width: 220px;">
             <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
                 <div>
                     <h1 class="ProductTitleCat" title="@product.Name">@product.Name</h1>
                 </div>
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@product.ProductId">
-                    <img src="@(Startup.storagePath + product.ImageUrl + ".png")" class="imageCell" />
+                    <img src="@(Startup.storagePath + product.ImageUrl + ".png")" class="imageCell" style="height: 250px; width: 150px;"/>
                 </a>
                 <br>
-                @*@asset.Stock*@
                 <h4>€@product.Price</h4>
             </div>
         </div>
     }
+    </div>
 </div>
