@@ -113,10 +113,10 @@ namespace TCGshopTestEnvironment
 
                 connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
 
-                //if (string.IsNullOrEmpty(dbSsl))
-                //{
-                //    connStr = connStr + "Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
-                //}
+                if (string.IsNullOrEmpty(dbSsl))
+                {
+                    connStr = connStr + "Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
+                }
 
             }
 
