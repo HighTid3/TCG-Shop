@@ -3,11 +3,12 @@
 @inject SignInManager<UserAccount> SignInManager
 @inject UserManager<UserAccount> UserManager
 
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <h1 class="text-left" style="padding-left: 60px; font-size:3.5rem;">Favorites list</h1>
+            <h1 class="text-left" style="padding-left: 60px; font-size:3.5rem;">Favorites list </h1>
             <hr />
         </div>
     </div>
@@ -41,7 +42,7 @@
 
                             <div class="pt-5 mt-5" style="padding-top:50px;">
                                 <a href="#" class="Removefromwishlist"
-                                   data-id='@asset.WishlistId'>Remove
+                                   data-id='@asset.WishlistId'> <i class="fa fa-trash-o"></i> Remove
                                 </a>
                             </div>
                         </div>
