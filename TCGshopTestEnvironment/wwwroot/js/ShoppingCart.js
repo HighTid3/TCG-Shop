@@ -70,7 +70,7 @@
                             ShoppingcartBadge();
                         } else {
                             removecardfromLocalstorage(recordToDelete[2]);
-                            $('#item-count-' + data["deleteId"]).text(data["itemCount"]);
+                            $('#item-count-' + data["deleteId"]).val(data["itemCount"]);
                             $('#item-total-' + data["deleteId"]).text(data["cartTotal"]);
                             ShoppingcartBadge();
                         }
@@ -107,7 +107,7 @@
 
     function addcardfromLocalstorage(cardId) {
         var cartindex = shoppingCart.findIndex((obj => obj.ProductId === cardId));
-        shoppingCart[cartindex].Amount += 1;
+        shoppingCart[cartindex].Amount = parseInt(shoppingCart[cartindex].Amount) + 1;
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
 
