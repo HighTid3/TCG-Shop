@@ -120,3 +120,12 @@
         ShoppingcartBadge();
     });
 });
+
+function inputvalidatewithstock(productid, cartid) {
+    var inputvalue = document.getElementById("item-count-" + cartid).value;
+    if (inputvalue < 1) {
+        shoppingCart.splice(cart, 1);
+        localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+        $('#row-' + cartid).fadeOut('slow');
+    }
+}

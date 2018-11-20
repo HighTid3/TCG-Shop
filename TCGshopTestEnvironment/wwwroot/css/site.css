@@ -563,3 +563,10 @@ p.lead {
 .clicked {
     color: #f5b740;
 }
+
+/*removes the arrow in input boxes*/
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}

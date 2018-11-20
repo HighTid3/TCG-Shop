@@ -96,6 +96,7 @@ function ModalBox(imageUrl) {
     }
 }
 
+//add product to local shoppingcart
 function AddToCart(id, productname, imageUrl, price, grade, count) {
     var product = { 'ProductId': id, 'Name': productname, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Amount': count }
 
@@ -156,7 +157,7 @@ $('.qty').click(function () {
 });
 
 
-//post method for adding products
+//post method for adding products to database shoppingbasket
 function postToCart(productId, userName, imageUrl, productname, price, grade, amount) {
 
         $.ajax
@@ -213,6 +214,33 @@ function AddDbCarttoLocal() {
         });
 }
 
+
+function AddDatabasecartToLocal() {
+    $.ajax
+    ({
+        type: 'POST',
+        url: '/Shopping/AddDatabasecartToLocal',
+        success: function (data) {
+            //shoppingCart = [];
+            $.each(data,
+                function(e) {
+                    var product = {
+                        'ProductId': e.ProductId,
+                        'Name': e.Name,
+                        'ImageUrl': e.ImageUrl,
+                        'Price': e.Price,
+                        'Grade': e.Grade,
+                        'Amount': e.Amount
+                    }
+                    shoppingCart.push(product);
+                    console.table(shoppingCart);
+                    ShoppingcartBadge();
+                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+                });
+        }
+    });
+}
+
 /*setTimeout(*/function AddLocalCartToDatabase() {
         if (localStorage.getItem("shoppingCart") !== null) {
             var local = shoppingCart;
@@ -247,6 +275,7 @@ $("#loginform").submit(function (e) {
             AddLocalCartToDatabase(),  //perform the add local cart items to database cart
             AddDbCarttoLocal();
         }
+
     });
     e.preventDefault();
 });
@@ -284,6 +313,7 @@ function postToWishlist(productId) {
     return false;
 }
 
+//remove from wishlist by toggling icon
 function toggleWishlist(classId) {
     var element = document.getElementById(classId);
     if (document.getElementById(classId).classList.contains("clicked")) {

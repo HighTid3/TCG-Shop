@@ -187,10 +187,12 @@ namespace TCGshopTestEnvironment.Controllers
             return Json(new { success = true });
         }
 
-        public async Task<ActionResult> AddDbCarttoLocal()
+
+        public async Task<ActionResult> AddDatabasecartToLocal()
         {
             var user = await _userManager.GetUserAsync(User);
             var cartproducts = _assets.ShoppinCartItems(user.Id).ToList();
+
             return Json(cartproducts);
         }
     }
