@@ -84,34 +84,41 @@ namespace TCGshopTestEnvironment.Controllers
 
         //decreases or removes items from shopping cart
         [HttpPost]
-        public ActionResult RemoveFromCart(int id, float price)
+        public async Task<IActionResult> RemoveFromCart(int id, float price)
         {
-            var cartItem = _context.Basket.FirstOrDefault(x => x.Id == id);
-            int itemCount = 0;
-
-            if (cartItem != null)
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
             {
-                if (cartItem.Amount > 1)
+                var cartItem = _context.Basket.FirstOrDefault(x => x.ProductsId == id && x.UserId == user.Id);
+                int itemCount = 0;
+
+                if (cartItem != null)
                 {
-                    cartItem.Amount--;
-                    itemCount = cartItem.Amount;
+                    if (cartItem.Amount > 1)
+                    {
+                        cartItem.Amount--;
+                        itemCount = cartItem.Amount;
+                    }
+                    else
+                    {
+                        _context.Basket.Remove(cartItem);
+                    }
+
+                    _context.SaveChanges(); // Save changes
                 }
-                else
+
+                var results = new ShoppingCartRemoveViewModel
                 {
-                    _context.Basket.Remove(cartItem);
-                }
-                
-                _context.SaveChanges(); // Save changes
+
+                    DeleteId = id,
+                    ItemCount = itemCount,
+                    CartTotal = Math.Round((itemCount * price), 2, MidpointRounding.AwayFromZero)
+
+                };
+                return Json(results);
             }
-            var results = new ShoppingCartRemoveViewModel
-            {
 
-                DeleteId = id,
-                ItemCount = itemCount,
-                CartTotal = Math.Round((itemCount * price),2, MidpointRounding.AwayFromZero)
-               
-            };
-            return Json(results);
+            return Json(new {success = true});
         }
 
         [HttpGet]
@@ -188,7 +195,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
 
-        public async Task<ActionResult> AddDatabasecartToLocal()
+        public async Task<ActionResult> AddDbCarttoLocal()
         {
             var user = await _userManager.GetUserAsync(User);
             var cartproducts = _assets.ShoppinCartItems(user.Id).ToList();

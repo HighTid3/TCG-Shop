@@ -189,14 +189,14 @@ function AddDbCarttoLocal() {
                     console.log(e)
                     console.log(e["productId"])
                     var product = {
-                        'ProductId': e["productId"],
+                        'ProductId': e["productId"].toString(),
                         'Name': e["name"],
                         'ImageUrl': e["imageUrl"],
                         'Price': e["price"],
                         'Grade': e["grade"],
                         'Amount': e["amount"]
                     }
-                    shoppingCartindex = shoppingCart.findIndex((obj => obj.ProductId === e["productId"]));
+                    shoppingCartindex = shoppingCart.findIndex((obj => obj.ProductId === e["productId"].toString()));
                     a = JSON.stringify(shoppingCart[shoppingCartindex])
                     b = JSON.stringify(shoppingCart)
                     c = b.indexOf(a)
@@ -212,33 +212,6 @@ function AddDbCarttoLocal() {
 
             }
         });
-}
-
-
-function AddDatabasecartToLocal() {
-    $.ajax
-    ({
-        type: 'POST',
-        url: '/Shopping/AddDatabasecartToLocal',
-        success: function (data) {
-            //shoppingCart = [];
-            $.each(data,
-                function(e) {
-                    var product = {
-                        'ProductId': e.ProductId,
-                        'Name': e.Name,
-                        'ImageUrl': e.ImageUrl,
-                        'Price': e.Price,
-                        'Grade': e.Grade,
-                        'Amount': e.Amount
-                    }
-                    shoppingCart.push(product);
-                    console.table(shoppingCart);
-                    ShoppingcartBadge();
-                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-                });
-        }
-    });
 }
 
 /*setTimeout(*/function AddLocalCartToDatabase() {
@@ -273,7 +246,8 @@ $("#loginform").submit(function (e) {
         data: form.serialize(), // serializes the form's elements.
         success: function () {
             AddLocalCartToDatabase(),  //perform the add local cart items to database cart
-            AddDbCarttoLocal();
+                AddDbCarttoLocal();
+            window.location.href = "/";
         }
 
     });

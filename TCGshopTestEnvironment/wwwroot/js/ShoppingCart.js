@@ -28,9 +28,13 @@
             var oldValue = $button.parent().find("input").val();
             var cardid = $button.attr('id');//get product id
 
+            var shoppingCartindex = shoppingCart.findIndex((obj => obj.ProductId === cardid));
+            var price = shoppingCart[shoppingCartindex].Price;
+
+
             if ($button.text() == "+") {
                 var newVal = parseFloat(oldValue) + 1;
-                addcardfromLocalstorage(cardid);
+                addcardtolocalstoragecart(cardid);
                 ShoppingcartBadge();
             } else {
                 // Don't allow decrementing below zero
@@ -38,10 +42,12 @@
                     var newVal = parseFloat(oldValue) - 1;
                     removecardfromLocalstorage(cardid);
                     ShoppingcartBadge();
+                    $.post("/Shopping/RemoveFromCart", { "id": cardid, "price": price });
                 } else {
                     $button.parent().parent().parent().fadeOut('slow');
                     removecardfromLocalstorage(cardid);
                     ShoppingcartBadge();
+                    $.post("/Shopping/RemoveFromCart", { "id": cardid, "price": price });
                     newVal = 0;
                 }
             }
@@ -83,29 +89,23 @@
     });
 
     function removecardfromLocalstorage(cardId) {
-        var cartindex = shoppingCart.findIndex((obj => obj.ProductId === cardId));
-        if (shoppingCart[cartindex].Amount > 1) {
-            shoppingCart[cartindex].Amount -= 1;
-            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-        } else {
-            shoppingCart.splice(cartindex, 1);
-            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-        }
-        //var index, len;
-        //for (index = 0, len = shoppingCart.length; index < len; index++) {
-        //    if (shoppingCart[index].ProductId === cardId) {
-        //        if (shoppingCart[index].Amount > 1) {
-        //            shoppingCart[index].Amount -= 1;
-        //            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-        //        } else {
-        //            shoppingCart.splice(index, 1);
-        //            localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-        //        }
-        //    }
-        //}
-    }
+        var shoppingCartindex = shoppingCart.findIndex((obj => obj.ProductId === cardId));
+        var amount = parseInt(shoppingCart[shoppingCartindex].Amount);
 
-    function addcardfromLocalstorage(cardId) {
+            if (amount > 1) {
+                shoppingCart[shoppingCartindex].Amount -= 1;
+                localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+            } else {
+                shoppingCart.splice(shoppingCartindex, 1);
+                localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+            }
+        }
+    
+    
+
+
+
+    function addcardtolocalstoragecart(cardId) {
         var cartindex = shoppingCart.findIndex((obj => obj.ProductId === cardId));
         shoppingCart[cartindex].Amount = parseInt(shoppingCart[cartindex].Amount) + 1;
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));

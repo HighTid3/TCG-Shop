@@ -10,7 +10,7 @@
 
 
 
-@if (SignInManager.IsSignedIn(User))
+@*@if (SignInManager.IsSignedIn(User))
 {
 <div class="container">
 <div class="row">
@@ -64,7 +64,7 @@
 
 //load shoppingcart products from the localstorage using ajax if user is not logged in.
 else
-{
+{*@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -89,7 +89,7 @@ else
         </div>
     </div>
 </div>
-}
+@*}*@
 
 
 <script type="text/javascript">
