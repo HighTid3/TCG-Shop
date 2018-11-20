@@ -186,6 +186,13 @@ namespace TCGshopTestEnvironment.Controllers
             _context.SaveChanges();
             return Json(new { success = true });
         }
+
+        public async Task<ActionResult> AddDbCarttoLocal()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var cartproducts = _assets.ShoppinCartItems(user.Id).ToList();
+            return Json(cartproducts);
+        }
     }
 }
 
