@@ -481,5 +481,12 @@ namespace TCGshopTestEnvironment.Controllers
         {
             return View();
         }
+
+        public async Task<ActionResult> GetStockofCard(int productId)
+        {
+            var stock = _assets.GetByID(productId).Stock;
+
+            return Json(stock);
+        }
     }
 }

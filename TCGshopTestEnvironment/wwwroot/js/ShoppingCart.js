@@ -17,7 +17,16 @@
         */
 
 
-        $('#my-ajax-table > tbody:last-child').append('<div class="container"><div class="row lineCart"><div class="col-md-2 imageShoppingJs"> ' + image + '</div><div class="col-md-4 CartTitleColomn" style=""padding-left:210px;padding-right:10px;><h1 class="ShoppingCartTitle">' + e.Name + '</h1> Amount: <button class="btn btn-default btn-minPlus" id="' + e.ProductId + '">-</button> <input class="ShoppingQuant text-center" type="number" placeholder="' + e.Amount + '" value="' + e.Amount + '">  <button class="btn btn-default btn-minPlus" id="' + e.ProductId + '">+</button></div><div class="col-md-6 priceCart" style="font-size:2rem;" id="' + e.ProductId + '">Price: € ' + e.Price + ' p/u<div id = "RemoveItem"><br><a href="#" style="font-size:1.5rem;">Remove</a></div></div></div><hr style="width:750px;float:left;">');
+        $('#my-ajax-table > tbody:last-child').append('<div class="container" id="'+"row".concat(e.ProductId)+'">' +
+            '<div class="row lineCart"><div class="col-md-2 imageShoppingJs"> ' + image + '</div>' +
+            '<div class="col-md-4 CartTitleColomn" style=""padding-left:210px;padding-right:10px;>' +
+            '<h1 class="ShoppingCartTitle">' + e.Name + '</h1> Amount: ' +
+            '<button class="btn btn-default btn-minPlus" id="' + e.ProductId + '">-</button> ' +
+            '<input class="ShoppingQuant text-center" id="' + "input".concat(e.ProductId) + '" type="number" placeholder="' + e.Amount + '" value="' + e.Amount + '" min="1" oninput="this.value = Math.abs(this.value)" onchange="inputvalidatewithstock('+e.ProductId + ')">  ' +
+            '<button class="btn btn-default btn-minPlus" id="' + e.ProductId + '">+</button></div>' +
+            '<div class="col-md-6 priceCart" style="font-size:2rem;" id="' + e.ProductId + '">Price: € ' + e.Price + ' p/u<div id = "RemoveItem"><br>' +
+            '<a href="#" style="font-size:1.5rem;">Remove</a>' +
+            '</div></div></div><hr style="width:750px;float:left;">');
     });
 
     $(function () {
@@ -88,6 +97,7 @@
         });
     });
 
+
     function removecardfromLocalstorage(cardId) {
         var shoppingCartindex = shoppingCart.findIndex((obj => obj.ProductId === cardId));
         var amount = parseInt(shoppingCart[shoppingCartindex].Amount);
@@ -107,25 +117,68 @@
 
     function addcardtolocalstoragecart(cardId) {
         var cartindex = shoppingCart.findIndex((obj => obj.ProductId === cardId));
+
         shoppingCart[cartindex].Amount = parseInt(shoppingCart[cartindex].Amount) + 1;
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
 
+
+
+
     $('#RemoveItem a').click(function () {
         var cardId = $(this).parent().parent().attr("id");
         var cartindex = shoppingCart.findIndex((obj => obj.ProductId === cardId));
+
         shoppingCart.splice(cartindex, 1);
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+
+        $.post("/Shopping/SetAmountinShoppingCart", { "id": cardId, "amount": 0 });
+
         $(this).parent().parent().parent().parent().fadeOut('slow');
         ShoppingcartBadge();
     });
 });
 
-function inputvalidatewithstock(productid, cartid) {
-    var inputvalue = document.getElementById("item-count-" + cartid).value;
+//check if manual input of amount for the item is valid with stock and not negative
+function inputvalidatewithstock(productid) {
+    var inputvalue = document.getElementById("input" + productid).value;
+    var cartindex = shoppingCart.findIndex((obj => obj.ProductId === productid.toString()));
+
     if (inputvalue < 1) {
-        shoppingCart.splice(cart, 1);
+        shoppingCart.splice(cartindex, 1);
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-        $('#row-' + cartid).fadeOut('slow');
+        $(this).parent().parent().parent().fadeOut('slow');
+        $('#row' + productid).fadeOut('slow');
+
+        $.post("/Shopping/SetAmountinShoppingCart", { "id": productid, "amount": inputvalue });
+
+        ShoppingcartBadge();
+    } else {
+        $.ajax
+        ({
+            type: 'POST',
+            url: '/Products/GetStockofCard',
+            data:
+            {
+                productId: productid
+            },
+            success: function (response) {
+                if (inputvalue > response) {
+                    document.getElementById("input" + productid).value = response;
+                    shoppingCart[cartindex].Amount = response;
+                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+
+                    $.post("/Shopping/SetAmountinShoppingCart", { "id": productid, "amount": response });
+                    ShoppingcartBadge();
+                } else {
+                    document.getElementById("input" + productid).value = inputvalue;
+                    shoppingCart[cartindex].Amount = inputvalue;
+                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+
+                    $.post("/Shopping/SetAmountinShoppingCart", { "id": productid, "amount": inputvalue });
+                    ShoppingcartBadge();
+                }
+            }
+        });
     }
 }
