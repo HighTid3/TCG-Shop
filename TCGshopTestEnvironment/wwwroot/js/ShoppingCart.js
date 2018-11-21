@@ -29,7 +29,7 @@
             var cardid = $button.attr('id');//get product id
 
             var shoppingCartindex = shoppingCart.findIndex((obj => obj.ProductId === cardid));
-            var price = shoppingCart[shoppingCartindex].Price;
+            var price = shoppingCart[shoppingCartindex]["Price"];
 
 
             if ($button.text() == "+") {

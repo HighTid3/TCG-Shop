@@ -185,7 +185,7 @@ function AddDbCarttoLocal() {
             type: 'POST',
             url: '/Shopping/AddDbCarttoLocal',
             success: function (data) {
-                data.forEach(function (e) {
+                data.forEach(function(e) {
                     console.log(e)
                     console.log(e["productId"])
                     var product = {
@@ -208,7 +208,8 @@ function AddDbCarttoLocal() {
                         ShoppingcartBadge();
                     }
 
-                })
+                });
+                window.location.href = "/";
 
             }
         });
@@ -247,7 +248,7 @@ $("#loginform").submit(function (e) {
         success: function () {
             AddLocalCartToDatabase(),  //perform the add local cart items to database cart
                 AddDbCarttoLocal();
-            window.location.href = "/";
+            
         }
 
     });
