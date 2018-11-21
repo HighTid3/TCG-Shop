@@ -20,13 +20,13 @@ namespace TCGshopTestEnvironment
     public class Startup
     {
         //S3
-
         public static string accessKey = Environment.GetEnvironmentVariable("accessKey");
         public static string secretKey = Environment.GetEnvironmentVariable("secretKey");
         public static string s3Server = Environment.GetEnvironmentVariable("s3Server");
+        public static string storagePath = "https://cdn.tcg.sale/tcg-upload/";
         //S3
 
-        public static string storagePath = "https://cdn.tcg.sale/tcg-upload/";
+        public bool ValidateEmail = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ValidateEmail"));
 
         public Startup(IConfiguration configuration)
         {
@@ -70,7 +70,8 @@ namespace TCGshopTestEnvironment
                 options.User.RequireUniqueEmail = true;
 
                 // Email Settings
-                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = ValidateEmail;
+                Console.WriteLine("RequireConfirmedEmail is " + ValidateEmail);
 
             });
 
