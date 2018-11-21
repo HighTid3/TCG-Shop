@@ -49,14 +49,17 @@
                 // Don't allow decrementing below zero
                 if (oldValue > 1) {
                     var newVal = parseFloat(oldValue) - 1;
+
                     removecardfromLocalstorage(cardid);
-                    ShoppingcartBadge();
                     $.post("/Shopping/RemoveFromCart", { "id": cardid, "price": price });
+
+                    ShoppingcartBadge();
                 } else {
-                    $button.parent().parent().parent().fadeOut('slow');
+                    $('#row' + cardid).fadeOut('slow');
                     removecardfromLocalstorage(cardid);
-                    ShoppingcartBadge();
                     $.post("/Shopping/RemoveFromCart", { "id": cardid, "price": price });
+
+                    ShoppingcartBadge();
                     newVal = 0;
                 }
             }
@@ -65,36 +68,6 @@
 
         });
 
-    });
-
-    $(function () {
-        // Document.ready -> link up remove event handler
-        $(".RemoveLink").click(function () {
-            // Get the id from the link
-            var recordToDelete = $(this).data("id");
-            var CardPrice = recordToDelete[1];
-            if (recordToDelete != '') {
-                // Perform the ajax post
-                $.post("/Shopping/RemoveFromCart", { "id": recordToDelete[0], "price": CardPrice },
-                    function (data) {
-                        // Successful requests get here
-                        // Update the page elements
-                        if (data["itemCount"] == 0) {
-                            removecardfromLocalstorage(recordToDelete[2]);
-                            $('#row-' + data["deleteId"]).fadeOut('slow');
-                            ShoppingcartBadge();
-                        } else {
-                            removecardfromLocalstorage(recordToDelete[2]);
-                            $('#item-count-' + data["deleteId"]).val(data["itemCount"]);
-                            $('#item-total-' + data["deleteId"]).text(data["cartTotal"]);
-                            ShoppingcartBadge();
-                        }
-                        //$('#cart-total').text(data.CartTotal);
-                        //$('#update-message').text(data.Message);
-                        //$('#cart-status').text('Cart (' + data.CartCount + ')');
-                    });
-            }
-        });
     });
 
 
@@ -134,7 +107,7 @@
 
         $.post("/Shopping/SetAmountinShoppingCart", { "id": cardId, "amount": 0 });
 
-        $(this).parent().parent().parent().parent().fadeOut('slow');
+        $('#row' + cardId).fadeOut('slow');
         ShoppingcartBadge();
     });
 });
@@ -147,6 +120,7 @@ function inputvalidatewithstock(productid) {
     if (inputvalue < 1) {
         shoppingCart.splice(cartindex, 1);
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+
         $(this).parent().parent().parent().fadeOut('slow');
         $('#row' + productid).fadeOut('slow');
 
@@ -182,3 +156,33 @@ function inputvalidatewithstock(productid) {
         });
     }
 }
+
+//$(function () {
+//    // Document.ready -> link up remove event handler
+//    $(".RemoveLink").click(function () {
+//        // Get the id from the link
+//        var recordToDelete = $(this).data("id");
+//        var CardPrice = recordToDelete[1];
+//        if (recordToDelete != '') {
+//            // Perform the ajax post
+//            $.post("/Shopping/RemoveFromCart", { "id": recordToDelete[0], "price": CardPrice },
+//                function (data) {
+//                    // Successful requests get here
+//                    // Update the page elements
+//                    if (data["itemCount"] == 0) {
+//                        removecardfromLocalstorage(recordToDelete[2]);
+//                        $('#row-' + data["deleteId"]).fadeOut('slow');
+//                        ShoppingcartBadge();
+//                    } else {
+//                        removecardfromLocalstorage(recordToDelete[2]);
+//                        $('#item-count-' + data["deleteId"]).val(data["itemCount"]);
+//                        $('#item-total-' + data["deleteId"]).text(data["cartTotal"]);
+//                        ShoppingcartBadge();
+//                    }
+//                    //$('#cart-total').text(data.CartTotal);
+//                    //$('#update-message').text(data.Message);
+//                    //$('#cart-status').text('Cart (' + data.CartCount + ')');
+//                });
+//        }
+//    });
+//});
