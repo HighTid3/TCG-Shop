@@ -10,7 +10,7 @@
 
 
 
-@if (SignInManager.IsSignedIn(User))
+@*@if (SignInManager.IsSignedIn(User))
 {
 <div class="container">
 <div class="row">
@@ -31,7 +31,7 @@
                 <div class="col-md-2">
                     <h2>@asset.Name</h2>
                     <small style="text-transform:uppercase;"><strong>Grade:</strong> @asset.Grade</small><br /><br />
-                    Amount: <input id="item-count-@asset.CartID" type="number" value="@asset.Amount" class="ShoppingQuant" /><br /><br />
+                    Amount: <input id="item-count-@asset.CartID" type="number" value="@asset.Amount" class="ShoppingQuant" min="1" oninput="this.value = Math.abs(this.value)" onchange="inputvalidatewithstock(@asset.ProductId,@asset.CartID)"/><br /><br />
                     <a href="#" class="RemoveLink"
                        data-id='["@asset.CartID","@asset.Price","@asset.ProductId"]'>
                         Remove
@@ -64,7 +64,7 @@
 
 //load shoppingcart products from the localstorage using ajax if user is not logged in.
 else
-{
+{*@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -89,7 +89,7 @@ else
         </div>
     </div>
 </div>
-}
+@*}*@
 
 
 <script type="text/javascript">

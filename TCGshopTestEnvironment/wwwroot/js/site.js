@@ -96,6 +96,7 @@ function ModalBox(imageUrl) {
     }
 }
 
+//add product to local shoppingcart
 function AddToCart(id, productname, imageUrl, price, grade, count) {
     var product = { 'ProductId': id, 'Name': productname, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Amount': count }
 
@@ -156,17 +157,15 @@ $('.qty').click(function () {
 });
 
 
-//post method for adding products
+//post method for adding products to database shoppingbasket
 function postToCart(productId, userName, imageUrl, productname, price, grade, amount) {
 
-    if (userName, productId) {
         $.ajax
         ({
             type: 'POST',
             url: '/Shopping/AddToShoppingcart',
             data:
             {
-                userName: userName,
                 productId: productId,
                 Amount: amount
             },
@@ -176,9 +175,43 @@ function postToCart(productId, userName, imageUrl, productname, price, grade, am
 
             }
         });
+    return false;
     }
 
-    return false;
+function AddDbCarttoLocal() {
+    $.ajax
+        ({
+            type: 'POST',
+            url: '/Shopping/AddDbCarttoLocal',
+            success: function (data) {
+                data.forEach(function(e) {
+                    console.log(e)
+                    console.log(e["productId"])
+                    var product = {
+                        'ProductId': e["productId"].toString(),
+                        'Name': e["name"],
+                        'ImageUrl': e["imageUrl"],
+                        'Price': e["price"],
+                        'Grade': e["grade"],
+                        'Amount': e["amount"]
+                    }
+                    shoppingCartindex = shoppingCart.findIndex((obj => obj.ProductId === e["productId"].toString()));
+                    a = JSON.stringify(shoppingCart[shoppingCartindex])
+                    b = JSON.stringify(shoppingCart)
+                    c = b.indexOf(a)
+
+                    if (c == -1) {
+                        shoppingCart.push(product);
+                        console.table(shoppingCart);
+                        localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+                        ShoppingcartBadge();
+                    }
+
+                });
+                window.location.href = "/";
+
+            }
+        });
 }
 
 /*setTimeout(*/function AddLocalCartToDatabase() {
@@ -212,9 +245,13 @@ $("#loginform").submit(function (e) {
         url: urls,
         data: form.serialize(), // serializes the form's elements.
         success: function () {
-            AddLocalCartToDatabase();  //perform the add local cart items to database cart
+            AddLocalCartToDatabase(),  //perform the add local cart items to database cart
+                AddDbCarttoLocal();
+            
         }
+
     });
+    e.preventDefault();
 });
 
 
@@ -250,6 +287,7 @@ function postToWishlist(productId) {
     return false;
 }
 
+//remove from wishlist by toggling icon
 function toggleWishlist(classId) {
     var element = document.getElementById(classId);
     if (document.getElementById(classId).classList.contains("clicked")) {
