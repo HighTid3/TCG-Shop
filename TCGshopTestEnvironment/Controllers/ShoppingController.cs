@@ -52,13 +52,10 @@ namespace TCGshopTestEnvironment.Controllers
 
         //add items to the shopping cart
         [HttpPost]
-        public async Task<IActionResult> AddToShoppingcart(string userName, int productId, int Amount)
+        public async Task<IActionResult> AddToShoppingcart(int productId, int Amount)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (userName != user.UserName)
-            {
-                return Json(new { error = "userId did not match with the session" });
-            }
+
             var assetModel = _assets.ShoppingbasketByName(user.Id).ToList(); //gets the basket of the logged in user
 
             if (assetModel.Select(x => x.ProductsId).Contains(productId)) // the basket already contains the product, add the amount by 1

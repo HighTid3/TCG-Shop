@@ -166,7 +166,6 @@ function postToCart(productId, userName, imageUrl, productname, price, grade, am
             url: '/Shopping/AddToShoppingcart',
             data:
             {
-                userName: userName,
                 productId: productId,
                 Amount: amount
             },

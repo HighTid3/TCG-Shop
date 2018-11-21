@@ -43,8 +43,28 @@
 
             if ($button.text() == "+") {
                 var newVal = parseFloat(oldValue) + 1;
-                addcardtolocalstoragecart(cardid);
-                ShoppingcartBadge();
+                $.ajax
+                ({
+                    type: 'POST',
+                    url: '/Products/GetStockofCard',
+                    data:
+                    {
+                        productId: cardid
+                    },
+                    success: function (response) {
+                        if (newVal > response) {
+                            document.getElementById("input" + cardid).value = oldValue;
+                        } else {
+                            addcardtolocalstoragecart(cardid);
+
+                            $.post("/Shopping/AddToShoppingcart", { "productId": cardid, "Amount": 1 });
+
+                            ShoppingcartBadge();
+                        }
+                    }
+                });
+                
+
             } else {
                 // Don't allow decrementing below zero
                 if (oldValue > 1) {
