@@ -85,11 +85,18 @@ label {
     text-align: center;
     border-radius: 10px;
 }
-    body {
-        margin: 0;
-        padding: 0;
-    }
-
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.TopLogin {
+    font-size: 2rem;
+    font-weight: 800;
+}
+.TopLogin a {
+    color: #e4e4e4;
+}
 .logo-image {
     margin-left: 0px;
 }
@@ -102,7 +109,7 @@ img.imageCell {
 .ProductTitleCat {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #3c76ee;
+    color: #e4e4e4;
     overflow: hidden;
     width: -webkit-fill-available;
     white-space: nowrap;
@@ -145,7 +152,7 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
     color: white;
 }
 .priceh4 {
-    color: grey;
+    color: #e4e4e4;
 }
 .innerColomn {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);

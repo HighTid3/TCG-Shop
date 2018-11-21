@@ -18,15 +18,5 @@
 }
 else
 {
-
-    <p>
-        <button type="button" onclick="location.href = '@Url.Action("Login", "Account")'" class="btn btn-primary btnSignIn">Sign in</button>
-
-        <button type="button" onclick="location.href = '@Url.Action("Register", "Account" )'" class="btn btn-primary btnSignIn" style="margin-left:5px;">Register</button>
-
-    </p>
-    @*<ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
-    </ul>*@
+    <h1 class="TopLogin"><a href="#" onclick="location.href = '@Url.Action("Login", "Account")'">Sign In </a>  <a style="padding-left:50px;padding-right:35px;" href="#" onclick="location.href = '@Url.Action("Register", "Account")'">Register </a> <a asp-area="" asp-controller="Shopping" asp-action="ShoppingCart"><span class="glyphicon glyphicon-shopping-cart" style="color: #e4e4e4;"></span> <span class="badge" id="shopcartamountbadge"></span></a></h1>
 }
