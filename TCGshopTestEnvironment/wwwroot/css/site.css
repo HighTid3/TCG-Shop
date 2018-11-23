@@ -1,8 +1,34 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 /*  Clearfix */
+
+.filter {
+    margin-top: 12px;
+    border-radius: 10px;
+    padding-left: 10px;
+    background-color: #3a3c40;
+}
+
+    .filter h3 {
+        color: white;
+    }
+
+label {
+    color: white;
+}
+
+.FilterTitle {
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
 .ShoppingCartTitle {
     font-size: 3rem;
+}
+.top-header {
+    background-color: #121315;
 }
 .col-md-6.priceCart {
     padding-top: 45px;
@@ -10,6 +36,9 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 .CartTitleColomn {
     
+}
+.bg-back {
+    background-color: #54575f;
 }
 .imageShoppingJs {
     padding-right: 15px !important;
@@ -56,11 +85,24 @@ for details on configuring this project to bundle and minify static web assets. 
     text-align: center;
     border-radius: 10px;
 }
-    body {
-        margin: 0;
-        padding: 0;
-    }
-
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.LoginTitle {
+    color: #e4e4e4;
+}
+.TopLogin {
+    font-size: 2rem;
+    font-weight: 800;
+}
+.innerBox {
+    background-color: #313337;
+}
+.TopLogin a {
+    color: #e4e4e4;
+}
 .logo-image {
     margin-left: 0px;
 }
@@ -73,7 +115,7 @@ img.imageCell {
 .ProductTitleCat {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #3c76ee;
+    color: #e4e4e4;
     overflow: hidden;
     width: -webkit-fill-available;
     white-space: nowrap;
@@ -115,16 +157,24 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
     background-color: #f5b740;
     color: white;
 }
+.priceh4 {
+    color: #e4e4e4;
+}
 .innerColomn {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     margin-bottom: 5px;
-    border: 1px solid #B0B0B0;
+    border: 1px solid #393a3e;
     border-radius: 10px;
+    background-color: #393a3e;
     /*margin: 20px;
     height: 100%;
     width: 235px;*/
+}
+.svgIconHeader {
+    color: #e7e7e7;
+    font-size: 2.7rem;
 }
 .priceperpiece {
     font-weight: 800;
@@ -198,8 +248,8 @@ ul.nav.navbar-nav li {
     }
 
 .callToAction {
-    background-color: #2b74f6;
-    border-color: #2b74f6;
+    background-color: #f5b740;
+    border-color: #f5b740;
     padding: 10px 35px 10px 35px;
     color: #FFF;
     font-weight: 700;
@@ -330,18 +380,19 @@ p.lead {
 }
 
 .navbar-inverse {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 800;
     font-size: 2rem;
     letter-spacing: 1px;
-    background-color: #2b74f6;
-    border-color: #2b74f6;
+    background-color: #313337;
+    border-color: #313337;
     color: white;
+    border-radius: 0;
 }
 
-    .navbar-inverse .navbar-nav > li > a {
-        color: white;
-    }
+.navbar-inverse .navbar-nav > li > a {
+    color: white;
+}
 
 .search-bar {
     margin-top: 10px;
