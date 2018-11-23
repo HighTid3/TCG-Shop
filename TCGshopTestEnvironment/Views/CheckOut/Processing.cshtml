@@ -1,0 +1,31 @@
+﻿@model TCGshopTestEnvironment.ViewModels.ProductsShopCartViewModel
+@inject SignInManager<UserAccount> SignInManager
+@inject UserManager<UserAccount> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" style="margin-top:25px;">
+            <center><h2 class="text-center" style="padding-bottom:15px;">Checkout</h2></center>
+            <div id="0">
+                <div id="1">
+                    <div id="ShoppingCartCheckOutProcessing">
+                        <div class="sk-folding-cube">
+                            <div class="sk-cube1 sk-cube"></div>
+                            <div class="sk-cube2 sk-cube"></div>
+                            <div class="sk-cube4 sk-cube"></div>
+                            <div class="sk-cube3 sk-cube"></div>
+                        </div>
+                        <div>Waiting for your payment to Process</div>
+                        <div>This can take a couple of minutes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/CheckOutProcessing.js" defer></script>
