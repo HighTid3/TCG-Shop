@@ -387,7 +387,7 @@ p.lead {
     background-color: #313337;
     border-color: #313337;
     color: white;
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .navbar-inverse .navbar-nav > li > a {
