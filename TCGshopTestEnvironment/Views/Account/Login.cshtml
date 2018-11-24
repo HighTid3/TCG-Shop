@@ -4,11 +4,10 @@
     ViewData["Title"] = "Log In";
 }
 
-<div class="containerCenter">
-    <div class="row justify-content-center">
-
-        <div class="col-md-4">
-            <h2>@ViewData["Title"]</h2>
+<div class="containerCenter pb-4 mb-5" style="margin-top: 101px;">
+    <div class="row innerBox justify-content-center">
+        <div class="col col-md-12">
+            <h2 class="LoginTitle">@ViewData["Title"]</h2>
 
             <form method="post" asp-action="Login" asp-controller="Account" id="loginform">
                 <div asp-validation-summary="All"><label  id="errormessages"></label></div>
@@ -27,37 +26,23 @@
                     <input asp-for="RememberMe" />
                     <span asp-validation-for="RememberMe"></span>
                 </div>
+
                 <p><input type="submit" value="Login" class="btn btn-primary btnSignIn" /></p>
-                <div class="form-group">
-                    <p>
-                        <a asp-area="" asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
-                    </p>
-                </div>
+                @*<div class="text-center mb-5" style="padding-bottom:20px;">
+                    <input type="submit" value="Login" class="btn btn-primary btnSignIn" />
+                </div>*@
+                <p class="text-center">
+                    <a asp-area="" asp-controller="Account" asp-action="Register">Register</a><br />
+                    <a asp-area="" asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
+                </p>
+
             </form>
         </div>
-        <div class="col-md-8">
-            <div class="signUpBox">
-               <h1>Sign Up </h1>
 
-               <p>
-                   <img src="~/images/ok.png" />View your orders easily and manage personal data.
-               </p>
-               <p>
-                   <img src="~/images/ok.png" />You can easily keep track of the status of your orders.
-               </p>
-               <p>
-                   <img src="~/images/ok.png" />You can download invoices from your orders.
-               </p>
-               <p>
-                   <img src="~/images/ok.png" />You can download invoices from your orders.
-               </p>
-
-               <a asp-controller="account" asp-action="Register">
+               @*<a asp-controller="account" asp-action="Register">
                    <button class="btn btn-primary btnSignIn" type="submit">
                        Create an account
                    </button>
-               </a>
-            </div>
-        </div>
+               </a>*@
     </div>
 </div>
