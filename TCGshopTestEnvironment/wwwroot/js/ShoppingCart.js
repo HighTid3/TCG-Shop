@@ -20,13 +20,19 @@
         $('#my-ajax-table > tbody:last-child').append('<div class="container" id="'+"row".concat(e.ProductId)+'">' +
             '<div class="row lineCart"><div class="col-md-2 imageShoppingJs"> ' + image + '</div>' +
             '<div class="col-md-4 CartTitleColomn" style=""padding-left:210px;padding-right:10px;>' +
-            '<h1 class="ShoppingCartTitle">' + e.Name + '</h1> Amount: ' +
+            '<h2 class="ShoppingCartTitle">' + e.Name + '</h2> Amount: ' +
             '<button class="btn btn-default btn-minPlus" id="' + e.ProductId + '">-</button> ' +
-            '<input class="ShoppingQuant text-center" id="' + "input".concat(e.ProductId) + '" type="number" placeholder="' + e.Amount + '" value="' + e.Amount + '" min="1" oninput="this.value = Math.abs(this.value)" onchange="inputvalidatewithstock('+e.ProductId + ')">  ' +
+            '<input class="ShoppingQuant text-center" id="' + "input".concat(e.ProductId) + '" type="number" placeholder="' + e.Amount + '" value="' + e.Amount + '" min="1" oninput="this.value = Math.abs(this.value)" onchange="inputvalidatewithstock('+e.ProductId + ')">' +
             '<button class="btn btn-default btn-minPlus" id="' + e.ProductId + '">+</button></div>' +
-            '<div class="col-md-6 priceCart" style="font-size:2rem;" id="' + e.ProductId + '">Price: € ' + e.Price + ' p/u<div id = "RemoveItem"><br>' +
-            '<a href="#" style="font-size:1.5rem;">Remove</a>' +
-            '</div></div></div><hr style="width:750px;float:left;">');
+            '<div class="col-md-6 priceCart" style="font-size:2rem;" id="' + e.ProductId + '">Price: € ' + e.Price + ' p/u<div id = "RemoveItem"><h2>€</h2>' +
+            '<a href="#" style="font-size:1.5rem;"> <i class="fa fa-trash-o"></i> Remove</a>' +
+            '</div></div></div>');
+
+         $('#overzicht > tbody:last-child').append('<div class="container-fluid" style="background-color: #313337;" id="'+"row".concat(e.ProductId)+'">' +
+            '<div class="row lineCartInformation"><div class="col-md-7"><p class="ShoppingCartTitleInfo">' + e.Name + '</p></div>' +
+            '<div class="col-md-1">x' + e.Amount + '</div>' +
+            '<div class="col-md-4 priceCartInfo text-right" style="font-size:2rem;" id="' + e.ProductId + '">€ ' + e.Price + ' <div id = "RemoveItem">' +
+            '</div></div></div>');
     });
 
     $(function () {
