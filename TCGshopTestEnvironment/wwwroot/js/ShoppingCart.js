@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     shoppingCart.forEach(function (e) {
         var image = "<div class=\"shoppingCartImg\"><img src=\"" + storagePath + e.ImageUrl + ".png\" class=\"imageCell\" /></div>";
-s
+
         $('#my-ajax-table > tbody:last-child').append('<div class="container" id="'+"row".concat(e.ProductId)+'">' +
             '<div class="row lineCart"><div class="col-md-2 imageShoppingJs"> ' + image + '</div>' +
             '<div class="col-md-4 CartTitleColomn" style=""padding-left:210px;padding-right:10px;>' +
