@@ -19,6 +19,8 @@
              '<div class="col-md-1" id="' + "overzicht".concat(e.ProductId) + '">x' + e.Amount + '</div>' +
              '<div class="col-md-4 priceCartInfo text-right" style="font-size:2rem;" id="' + "totaleprice".concat(e.ProductId) + '">€ ' + totalprice + ' <div id = "RemoveItem">' +
             '</div></div></div>');
+
+            $('.totalpriceoverzicht > span:last-child').append(' €' + e.Price + '');
     });
 
     $(function () {
