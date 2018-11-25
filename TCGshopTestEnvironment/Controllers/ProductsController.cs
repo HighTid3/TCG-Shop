@@ -141,7 +141,7 @@ namespace TCGshopTestEnvironment.Controllers
             }
 
             //viewbag for the view with all the grades in it.
-            ViewBag.Grade = listingResult.Select(x => x.Grade).Distinct();
+            ViewBag.Grade = listingResult.OrderBy(x => int.Parse(x.Grade)).Select(x => x.Grade).Distinct();
 
             if (grades.Count > 0 && listingResult.Count(x => grades.Contains(x.Grade)) > 0)
             {
@@ -282,7 +282,7 @@ namespace TCGshopTestEnvironment.Controllers
                 }
 
                 //viewbag for the view with all the grades in it.
-                ViewBag.Grade = listingResult.Select(x => x.Grade).Distinct();
+                ViewBag.Grade = listingResult.OrderBy(x => int.Parse(x.Grade)).Select(x => x.Grade).Distinct();
 
                 if (grades.Count > 0 && listingResult.Count(x => grades.Contains(x.Grade)) > 0)
                 {
@@ -480,6 +480,13 @@ namespace TCGshopTestEnvironment.Controllers
         public IActionResult FileUpload()
         {
             return View();
+        }
+
+        public async Task<ActionResult> GetStockofCard(int productId)
+        {
+            var stock = _assets.GetByID(productId).Stock;
+
+            return Json(stock);
         }
     }
 }

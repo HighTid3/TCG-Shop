@@ -41,5 +41,39 @@ namespace TCGshopTestEnvironment.Services
                 };
 
         }
+
+        public int CreateOrder(Order order, List<ProductsShopCartViewModel> cartItems)
+        {
+            decimal orderTotal = 0;
+
+            // Iterate over the items in the cart, 
+            // adding the order details for each
+            foreach (var item in cartItems)
+            {
+                var orderDetail = new OrderDetail
+                {
+                    ProductId = item.ProductId,
+                    OrderId = order.OrderId,
+                    UnitPrice = item.Price,
+                    Quantity = item.Amount
+                };
+                // Set the order total of the shopping cart
+                orderTotal += (item.Amount * item.Price);
+
+                _context.OrderDetails.Add(orderDetail);
+            }
+            // Set the order's total to the orderTotal count
+            order.Total = orderTotal;
+
+            // Save the order
+            _context.SaveChanges();
+            // Empty the shopping cart
+            //TODO
+
+            // Return the OrderId as the confirmation number
+            return order.OrderId;
+
+        }
+
     }
 }

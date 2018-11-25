@@ -3,10 +3,12 @@
 @inject SignInManager<UserAccount> SignInManager
 @inject UserManager<UserAccount> UserManager
 
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     @foreach (var asset in ViewBag.OnePageOfProducts)
     {
-        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 450px; width: 270px;">
+        
+        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 405px; width: 270px;">
             <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
                 <div>
                     <h1 class="ProductTitleCat" title="@asset.Name">@asset.Name</h1>
@@ -31,8 +33,13 @@
                 </a>
                 <br>
                 @*@asset.Stock*@
-                <h4>€@asset.Price</h4>
 
+                <div class="">
+                <div class="col-md-6">
+
+                <h4 class="priceh4">€@asset.Price</h4>
+                </div>
+                <div class="col-md-6">
                 @*Button action handler, one for signed in users, one for guests*@
                 @if (SignInManager.IsSignedIn(User))
                 {
@@ -41,10 +48,11 @@
                 }
                 else
                 {
-                    <button id="AddCartBtn" onclick="AddToCart('@asset.Id', '@asset.Name', '@asset.ImageUrl', '@asset.Price', '@asset.Grade', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+                    <button id="AddCartBtn" onclick="AddToCart('@asset.Id', '@asset.Name', '@asset.ImageUrl', '@asset.Price', '@asset.Grade', '1')" class="btnSignIn AddCart" style="background-color:transparent;border-color:transparent; padding-left:50px; margin-bottom: 10px;"> <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                     @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
                 }
-
+                    </div>
+                    </div>s
             </div>
         </div>
     }

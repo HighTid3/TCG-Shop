@@ -2,9 +2,55 @@
 for details on configuring this project to bundle and minify static web assets. */
 /*  Clearfix */
 
+.filter {
+    margin-top: 12px;
+    border-radius: 10px;
+    padding-left: 10px;
+    background-color: #3a3c40;
+}
 
+    .filter h3 {
+        color: white;
+    }
+
+label {
+    color: white;
+}
+
+.FilterTitle {
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.ShoppingCartTitle {
+    font-size: 3rem;
+}
+.top-header {
+    background-color: #121315;
+}
+.col-md-6.priceCart {
+    padding-top: 45px;
+    font-size: 2.3rem !important;
+}
+.CartTitleColomn {
+    
+}
+.bg-back {
+    background-color: #54575f;
+}
+.imageShoppingJs {
+    padding-right: 15px !important;
+}
+.margint25 {
+    margin-top: 25px;
+}
+.marginb25 {
+    margin-bottom: 25px;
+}
 .price-filter {
-    color:white;
+    color: white;
 }
 /* Override imageCell for ShoppingCart images*/
 .shoppingCartImg img{
@@ -16,6 +62,16 @@ for details on configuring this project to bundle and minify static web assets. 
     margin-bottom:25px;
     font-weight: 400;
 }
+.btn-minPlus {
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: #f5b740 !important;
+    border-color: #f5b740;
+    border-radius: 100%;
+    padding: 1px 12px;
+    font-size: 2.5rem;
+    color: #FFF;
+}
 .ShoppingImage {
     padding-bottom: 10px;
     padding-right: 20px;
@@ -23,17 +79,30 @@ for details on configuring this project to bundle and minify static web assets. 
 .ShoppingPrice {
     font-weight: 400;
 }
-    .ShoppingQuant {
-        padding-left: 5px;
-        width: 39px;
-        text-align:center;
-        border-radius: 15px;
-    }
-    body {
-        margin: 0;
-        padding: 0;
-    }
-
+.ShoppingQuant {
+    padding-left: 5px;
+    width: 36px;
+    text-align: center;
+    border-radius: 10px;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.LoginTitle {
+    color: #e4e4e4;
+}
+.TopLogin {
+    font-size: 2rem;
+    font-weight: 800;
+}
+.innerBox {
+    background-color: #313337;
+}
+.TopLogin a {
+    color: #e4e4e4;
+}
 .logo-image {
     margin-left: 0px;
 }
@@ -46,7 +115,7 @@ img.imageCell {
 .ProductTitleCat {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #3c76ee;
+    color: #e4e4e4;
     overflow: hidden;
     width: -webkit-fill-available;
     white-space: nowrap;
@@ -64,17 +133,54 @@ img.imageCell {
 .detailProduct {
     margin: 35px;
 }
-
+.col-md-4 .text-danger.validation-summary-errors {
+    width: 220px;
+}
+span.text-danger.field-validation-error {
+    padding-left: 14px;
+}
+.outerShadow {
+    margin-left: 15px;
+    margin-top: 65px;
+    padding: 20px;
+    -webkit-box-shadow: 0px 0px 10px 3px rgba(166,166,166,0.8);
+    -moz-box-shadow: 0px 0px 10px 3px rgba(166,166,166,0.8);
+    box-shadow: 0px 0px 10px 3px rgba(166,166,166,0.8);
+}
+.outerShadow .completed {
+    padding-bottom: 25px;
+    text-transform: uppercase;
+    font-size: 2rem;
+    font-weight: 800;
+}
+button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, button.btn.btn-default.btnSignIn:active {
+    background-color: #f5b740;
+    color: white;
+}
+.priceh4 {
+    color: #e4e4e4;
+}
 .innerColomn {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     margin-bottom: 5px;
-    border: 1px solid #B0B0B0;
-    border-radius: 15px;
+    border: 1px solid #393a3e;
+    border-radius: 10px;
+    background-color: #393a3e;
     /*margin: 20px;
     height: 100%;
     width: 235px;*/
+}
+.svgIconHeader {
+    color: #e7e7e7;
+    font-size: 2.7rem;
+}
+.priceperpiece {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 10px;
+    text-align: right;
 }
 
 .GradeText {
@@ -142,8 +248,8 @@ ul.nav.navbar-nav li {
     }
 
 .callToAction {
-    background-color: #2b74f6;
-    border-color: #2b74f6;
+    background-color: #f5b740;
+    border-color: #f5b740;
     padding: 10px 35px 10px 35px;
     color: #FFF;
     font-weight: 700;
@@ -204,7 +310,7 @@ ul.nav.navbar-nav li {
 .btnLogin {
     background-color: #f5b740;
     border-color: #f5b740;
-    width: 82%;
+    width: 300px;
     padding: 10px;
     color: white;
     font-weight: 700;
@@ -274,18 +380,19 @@ p.lead {
 }
 
 .navbar-inverse {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 800;
     font-size: 2rem;
     letter-spacing: 1px;
-    background-color: #2b74f6;
-    border-color: #2b74f6;
+    background-color: #313337;
+    border-color: #313337;
     color: white;
+    border-radius: 0;
 }
 
-    .navbar-inverse .navbar-nav > li > a {
-        color: white;
-    }
+.navbar-inverse .navbar-nav > li > a {
+    color: white;
+}
 
 .search-bar {
     margin-top: 10px;
@@ -506,4 +613,11 @@ p.lead {
 
 .clicked {
     color: #f5b740;
+}
+
+/*removes the arrow in input boxes*/
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
 }

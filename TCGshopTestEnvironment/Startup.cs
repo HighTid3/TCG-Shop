@@ -20,13 +20,13 @@ namespace TCGshopTestEnvironment
     public class Startup
     {
         //S3
-
         public static string accessKey = Environment.GetEnvironmentVariable("accessKey");
         public static string secretKey = Environment.GetEnvironmentVariable("secretKey");
         public static string s3Server = Environment.GetEnvironmentVariable("s3Server");
+        public static string storagePath = "https://cdn.tcg.sale/tcg-upload/";
         //S3
 
-        public static string storagePath = "https://cdn.tcg.sale/tcg-upload/";
+        public bool ValidateEmail = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ValidateEmail"));
 
         public Startup(IConfiguration configuration)
         {
@@ -70,7 +70,8 @@ namespace TCGshopTestEnvironment
                 options.User.RequireUniqueEmail = true;
 
                 // Email Settings
-                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = ValidateEmail;
+                Console.WriteLine("RequireConfirmedEmail is " + ValidateEmail);
 
             });
 
@@ -80,17 +81,20 @@ namespace TCGshopTestEnvironment
             services.AddScoped<IShopping, ShoppingService>();
             services.AddScoped<IWishlist, WishlistService>();
 
-            var connection = @"User ID=postgres;Password=test;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
+
+            var connection = @"User ID=postgres;Password=;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
 
             
             // Heroku provides PostgreSQL connection URL via env variable
             var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            var dbSsl = Environment.GetEnvironmentVariable("DATABASE_SSL");
 
             var connStr = "";
 
             if (connUrl == null)
             {
                 connStr = connection;
+
             }
             else
             {
@@ -108,8 +112,16 @@ namespace TCGshopTestEnvironment
                 var pgHost = pgHostPort.Split(":")[0];
                 var pgPort = pgHostPort.Split(":")[1];
 
-                connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
+                connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
+
+                if (string.IsNullOrEmpty(dbSsl))
+                {
+                    connStr = connStr + "Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
+                }
+
             }
+
+
             
             services.AddDbContext<DBModel>(options => options.UseNpgsql(connStr));
 

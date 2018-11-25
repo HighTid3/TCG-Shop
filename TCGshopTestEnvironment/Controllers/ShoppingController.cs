@@ -52,13 +52,10 @@ namespace TCGshopTestEnvironment.Controllers
 
         //add items to the shopping cart
         [HttpPost]
-        public async Task<IActionResult> AddToShoppingcart(string userName, int productId, int Amount)
+        public async Task<IActionResult> AddToShoppingcart(int productId, int Amount)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (userName != user.UserName)
-            {
-                return Json(new { error = "userId did not match with the session" });
-            }
+
             var assetModel = _assets.ShoppingbasketByName(user.Id).ToList(); //gets the basket of the logged in user
 
             if (assetModel.Select(x => x.ProductsId).Contains(productId)) // the basket already contains the product, add the amount by 1
@@ -84,34 +81,41 @@ namespace TCGshopTestEnvironment.Controllers
 
         //decreases or removes items from shopping cart
         [HttpPost]
-        public ActionResult RemoveFromCart(int id, float price)
+        public async Task<IActionResult> RemoveFromCart(int id, float price)
         {
-            var cartItem = _context.Basket.FirstOrDefault(x => x.Id == id);
-            int itemCount = 0;
-
-            if (cartItem != null)
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
             {
-                if (cartItem.Amount > 1)
+                var cartItem = _context.Basket.FirstOrDefault(x => x.ProductsId == id && x.UserId == user.Id);
+                int itemCount = 0;
+
+                if (cartItem != null)
                 {
-                    cartItem.Amount--;
-                    itemCount = cartItem.Amount;
+                    if (cartItem.Amount > 1)
+                    {
+                        cartItem.Amount--;
+                        itemCount = cartItem.Amount;
+                    }
+                    else
+                    {
+                        _context.Basket.Remove(cartItem);
+                    }
+
+                    _context.SaveChanges(); // Save changes
                 }
-                else
+
+                var results = new ShoppingCartRemoveViewModel
                 {
-                    _context.Basket.Remove(cartItem);
-                }
-                
-                _context.SaveChanges(); // Save changes
+
+                    DeleteId = id,
+                    ItemCount = itemCount,
+                    CartTotal = Math.Round((itemCount * price), 2, MidpointRounding.AwayFromZero)
+
+                };
+                return Json(results);
             }
-            var results = new ShoppingCartRemoveViewModel
-            {
 
-                DeleteId = id,
-                ItemCount = itemCount,
-                CartTotal = Math.Round((itemCount * price),2, MidpointRounding.AwayFromZero)
-               
-            };
-            return Json(results);
+            return Json(new {success = true});
         }
 
         [HttpGet]
@@ -122,11 +126,35 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CheckOut(ProductsShopCartViewModel vm)
+        public async Task<IActionResult> CheckOut(List<ProductsShopCartViewModel> vm)
         {
+            List<ProductsShopCartViewModel> ShoppingCart = new List<ProductsShopCartViewModel>();
 
-            return View();
+            foreach (var product in vm)
+            {
+                var dbProduct = _context.products.Where(x => x.ProductId == product.ProductId).Select(x => x).SingleOrDefault();
+                
+                ShoppingCart.Add(new ProductsShopCartViewModel{
+                        ProductId = dbProduct.ProductId,
+                        Amount = product.Amount,
+                        Name = dbProduct.Name,
+                        ImageUrl = dbProduct.ImageUrl,
+                        Price = dbProduct.Price,
+                        Grade = dbProduct.Grade,
+                        TotalPrice = (dbProduct.Price * product.Amount)
+
+                    }
+                
+                );
+
+            }
+
+            _context.SaveChanges();
+            return Json(ShoppingCart);
         }
+
+
+
 
         [HttpPost]
         public async Task<ActionResult> AddLocalCartToDatabase(List<ProductsShopCartViewModel> vm)
@@ -162,52 +190,41 @@ namespace TCGshopTestEnvironment.Controllers
             _context.SaveChanges();
             return Json(new { success = true });
         }
+
+
+        public async Task<ActionResult> AddDbCarttoLocal()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var cartproducts = _assets.ShoppinCartItems(user.Id).ToList();
+
+            return Json(cartproducts);
+        }
+
+
+        public async Task<IActionResult> SetAmountinShoppingCart(int id, int amount)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var cartItem = _context.Basket.FirstOrDefault(x => x.ProductsId == id && x.UserId == user.Id);
+
+                if (cartItem != null)
+                {
+
+                    if (amount < 1)
+                    {
+                        _context.Basket.Remove(cartItem);
+                    }
+                    else
+                    {
+                        cartItem.Amount = amount;
+                    }
+
+                    _context.SaveChanges(); // Save changes
+                }
+            }
+
+            return Json(new { success = true });
+        }
     }
 }
-
-
-
-//public ActionResult Add(ProductsShopCartViewModel product)
-//{
-//    if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
-//    {
-//        List<ProductsShopCartViewModel> CartProducts = new List<ProductsShopCartViewModel>();
-
-//        CartProducts.Add(product);
-//        HttpContext.Session.SetObjectAsJson(SessionKeyName,CartProducts);
-//        ViewBag.cart = CartProducts.Count();
-
-//        HttpContext.Session.SetInt32(TotalCartProducts, 1);
-
-//    }
-
-//    else
-//    {
-//        List<ProductsShopCartViewModel> CartProducts = HttpContext.Session.GetObjectFromJson<List<ProductsShopCartViewModel>>(SessionKeyName);
-//        CartProducts.Add(product);
-//        HttpContext.Session.SetObjectAsJson(SessionKeyName, CartProducts);
-//        ViewBag.cart = CartProducts.Count();
-
-//        var count = HttpContext.Session.GetInt32(TotalCartProducts);
-
-//        HttpContext.Session.SetInt32(TotalCartProducts, Convert.ToInt32(HttpContext.Session.GetInt32(TotalCartProducts) + 1) );
-
-//    }
-
-//    return RedirectToAction("Index", "Home");
-//}
-
-//public static class SessionExtensions
-//{
-//    public static void SetObjectAsJson(this ISession session, string key, object value)
-//    {
-//        session.SetString(key, JsonConvert.SerializeObject(value));
-//    }
-
-//    public static T GetObjectFromJson<T>(this ISession session, string key)
-//    {
-//        var value = session.GetString(key);
-
-//        return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
-//    }
-//}
