@@ -10,17 +10,17 @@
             '<button class="btn btn-default btn-minPlus" id="' + e.ProductId + '">-</button> ' +
             '<input class="ShoppingQuant text-center" id="' + "input".concat(e.ProductId) + '" type="number" placeholder="' + e.Amount + '" value="' + e.Amount + '" min="1" oninput="this.value = Math.abs(this.value)" onchange="inputvalidatewithstock('+e.ProductId + ')">' +
             '<button class="btn btn-default btn-minPlus" id="' + e.ProductId + '">+</button></div>' +
-            '<div class="col-md-6 priceCart" style="font-size:2rem;" id="' + e.ProductId + '">Price: € ' + e.Price + ' p/u<div id = "RemoveItem"><h2 id="' + "totalprice".concat(e.ProductId) + '">€ ' + totalprice + '</h2>' +
+            '<div class="col-md-6 priceCart" style="font-size:2rem;" id="' + e.ProductId + '">Price: € ' + e.Price + ' p/u<div id = "RemoveItem"><h2 id="' + "totalprice".concat(e.ProductId) + '">€ ' + totalprice.toFixed(2) + '</h2>' +
             '<a href="#" style="font-size:1.5rem;"> <i class="fa fa-trash-o"></i> Remove</a>' +
             '</div></div></div>');
 
          $('#overzicht > tbody:last-child').append('<div class="container-fluid" style="background-color: #313337;" id="'+"overzichtrow".concat(e.ProductId)+'">' +
             '<div class="row lineCartInformation"><div class="col-md-7"><p class="ShoppingCartTitleInfo">' + e.Name + '</p></div>' +
              '<div class="col-md-1" id="' + "overzicht".concat(e.ProductId) + '">x' + e.Amount + '</div>' +
-             '<div class="col-md-4 priceCartInfo text-right" style="font-size:2rem;" id="' + "totaleprice".concat(e.ProductId) + '">€ ' + totalprice + ' <div id = "RemoveItem">' +
+             '<div class="col-md-4 priceCartInfo text-right" style="font-size:2rem;" id="' + "totaleprice".concat(e.ProductId) + '">€ ' + totalprice.toFixed(2) + ' <div id = "RemoveItem">' +
             '</div></div></div>');
 
-            $('.totalpriceoverzicht > span:last-child').append(' €' + e.Price + '');
+            //$('.totalpriceoverzicht > span:last-child').append(' €' + e.Price + '');
     });
 
     $(function () {
@@ -49,7 +49,9 @@
                     success: function (response) {
                         if (newVal > response) {
                             document.getElementById("input" + cardid).value = oldValue;
-                            document.getElementById("overzicht" + cardid).innerHTML = "x"+oldValue;
+                            document.getElementById("overzicht" + cardid).innerHTML = "x" + oldValue;
+                            document.getElementById(overzichttotalprice).text = "x" + oldValue;
+                            document.getElementById("overzichttotalprice").innerHTML = overzichtotalprice();
                         } else {
                             addcardtolocalstoragecart(cardid);
 
@@ -57,6 +59,7 @@
                             document.getElementById("overzicht" + cardid).innerHTML = "x" + newVal;
                             $('#totalprice' + cardid).text("€" + (price * newVal).toFixed(2));
                             $('#totaleprice' + cardid).text("€" + (price * newVal).toFixed(2));
+                            document.getElementById("overzichttotalprice").innerHTML = overzichtotalprice();
                             ShoppingcartBadge();
                         }
                     }
@@ -73,12 +76,14 @@
                     document.getElementById("overzicht" + cardid).innerHTML = "x" + newVal;
                     $('#totalprice' + cardid).text("€" + (price * newVal).toFixed(2));
                     $('#totaleprice' + cardid).text("€" + (price * newVal).toFixed(2));
+                    document.getElementById("overzichttotalprice").innerHTML = overzichtotalprice();
                     ShoppingcartBadge();
                 } else {
                     $('#row' + cardid).fadeOut('slow');
                     $('#overzichtrow' + cardid).fadeOut('slow');
                     removecardfromLocalstorage(cardid);
                     $.post("/Shopping/RemoveFromCart", { "id": cardid, "price": price });
+                    document.getElementById("overzichttotalprice").innerHTML = overzichtotalprice();
 
                     ShoppingcartBadge();
                     newVal = 0;
@@ -130,10 +135,23 @@
 
         $('#row' + cardId).fadeOut('slow');
         $('#overzichtrow' + cardId).fadeOut('slow');
+        document.getElementById("overzichttotalprice").innerHTML = overzichtotalprice();
         ShoppingcartBadge();
     });
+
+
+
+    document.getElementById("overzichttotalprice").innerHTML = overzichtotalprice();
 });
 
+function overzichtotalprice() {
+    var total = 0;
+    for (var i = 0, _len = shoppingCart.length; i < _len; i++) {
+        total += (parseFloat(shoppingCart[i]["Price"].replace(/,/g, ".")) * shoppingCart[i]["Amount"]);
+
+    }
+    return total.toFixed(2);
+}
 //check if manual input of amount for the item is valid with stock and not negative
 function inputvalidatewithstock(productid) {
     var inputvalue = document.getElementById("input" + productid).value;
@@ -150,6 +168,7 @@ function inputvalidatewithstock(productid) {
         $('#row' + productid).fadeOut('slow');
         $('#overzichtrow' + productid).fadeOut('slow');
         $.post("/Shopping/SetAmountinShoppingCart", { "id": productid, "amount": inputvalue });
+        document.getElementById("overzichttotalprice").innerHTML = overzichtotalprice();
 
         ShoppingcartBadge();
     } else {
@@ -173,6 +192,7 @@ function inputvalidatewithstock(productid) {
 
                     $('#totalprice' + productid).text("€" + (price * response).toFixed(2));
                     $('#totaleprice' + productid).text("€" + (price * response).toFixed(2));
+                    document.getElementById("overzichttotalprice").innerHTML = overzichtotalprice();
                     ShoppingcartBadge();
                 } else {
                     document.getElementById("input" + productid).value = inputvalue;
@@ -184,6 +204,7 @@ function inputvalidatewithstock(productid) {
                     document.getElementById("overzicht" + productid).innerHTML = "x" + inputvalue;
                     $('#totalprice' + productid).text("€" + (price * inputvalue).toFixed(2));
                     $('#totaleprice' + productid).text("€" + (price * inputvalue).toFixed(2));
+                    document.getElementById("overzichttotalprice").innerHTML = overzichtotalprice();
                     ShoppingcartBadge();
                 }
             }
