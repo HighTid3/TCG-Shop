@@ -191,7 +191,7 @@ function AddDbCarttoLocal() {
                         'ProductId': e["productId"].toString(),
                         'Name': e["name"],
                         'ImageUrl': e["imageUrl"],
-                        'Price': e["price"],
+                        'Price': e["price"].toString(),
                         'Grade': e["grade"],
                         'Amount': e["amount"]
                     }
