@@ -195,13 +195,13 @@ namespace TCGshopTestEnvironment.Controllers
                 var result = await _signInManager.PasswordSignInAsync(vm.UserName, vm.Password, vm.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return Json(new {  Status = "LoggedIn" });
                 }
-                ModelState.AddModelError("", "Username or password is incorrect.");
-                return View(vm);
+                //ModelState.AddModelError("", "Username or password is incorrect.");
+                return Json(new { Status = "Nok" , message = "Username or password is incorrect." });
             }
 
-            return View(vm);
+            return Json(new { Status = "Nok" });
         }
 
 

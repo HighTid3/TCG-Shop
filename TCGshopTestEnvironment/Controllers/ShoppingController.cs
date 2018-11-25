@@ -55,26 +55,30 @@ namespace TCGshopTestEnvironment.Controllers
         public async Task<IActionResult> AddToShoppingcart(int productId, int Amount)
         {
             var user = await _userManager.GetUserAsync(User);
-
-            var assetModel = _assets.ShoppingbasketByName(user.Id).ToList(); //gets the basket of the logged in user
-
-            if (assetModel.Select(x => x.ProductsId).Contains(productId)) // the basket already contains the product, add the amount by 1
+            if (user != null)
             {
+                var assetModel = _assets.ShoppingbasketByName(user.Id).ToList(); //gets the basket of the logged in user
 
-                ShoppingBasket updatedmodel = assetModel.FirstOrDefault(x => x.ProductsId == productId);
-                updatedmodel.Amount += Amount;
-                _context.Update(updatedmodel);
-                _context.SaveChanges();
+                if (assetModel.Select(x => x.ProductsId).Contains(productId)
+                ) // the basket already contains the product, add the amount by 1
+                {
+
+                    ShoppingBasket updatedmodel = assetModel.FirstOrDefault(x => x.ProductsId == productId);
+                    updatedmodel.Amount += Amount;
+                    _context.Update(updatedmodel);
+                    _context.SaveChanges();
+
+                }
+
+                else // else add the product to the basket
+                {
+                    var cart = new ShoppingBasket
+                        {UserId = user.Id, ProductsId = productId, Amount = Amount, DateCreated = DateTime.Now};
+                    _context.Basket.Add(cart);
+                    _context.SaveChanges();
+                }
 
             }
-
-            else // else add the product to the basket
-            {
-                var cart = new ShoppingBasket { UserId = user.Id, ProductsId = productId, Amount = Amount, DateCreated = DateTime.Now};
-                _context.Basket.Add(cart);
-                _context.SaveChanges();
-            }
-
 
             return Json(new { success = true });
         }

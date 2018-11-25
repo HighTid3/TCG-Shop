@@ -191,7 +191,7 @@ function AddDbCarttoLocal() {
                         'ProductId': e["productId"].toString(),
                         'Name': e["name"],
                         'ImageUrl': e["imageUrl"],
-                        'Price': e["price"],
+                        'Price': e["price"].toString(),
                         'Grade': e["grade"],
                         'Amount': e["amount"]
                     }
@@ -244,9 +244,14 @@ $("#loginform").submit(function (e) {
         type: "POST",
         url: urls,
         data: form.serialize(), // serializes the form's elements.
-        success: function () {
-            AddLocalCartToDatabase(),  //perform the add local cart items to database cart
-                AddDbCarttoLocal();
+        success: function (response) {
+            if (response["status"] == "LoggedIn") {
+                AddLocalCartToDatabase(),  //perform the add local cart items to database cart
+                    AddDbCarttoLocal();
+            }
+            else {
+                $("#errormessages").html("Username or Password is incorrect.")
+            }
             
         }
 
