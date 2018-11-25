@@ -39,7 +39,7 @@
                         }
                         else
                         {
-                            <span class="glyphicon glyphicon-star-empty" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>
+                            <span class="glyphicon glyphicon-star-empty" onclick="toggleWishlist(@asset.Id)" id="@asset.Id" style="color:white;"></span>
                         }
 
                    <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '@asset.Name', '@asset.Price', '@asset.Grade', '1');AddLocalCartToDatabase()" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;background-color: transparent; border-color: transparent;margin-bottom: 10px;" > <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
