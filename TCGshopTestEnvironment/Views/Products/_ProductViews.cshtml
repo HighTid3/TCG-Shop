@@ -35,13 +35,14 @@
                     
                         if (ViewBag.wishlist.Contains(asset.Id))
                         {
-                           <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '@asset.Name', '@asset.Price', '@asset.Grade', '1');AddLocalCartToDatabase()" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;background-color: transparent; border-color: transparent; margin-bottom: 10px;" > <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                             <span class="glyphicon glyphicon-star-empty clicked" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>
                         }
                         else
                         {
                             <span class="glyphicon glyphicon-star-empty" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>
                         }
+
+                   <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '@asset.Name', '@asset.Price', '@asset.Grade', '1');AddLocalCartToDatabase()" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;background-color: transparent; border-color: transparent;margin-bottom: 10px;" > <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                     @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
                 }
                 else
@@ -50,7 +51,7 @@
                     @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
                 }
                     </div>
-                    </div>s
+                    </div>
             </div>
         </div>
     }
