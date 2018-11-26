@@ -6,19 +6,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TCGshopTestEnvironment.Models;
+using TCGshopTestEnvironment.Services;
 
 namespace TCGshopTestEnvironment.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IProducts _assets;
         private DBModel _context;
-        public HomeController(DBModel context)
+        public HomeController(IProducts assets, DBModel context)
         {
+            _assets = assets;
             _context = context;
         }
         public IActionResult Index()
         {
-            return View();
+            var assetModel = _assets.GetMostViewed();
+
+            return View(assetModel);
         }
 
         public IActionResult About()

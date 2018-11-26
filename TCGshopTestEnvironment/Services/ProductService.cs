@@ -37,41 +37,32 @@ namespace TCGshopTestEnvironment.Services
 
         public IEnumerable<Productsandcategorie> GetbyCardType(string type)
         {
-                IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
-                                                                "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
-                                                                "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
-                                                                "GROUP BY products.\"ProductId\"").ToArray();
+            IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
+                                                            "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
+                                                            "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
+                                                            "GROUP BY products.\"ProductId\"").ToArray();
 
-                List<Productsandcategorie> ProductsAndCategories = new List<Productsandcategorie>();
+            List<Productsandcategorie> ProductsAndCategories = new List<Productsandcategorie>();
 
-                foreach (var ProductsCat in results)
+            foreach (var ProductsCat in results)
+            {
+
+                List<string> CatNames = new List<string>();
+
+                try
                 {
+                    CatNames = ProductsCat.CategoryName.Split(',').ToList();
+                }
+                catch (Exception e)
+                {
+                    CatNames = new List<string> { "" };
+                }
 
-                    List<string> CatNames = new List<string>();
+                if (type != "All")
+                {
+                    if (CatNames.Contains(type))
+                    {
 
-                    try
-                    {
-                        CatNames = ProductsCat.CategoryName.Split(',').ToList();
-                    }
-                    catch (Exception e)
-                    {
-                        CatNames = new List<string> { "" };
-                    }
-
-                    if (type != "All")
-                    {
-                        if (CatNames.Contains(type))
-                        {
-
-                            ProductsAndCategories.Add(new Productsandcategorie
-                            {
-                                prods = ProductsCat,
-                                Catnames = CatNames
-                            });
-                        }
-                    }
-                    else
-                    {
                         ProductsAndCategories.Add(new Productsandcategorie
                         {
                             prods = ProductsCat,
@@ -79,28 +70,37 @@ namespace TCGshopTestEnvironment.Services
                         });
                     }
                 }
-            
-            return ProductsAndCategories;
+                else
+                {
+                    ProductsAndCategories.Add(new Productsandcategorie
+                    {
+                        prods = ProductsCat,
+                        Catnames = CatNames
+                    });
+                }
             }
 
-            //(type != "Default")
-            //return from p in _context.products
-            //       join c in _context.ProductCategory on p.ProductId equals c.ProductId
-            //       let categorienames = (from d in _context.ProductCategory
-            //                             where p.ProductId == d.ProductId && d.CategoryName == type
-            //                             select d.CategoryName).ToList()
-            //       where c.CategoryName == type
-            //       select new Productsandcategorie { prods = p, Catnames = categorienames };
-            //}
-            //else
-            //{
-            //    return from p in _context.products
-            //            let categorienames = (from d in _context.ProductCategory
-            //                                 where p.ProductId == d.ProductId
-            //                                 select d.CategoryName).ToList()
-            //           select new Productsandcategorie { prods = p, Catnames = categorienames };
-            //}
-        
+            return ProductsAndCategories;
+        }
+
+        //(type != "Default")
+        //return from p in _context.products
+        //       join c in _context.ProductCategory on p.ProductId equals c.ProductId
+        //       let categorienames = (from d in _context.ProductCategory
+        //                             where p.ProductId == d.ProductId && d.CategoryName == type
+        //                             select d.CategoryName).ToList()
+        //       where c.CategoryName == type
+        //       select new Productsandcategorie { prods = p, Catnames = categorienames };
+        //}
+        //else
+        //{
+        //    return from p in _context.products
+        //            let categorienames = (from d in _context.ProductCategory
+        //                                 where p.ProductId == d.ProductId
+        //                                 select d.CategoryName).ToList()
+        //           select new Productsandcategorie { prods = p, Catnames = categorienames };
+        //}
+
 
         public IEnumerable<Productsandcategorie> GetByNameSearch(string name)
         {
@@ -131,13 +131,32 @@ namespace TCGshopTestEnvironment.Services
             }
             return ProductsAndCategories;
 
-                //      return from p in _context.products
-                //       where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
-                //             let categorienames = (from d in _context.ProductCategory
-                //                                  where p.ProductId == d.ProductId
-                //                                  select d.CategoryName).ToList()
+            //      return from p in _context.products
+            //       where p.Name.ToLower() == name || p.Name.ToLower().Contains(name)
+            //             let categorienames = (from d in _context.ProductCategory
+            //                                  where p.ProductId == d.ProductId
+            //                                  select d.CategoryName).ToList()
 
-                //    select new Productsandcategorie { prods = p, Catnames = categorienames };
+            //    select new Productsandcategorie { prods = p, Catnames = categorienames };
         }
+
+        public IEnumerable<PopularViewModel> GetMostViewed()
+        {
+            var result = (from p in _context.products
+                          where p.ViewsDetails > 10
+                          orderby p.ViewsDetails descending
+                          select new PopularViewModel
+                          {
+                              ProductId = p.ProductId,
+                              Name = p.Name,
+                              Price = p.Price,
+                              DateCreated = p.DateCreated,
+                              DateUpdated = p.DateUpdated,
+                              ViewsListed = p.ViewsListed,
+                              ViewsDetails = p.ViewsDetails,
+                              ImageUrl = p.ImageUrl
+                          }).ToList();
+            return result;
+        } 
     }
 }

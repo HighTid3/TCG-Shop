@@ -11,24 +11,24 @@
             <div class="row detailProduct">
                 <div class="col-md-6 text-center">
                     <tr class="assetRow">
-                        <td class=""><img src="@(Startup.storagePath + Model.ImageUrl)" class="" style="height: 300px; width: 240px;" /></td>
+                        <td class=""><img src="@(Startup.storagePath + Model.ImageUrl + ".png")" class="" style="height: 300px; width: 240px;" /></td>
                 </div>
 
                 <div class="col-md-6">
-                    <h1 class="display-1">@Model.Name</h1>
+                    <h1 class="display-1" style="color:#e4e4e4;">@Model.Name</h1>
                     <label class="GradeText" style="font-size: 1.5rem;">[@Model.Grade]</label>
                     <p style="margin-top:5px;">
-                        <strong>Description</strong> <br />
-                        @Model.Description
+                        <strong style="color:#e4e4e4;">Description</strong> <br />
+                         <span style="color:#e4e4e4;"> @Model.Description</span>
                     </p>
                     <p>
-                        <strong>Stock</strong> <br />
+                        <strong style="color:#e4e4e4;">Stock</strong> <br />
                         <label value="@Model.Stock" id="productStock">@Model.Stock</label>
                     </p>
 
                     <p>
 
-                        <h3> €@Model.Price</h3>
+                        <h3 style="color:#e4e4e4;"> €@Model.Price</h3>
                     </p>
 
                 </div>
