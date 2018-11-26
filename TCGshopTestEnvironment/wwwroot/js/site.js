@@ -98,33 +98,47 @@ function ModalBox(imageUrl) {
 
 //add product to local shoppingcart
 function AddToCart(id, productname, imageUrl, price, grade, count) {
+
     var product = { 'ProductId': id, 'Name': productname, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Amount': count }
 
     console.log($.inArray(product, shoppingCart));
-
-    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === product.Name));
-
-    ShoppingcartBadge()
-
-    a = JSON.stringify(shoppingCart[shoppingCartindex]) 
-    b = JSON.stringify(shoppingCart)
-    c = b.indexOf(a)
-
-    if (c != -1) {
-        shoppingCart[shoppingCartindex].Amount = (parseInt(shoppingCart[shoppingCartindex].Amount) + parseInt(count));
-        ShoppingcartBadge();
-        localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+    
+    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === product.Name)); //check index of the added product
+    if (shoppingCartindex != -1) { // if the shoppingcart already contains the to be added product, get the current stock of the product
+        $.ajax
+            ({
+                type: 'POST',
+                url: '/Products/GetStockofCard',
+                data:
+                {
+                    productId: id
+                },
+                success: function (response) {
+                    if (shoppingCart[shoppingCartindex]["Amount"] !== response) { // check if the total amount in the shoppingcart is already the maximum we have in stock, if not execute code
+                        shoppingCart[shoppingCartindex].Amount = (parseInt(shoppingCart[shoppingCartindex].Amount) + parseInt(count));
+                        ShoppingcartBadge();
+                        localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+                        ShoppingcartBadge()
+                        ModalBox(imageUrl);
+                    }
+                    else {
+                        alert("You already have the maximum amount in your shopping basket");
+                    }
+                }
+            });
     }
     else {
         shoppingCart.push(product);
         console.table(shoppingCart);
         ShoppingcartBadge();
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+        ShoppingcartBadge()
+        ModalBox(imageUrl);
     }
+};
+    //$.post("/Products/GetStockofCard", { "productId": id },
+    //    function (data) { if (shoppingCart[shoppingCartindex]["Amount"] === data) { console.log("error") } });
 
-    ModalBox(imageUrl);
-
-}
 
 //method for setting amount in detailmodel
 $('.qty').click(function () {
@@ -159,25 +173,60 @@ $('.qty').click(function () {
 
 //post method for adding products to database shoppingbasket
 function postToCart(productId, userName, imageUrl, productname, price, grade, amount) {
-
+    shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === productname)); //check index of the added product
+    if (shoppingCartindex != -1) { // if the shoppingcart already contains the to be added product, get the current stock of the product
         $.ajax
-        ({
-            type: 'POST',
-            url: '/Shopping/AddToShoppingcart',
-            data:
-            {
-                productId: productId,
-                Amount: amount
-            },
+            ({
+                type: 'POST',
+                url: '/Products/GetStockofCard',
+                data:
+                {
+                    productId: productId
+                },
+                success: function (response) {// check if the total amount in the shoppingcart is already the maximum we have in stock, if not execute code
+                    if (shoppingCart[shoppingCartindex]["Amount"] !== response) {
+                        $.ajax
+                            ({
+                                type: 'POST',
+                                url: '/Shopping/AddToShoppingcart',
+                                data:
+                                {
+                                    productId: productId,
+                                    Amount: amount
+                                },
+                                success: function (response) {
+                                    AddToCart(productId, productname, imageUrl, price, grade, amount);
+                                    ModalBox(imageUrl);
+
+                                }
+                            });
+                        return false;
+                    }
+                    else {
+                        alert("You already have the maximum amount in your shopping basket");
+                    }
+                }
+            })
+    }
+    else {
+        $.ajax
+            ({
+                type: 'POST',
+                url: '/Shopping/AddToShoppingcart',
+                data:
+                {
+                    productId: productId,
+                    Amount: amount
+                },
                 success: function (response) {
                     AddToCart(productId, productname, imageUrl, price, grade, amount);
-                ModalBox(imageUrl);
+                    ModalBox(imageUrl);
 
-            }
-        });
-    return false;
+                }
+            });
+        return false;
     }
-
+}
 function AddDbCarttoLocal() {
     $.ajax
         ({
