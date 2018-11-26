@@ -8,9 +8,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <h1 class="text-left" style="padding-left: 60px; font-size:3.5rem;">Favorites list </h1>
-            <hr />
-        </div>
+            <h1 class="text-left" style="padding-left: 60px; font-size:3.5rem;color: #e7e7e7;">Favorites list </h1>
+          </div>
     </div>
 </div>
 
@@ -18,8 +17,8 @@
 {
     <div class="container">
      <div class="row">
-         <div class="col-md-12 col-md-offset-2" style="background-color:transparent; margin-top:10px;">
-    <div id="productsTable">
+         <div class="col-md-12 col-md-offset-2" style="smargin-top:10px;">
+    <div id="productsTable" style="background-color:#313336;width: 700px;padding-top:50px;padding-bottom:40px;">
         <table class="table table-condensed" id="productsIndexTable">
             <thead>
                 
@@ -32,7 +31,7 @@
                         <div class="col-md-2 text-center">
                             <img src="@(Startup.storagePath + asset.ImageUrl+ ".png")" class="" width="100" />
                         </div>
-                        <div class="col-md-2"> <h1>@asset.Name</h1> <small style="text-transform:uppercase;font-weight: 500;"> Grade: @asset.Grade</small></div>
+                        <div class="col-md-2" style="color:#efefef;"> <h1>@asset.Name</h1> <small style="text-transform:uppercase;font-weight: 500;"> Grade: @asset.Grade</small></div>
                         <div class="col-md-2">
 
                         </div>
@@ -41,7 +40,7 @@
                             @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
 
                             <div class="pt-5 mt-5" style="padding-top:50px;">
-                                <a href="#" class="Removefromwishlist"
+                                <a href="#" class="Removefromwishlist" style="color:#efefef;"
                                    data-id='@asset.WishlistId'> <i class="fa fa-trash-o"></i> Remove
                                 </a>
                             </div>
