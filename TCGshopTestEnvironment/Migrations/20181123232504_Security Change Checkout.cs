@@ -3,22 +3,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TCGshopTestEnvironment.Migrations
 {
-    public partial class shoppinbasketdatetime : Migration
+    public partial class SecurityChangeCheckout : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateCreated",
-                table: "Basket",
+            migrationBuilder.AddColumn<Guid>(
+                name: "Guid",
+                table: "Orders",
                 nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "DateCreated",
-                table: "Basket");
+                name: "Guid",
+                table: "Orders");
         }
     }
 }

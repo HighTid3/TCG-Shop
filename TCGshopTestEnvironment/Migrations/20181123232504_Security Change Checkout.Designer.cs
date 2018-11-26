@@ -10,8 +10,8 @@ using TCGshopTestEnvironment.Models;
 namespace TCGshopTestEnvironment.Migrations
 {
     [DbContext(typeof(DBModel))]
-    [Migration("20181118144100_Checkout")]
-    partial class Checkout
+    [Migration("20181123232504_Security Change Checkout")]
+    partial class SecurityChangeCheckout
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -186,11 +186,17 @@ namespace TCGshopTestEnvironment.Migrations
 
                     b.Property<string>("FirstName");
 
+                    b.Property<Guid>("Guid");
+
                     b.Property<string>("LastName");
 
                     b.Property<DateTime>("OrderDate");
 
                     b.Property<bool>("Paid");
+
+                    b.Property<string>("PaymentId");
+
+                    b.Property<string>("PaymentStatus");
 
                     b.Property<string>("Phone");
 
@@ -369,14 +375,22 @@ namespace TCGshopTestEnvironment.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.Whishlist", b =>
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Wishlist", b =>
                 {
-                    b.Property<int>("Whishlist_ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.HasKey("Whishlist_ID");
+                    b.Property<int>("ProductId");
 
-                    b.ToTable("whishlists");
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("wishlists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -462,6 +476,18 @@ namespace TCGshopTestEnvironment.Migrations
                     b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Wishlist", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.Products", "Product")
+                        .WithMany("User")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

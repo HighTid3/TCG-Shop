@@ -10,8 +10,8 @@ using TCGshopTestEnvironment.Models;
 namespace TCGshopTestEnvironment.Migrations
 {
     [DbContext(typeof(DBModel))]
-    [Migration("20181005141815_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20181123230408_Fixing Migrations")]
+    partial class FixingMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -153,34 +153,82 @@ namespace TCGshopTestEnvironment.Migrations
                     b.ToTable("ProductCategory");
                 });
 
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.Orders", b =>
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.JoinTables.ShoppingBasket", b =>
                 {
-                    b.Property<int>("Order_ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Payment_Status");
+                    b.Property<int>("Amount");
 
-                    b.Property<DateTime>("Purchage_Date");
+                    b.Property<DateTime>("DateCreated");
 
-                    b.Property<DateTime>("Shipped_Date");
+                    b.Property<int>("ProductsId");
 
-                    b.Property<string>("Shipping_Status");
+                    b.Property<string>("UserId");
 
-                    b.HasKey("Order_ID");
+                    b.HasKey("Id");
 
-                    b.ToTable("orders");
+                    b.ToTable("Basket");
                 });
 
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.Pictures", b =>
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Order", b =>
                 {
-                    b.Property<int>("Picture_ID")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Picture");
+                    b.Property<string>("Address");
 
-                    b.HasKey("Picture_ID");
+                    b.Property<string>("City");
 
-                    b.ToTable("pictures");
+                    b.Property<string>("Country");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<DateTime>("OrderDate");
+
+                    b.Property<bool>("Paid");
+
+                    b.Property<string>("PaymentId");
+
+                    b.Property<string>("PaymentStatus");
+
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("PostalCode");
+
+                    b.Property<string>("State");
+
+                    b.Property<decimal>("Total");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderDetailId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("OrderId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<decimal>("UnitPrice");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Products", b =>
@@ -202,7 +250,7 @@ namespace TCGshopTestEnvironment.Migrations
 
                     b.Property<string>("OwnerId");
 
-                    b.Property<float>("Price");
+                    b.Property<decimal>("Price");
 
                     b.Property<int>("Stock");
 
@@ -215,6 +263,42 @@ namespace TCGshopTestEnvironment.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("products");
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.ProductsCat", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CategoryName");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateUpdated");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<string>("ImageUrl");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("OwnerId");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<int>("Stock");
+
+                    b.Property<int>("ViewsDetails");
+
+                    b.Property<int>("ViewsListed");
+
+                    b.HasKey("ProductId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("ProductsCat");
                 });
 
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Statistics", b =>
@@ -289,14 +373,22 @@ namespace TCGshopTestEnvironment.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.Whishlist", b =>
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Wishlist", b =>
                 {
-                    b.Property<int>("Whishlist_ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.HasKey("Whishlist_ID");
+                    b.Property<int>("ProductId");
 
-                    b.ToTable("whishlists");
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("wishlists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -357,11 +449,43 @@ namespace TCGshopTestEnvironment.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.OrderDetail", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TCGshopTestEnvironment.Models.Products", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Products", b =>
                 {
                     b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.ProductsCat", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Wishlist", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.Products", "Product")
+                        .WithMany("User")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }
