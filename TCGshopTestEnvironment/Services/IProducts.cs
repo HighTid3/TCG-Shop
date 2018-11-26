@@ -17,5 +17,7 @@ namespace TCGshopTestEnvironment.Services
 
         IEnumerable<Productsandcategorie> GetByNameSearch(string name);
 
+        IEnumerable<PopularViewModel> GetMostViewed();
+
     }
 }
