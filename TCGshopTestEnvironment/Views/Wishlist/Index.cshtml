@@ -26,8 +26,8 @@
             <tbody>
                 @foreach (var asset in @Model)
                 {
-                    <div class="container">
-                    <div class="row assetRow" id="row-@asset.WishlistId">
+                    <div class="container" id="row-@asset.WishlistId">
+                    <div class="row assetRow" >
                         <div class="col-md-2 text-center">
                             <img src="@(Startup.storagePath + asset.ImageUrl+ ".png")" class="" width="100" />
                         </div>
