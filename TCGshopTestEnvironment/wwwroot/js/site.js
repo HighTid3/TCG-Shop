@@ -135,7 +135,7 @@ function AddToCart(id, productname, imageUrl, price, grade, count) {
         ShoppingcartBadge()
         ModalBox(imageUrl);
     }
-};
+}
     //$.post("/Products/GetStockofCard", { "productId": id },
     //    function (data) { if (shoppingCart[shoppingCartindex]["Amount"] === data) { console.log("error") } });
 
@@ -283,7 +283,7 @@ function AddDbCarttoLocal() {
 
         return false;
     }
-    /*,500)*/;
+    /*,500)*/
 
 $("#loginform").submit(function (e) {
     var form = $(this);
