@@ -184,11 +184,17 @@ namespace TCGshopTestEnvironment.Migrations
 
                     b.Property<string>("FirstName");
 
+                    b.Property<Guid>("Guid");
+
                     b.Property<string>("LastName");
 
                     b.Property<DateTime>("OrderDate");
 
                     b.Property<bool>("Paid");
+
+                    b.Property<string>("PaymentId");
+
+                    b.Property<string>("PaymentStatus");
 
                     b.Property<string>("Phone");
 
@@ -197,8 +203,6 @@ namespace TCGshopTestEnvironment.Migrations
                     b.Property<string>("State");
 
                     b.Property<decimal>("Total");
-
-                    b.Property<string>("paymentId");
 
                     b.HasKey("OrderId");
 
@@ -463,6 +467,25 @@ namespace TCGshopTestEnvironment.Migrations
                     b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.ProductsCat", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("TCGshopTestEnvironment.Models.Wishlist", b =>
+                {
+                    b.HasOne("TCGshopTestEnvironment.Models.Products", "Product")
+                        .WithMany("User")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

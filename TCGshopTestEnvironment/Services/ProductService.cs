@@ -155,7 +155,7 @@ namespace TCGshopTestEnvironment.Services
                               ViewsListed = p.ViewsListed,
                               ViewsDetails = p.ViewsDetails,
                               ImageUrl = p.ImageUrl
-                          }).ToList();
+                          }).Take(5).ToList();
             return result;
         } 
     }

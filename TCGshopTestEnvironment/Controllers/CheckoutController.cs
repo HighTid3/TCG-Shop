@@ -75,6 +75,7 @@ namespace TCGshopTestEnvironment.Controllers
                 //Creating Order
                 //order.Email = user.Email; //Get From User Account
                 order.Email = values[0].Email; //Get From Form
+                order.Guid = Guid.NewGuid();
                 order.OrderDate = DateTime.Now;
                 order.FirstName = values[0].FirstName;
                 order.LastName = values[0].FirstName;
@@ -125,22 +126,22 @@ namespace TCGshopTestEnvironment.Controllers
                 {
                     Amount = new Amount(Currency.EUR, Total.ToString("F", CultureInfo.InvariantCulture)),
                     Description = "Payment for your mock purchase from TCG.Sale",
-                    RedirectUrl = "http://TCG.sale" + Url.Action("Processing", "Checkout")
+                    RedirectUrl = "http://TCG.sale" + Url.Action("Processing", "Checkout") + "?guid=" + order.Guid,
+                    WebhookUrl = "http://TCG.sale" + Url.Action("Webhook", "Checkout")
                 };
 
                 PaymentResponse paymentResponse = await paymentClient.CreatePaymentAsync(paymentRequest);
                 Console.WriteLine(paymentResponse.Links.Checkout);
 
                 //Updating PaymentId
-                order.paymentId = paymentResponse.Id;
+                order.PaymentId = paymentResponse.Id;
+                order.PaymentStatus = "created";
 
                 //Writing Order to DB
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
 
                 return Json(paymentResponse.Links.Checkout.Href);
-                //return Redirect(paymentResponse.Links.Checkout.Href);
-                //return Ok();
 
             }
             catch (Exception e)
@@ -152,14 +153,43 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public ActionResult Processing()
+        public ActionResult Processing(Guid guid)
         {
-            return new ContentResult
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult ProcessingStatus(Guid guid)
+        {
+            //Search for the Order Posted by the Webhook
+            var dbOrder = _context.Orders.Where(x => x.Guid == guid).Select(x => x).SingleOrDefault();
+            try
             {
-                ContentType = "text/html",
-                StatusCode = (int)HttpStatusCode.OK,
-                Content = "<h1>Payment Processing<h1>"
-            };
+                return Json(new {status = dbOrder.PaymentStatus});
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500);
+            }
+            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Webhook(string id)
+        {
+            //Search for the Order Posted by the Webhook
+            var dbOrder = _context.Orders.Where(x => x.PaymentId == id).Select(x => x).SingleOrDefault();
+
+            //Get the current Payment Status
+            PaymentResponse result = await paymentClient.GetPaymentAsync(id);
+
+            //Update dbOrder
+            dbOrder.PaymentStatus = result.Status.ToString();
+            await _context.SaveChangesAsync();
+
+            return Ok();
+
         }
 
 
@@ -168,41 +198,7 @@ namespace TCGshopTestEnvironment.Controllers
 
 
 
-        // POST: /Checkout/AddressAndPayment
-        //[HttpPost]
-        //public ActionResult AddressAndPayment(FormCollection values)
-        //{
-        //    var order = new Order();
 
-        //    try
-        //    {
-        //        if (string.Equals(values["PromoCode"], PromoCode,
-        //                StringComparison.OrdinalIgnoreCase) == false)
-        //        {
-        //            return View(order);
-        //        }
-        //        else
-        //        {
-        //            order.Username = User.Identity.Name;
-        //            order.OrderDate = DateTime.Now;
-
-        //            //Save Order
-        //            storeDB.Orders.Add(order);
-        //            storeDB.SaveChanges();
-        //            //Process the order
-        //            var cart = ShoppingCart.GetCart(this.HttpContext);
-        //            cart.CreateOrder(order);
-
-        //            return RedirectToAction("Complete",
-        //                new { id = order.OrderId });
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        //Invalid - redisplay with errors
-        //        return View(order);
-        //    }
-        //}
 
 
     }
