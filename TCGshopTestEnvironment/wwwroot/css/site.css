@@ -657,6 +657,9 @@ p.lead {
 .clicked {
     color: #f5b740;
 }
+.notclicked{
+    color: white;
+}
 
 /*removes the arrow in input boxes*/
 input[type=number]::-webkit-inner-spin-button, 

@@ -298,9 +298,11 @@ function toggleWishlist(classId) {
     if (document.getElementById(classId).classList.contains("clicked")) {
         $.post("/Wishlist/RemoveFromWishlistbyproduct", { "productId": classId },
             function () { })
+        element.classList.add("notclicked")
     }
     else {
         postToWishlist(classId);
+        element.classList.remove("notclicked");
     }
     element.classList.toggle("clicked");
 
