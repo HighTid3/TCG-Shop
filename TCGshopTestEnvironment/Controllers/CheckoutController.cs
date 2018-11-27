@@ -186,6 +186,8 @@ namespace TCGshopTestEnvironment.Controllers
 
             //Update dbOrder
             dbOrder.PaymentStatus = result.Status.ToString();
+            _context.Update(dbOrder);
+
             await _context.SaveChangesAsync();
 
             return Ok();
