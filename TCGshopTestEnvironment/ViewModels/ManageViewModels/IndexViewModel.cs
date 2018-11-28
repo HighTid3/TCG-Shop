@@ -21,5 +21,16 @@ namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
         public string PhoneNumber { get; set; }
 
         public string StatusMessage { get; set; }
+
+        [Required, MaxLength(256), Display(Name = "First name")]
+        public string FirstName { get; set; }
+        [Required, MaxLength(256), Display(Name = "Last name")]
+        public string LastName { get; set; }
+
+        public string Country { get; set; }
+
+        public string Address { get; set; }
+        [DataType(DataType.PostalCode)]
+        public string ZipCode { get; set; }
     }
 }
