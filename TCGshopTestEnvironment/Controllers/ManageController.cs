@@ -194,18 +194,18 @@ namespace TCGshopTestEnvironment.Controllers
             return RedirectToAction(nameof(ChangePassword));
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Orders()
-        //{
-        //    var user = await _userManager.GetUserAsync(User);
-        //    if (user == null)
-        //    {
-        //        throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-        //    }
+        [HttpGet]
+        public async Task<IActionResult> Orders()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
 
-
-        //    return View(model);
-        //}
+            var model = new OrderOverviewViewModel { StatusMessage = StatusMessage};
+            return View(model);
+        }
 
         #region Helpers
 

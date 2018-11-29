@@ -15,7 +15,7 @@ namespace TCGshopTestEnvironment.Views.Manage
 
         public static string ChangePassword => "ChangePassword";
 
-        public static string ExternalLogins => "ExternalLogins";
+        public static string Orders => "Orders";
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
@@ -23,7 +23,7 @@ namespace TCGshopTestEnvironment.Views.Manage
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
 
-        public static string ExternalLoginsNavClass(ViewContext viewContext) => PageNavClass(viewContext, ExternalLogins);
+        public static string ExternalLoginsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Orders);
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
 

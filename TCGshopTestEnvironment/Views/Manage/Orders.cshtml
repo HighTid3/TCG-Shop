@@ -1,0 +1,8 @@
+﻿@model TCGshopTestEnvironment.ViewModels.ManageViewModels.OrderOverviewViewModel
+@{
+    ViewData["Title"] = "Orders";
+    ViewData.AddActivePage(ManageNavPages.Orders);
+}
+
+<h4>@ViewData["Title"]</h4>
+@Html.Partial("_StatusMessage", Model.StatusMessage)
