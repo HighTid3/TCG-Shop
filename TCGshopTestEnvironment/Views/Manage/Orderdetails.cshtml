@@ -1,0 +1,99 @@
+﻿@model TCGshopTestEnvironment.ViewModels.ManageViewModels.OrderDetailsViewModel
+@{
+    ViewData["Title"] = "Order detail";
+    ViewData.AddActivePage(ManageNavPages.Orderdetails);
+}
+
+<h4>@ViewData["Title"]</h4>
+
+
+
+
+    <div class="card">
+        <div class="card-header">
+            Invoice
+            <strong>@Model.Ordernr</strong>
+            <span class="float-right"> <strong>Status:</strong> @Model.Orderstatus</span>
+
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <h6 class="mb-3">From:</h6>
+                    <div>
+                        <strong>TCG Shop</strong>
+                    </div>
+                    <div>PikachuLane 8</div>
+                    <div>1-99 Level, The Netherlands</div>
+                    <div>Email: Jurre@TCG.Shop</div>
+                    <div>Phone: +31 6 11 22 33 44</div>
+                </div>
+
+                <div class="col-sm-6">
+                    <h6 class="mb-3">To:</h6>
+                    <div>
+                        <strong>@Model.FirstName @Model.LastName</strong>
+                    </div>
+                    <div>@Model.Address</div>
+                    <div>@Model.PostalCode, @Model.Country</div>
+                    <div>Email: @Model.Email</div>
+                </div>
+            </div>
+
+            <div class="table-responsive-sm">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+
+                        <th>Product nr.</th>
+                        <th>Product name</th>
+                        <th>Grade</th>
+                        <th>Amount</th>
+                        <th>Unit Price</th>
+                        <th>Total Price</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var order in Model.Orderdetails)
+                    {
+                        <a asp-action="">
+                            <tr class="assetRow">
+                                <td class="">@order.ProductId</td>
+                                <td class="">@order.ProductName</td>
+                                <td class="">@order.Grade</td>
+                                <td class="">@order.Quantity</td>
+                                <td class="">@order.UnitPrice</td>
+                                <td class="">@order.TotalPrice</td>
+
+                            </tr>
+                        </a>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-5">
+
+                </div>
+
+                <div class="col-lg-4 col-sm-5 ml-auto">
+                    <table class="table table-clear">
+                        <tbody>
+                            <tr>
+                                <td class="left">
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="right">
+                                    <strong>€@Model.Total</strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
