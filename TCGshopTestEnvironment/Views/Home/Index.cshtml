@@ -21,11 +21,11 @@
                         <div class="row">
                             <div class="col-md-6 col-xl-6">
                                 <div class="text-center">
-                                    <center><img class="img-fluid text-center" src="~/images/THC.png" /></center>
+                                    <center><img class="img-fluid text-center" src="~/images/THC.png" style="height: 250px; width: 290px;"/></center>
                                 </div>
                             </div>
                             <div class=col-md-6 col-xl-6>
-                                <h1>Legendary Hero Collection</h1>
+                                <h3>Legendary Hero Collection</h3>
                                 <p class="lead">
                                     Get ready to dispense some Dueling Justice this season when the Yu-Gi-Oh! TCG presents the Legendary Hero Decks, featuring 3 unique archetypes including: 
                                     "Destiny HERO's", "Aesir" and "The Phantom Knights". Get them now!
@@ -56,11 +56,11 @@
                             <div class="row">
                                 <div class="col-md-6 col-xl-6">
                                     <div class="text-center">
-                                        <center><img class="img-fluid text-center" src="~/images/THC.png" /></center>
+                                        <center><img class="img-fluid text-center" src="~/images/THC.png" style="height: 250px; width: 290px;"/></center>
                                     </div>
                                 </div>
                                 <div class=col-md-6 col-xl-6>
-                                    <h1>Legendary Hero Collection</h1>
+                                    <h3>Legendary Hero Collection</h3>
                                     <p class="lead">
                                         Get ready to dispense some Dueling Justice this season when the Yu-Gi-Oh! TCG presents the Legendary Hero Decks, featuring 3 unique archetypes including:
                                         "Destiny HERO's", "Aesir" and "The Phantom Knights". Get them now!
@@ -92,12 +92,12 @@
                             <div class="row">
                                 <div class="col-md-6 col-xl-6">
                                     <div class="text-center">
-                                        <center><img class="img-fluid text-center" src="~/images/THC.png" /></center>
+                                        <center><img class="img-fluid text-center" src="~/images/THC.png" style="height: 250px; width: 290px;"/></center>
                                     </div>
                                 </div>
                                 <div class=col-md-6 col-xl-6>
-                                    <h1>Legendary Hero Collection</h1>
-                                    <p class="lead">
+                                    <h3>Legendary Hero Collection</h3>
+                                    <p class="lead textAdd">
                                         Get ready to dispense some Dueling Justice this season when the Yu-Gi-Oh! TCG presents the Legendary Hero Decks, featuring 3 unique archetypes including:
                                         "Destiny HERO's", "Aesir" and "The Phantom Knights". Get them now!
                                     </p>
@@ -130,20 +130,20 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-<div style="height: 400px">
-    <div class="containerCenter" style="margin-top: 10px;">
-        <h2 style="color: rgb(230, 230, 230);">Popular Choices</h2>
+<div style="height: 280px">
+    <div class="containerCenter" style="margin-top: 2px;">
+        <h3 style="color: rgb(230, 230, 230);">Popular Choices</h3>
     </div>
     <div class="containerCenter">
         @foreach (var product in @Model)
     {
-        <div class="col-xl-3 col-md-3 col-sm-6 col-xs-12 text-center" style="margin-top:10px; height: 350px; width: 240px;">
+        <div class="col-xl-3 col-md-3 col-xs-6 text-center" style="margin-top:5px; height: 270px; width: 180px;">
             <div class="innerColomnSquare" style="width: -webkit-fill-available; height: -webkit-fill-available;">
                 <div>
                     <h1 class="ProductTitleCat" title="@product.Name">@product.Name</h1>
                 </div>
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@product.ProductId">
-                    <img src="@(Startup.storagePath + product.ImageUrl + ".png")" class="imageCell" style="height: 250px; width: 160px;"/>
+                    <img src="@(Startup.storagePath + product.ImageUrl + ".png")" class="imageCell" style="height: 185px; width: 120px;"/>
                 </a>
                 <br>
                 <h4 style="color: rgb(230, 230, 230);">€@product.Price</h4>
