@@ -17,13 +17,17 @@ namespace TCGshopTestEnvironment.Views.Manage
 
         public static string Orders => "Orders";
 
+        public static string Orderdetails => "Orderdetails";
+
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
 
-        public static string ExternalLoginsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Orders);
+        public static string OrdersNavClass(ViewContext viewContext) => PageNavClass(viewContext, Orders);
+
+        public static string OrderdetailsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Orderdetails);
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
 

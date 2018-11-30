@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TCGshopTestEnvironment.Models;
+using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels.ManageViewModels;
 
 namespace TCGshopTestEnvironment.Controllers
@@ -18,17 +19,20 @@ namespace TCGshopTestEnvironment.Controllers
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IManage _manage;
 
         public ManageController(
             UserManager<UserAccount> userManager,
             ILogger<ManageController> logger,
             SignInManager<UserAccount> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IManage manage)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _manage = manage;
         }
 
         [TempData]
@@ -203,10 +207,24 @@ namespace TCGshopTestEnvironment.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var model = new OrderOverviewViewModel { StatusMessage = StatusMessage};
+
+            var model = _manage.OrderOverview(user.Email);
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> OrderDetails(int orderid)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+
+            var model = _manage.Orderdetails(user.Email, orderid);
+            return View(model);
+        }
         #region Helpers
 
         private void AddErrors(IdentityResult result)

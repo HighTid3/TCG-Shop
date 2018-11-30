@@ -1,8 +1,34 @@
-﻿@model TCGshopTestEnvironment.ViewModels.ManageViewModels.OrderOverviewViewModel
+﻿@model IEnumerable<TCGshopTestEnvironment.ViewModels.ManageViewModels.OrderOverviewViewModel>
 @{
     ViewData["Title"] = "Orders";
     ViewData.AddActivePage(ManageNavPages.Orders);
 }
 
 <h4>@ViewData["Title"]</h4>
-@Html.Partial("_StatusMessage", Model.StatusMessage)
+
+<table class="table table-condensed" id="productsIndexTable">
+    <thead>
+    <tr>
+        <th>Order Date</th>
+        <th>Order number</th>
+        <th>Total Price</th>
+        <th>Order Status</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in Model)
+    {
+        
+            <tr class="assetRow">
+                <td class="">@order.OrderDate</td>
+                <td class="">@order.Ordernr</td>
+                <td class="">€@order.TotalPrice</td>
+                <td class="">@order.Status</td>
+                <td class="">
+                    <a asp-action="OrderDetails" asp-route-orderid="@order.OrderId">Details</a>
+                </td></tr>
+        
+    }
+    </tbody>
+</table>
