@@ -332,3 +332,5 @@ ASALocalRun/
 .mfractor/
 
 TCGshopTestEnvironment/wwwroot/\.DS_Store
+
+TCGshopTestEnvironment/wwwroot/images/baseline_search_black_18dp\.png

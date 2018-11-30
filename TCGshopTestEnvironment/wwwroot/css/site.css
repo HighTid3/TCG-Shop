@@ -136,19 +136,31 @@ body {
     color: #e4e4e4;
 }
 .TopLogin {
-    font-size: 2rem;
-    font-weight: 800;
+    margin-top: 15px;
+    font-size: 1.6rem;
+    font-weight: 600;
 }
 .innerBox {
     background-color: #313337;
 }
+.form-control.search {
+    display: block;
+    width: 100%;
+    height: 30px;
+    padding: 3px 6px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #e4e4e4;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
 .TopLogin a {
     color: #e4e4e4;
+    font-size: 1.6rem;
+    font-weight: 600;
 }
-.logo-image {
-    margin-left: 0px;
-}
-
 img.imageCell {
     width: 190px;
     height: 280px;
@@ -248,6 +260,8 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
     color: #ffffff;
     font-weight: 700;
     font-size: 1.4rem;
+    border-radius: 2px;
+    padding: 4px 10px;
 }
 
 .wrapper {
@@ -256,7 +270,7 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
 }
 
 .innerPrice {
-    font-size: 3rem;
+    font-size: 2.5rem;
 }
 
 .loginRight {
@@ -277,7 +291,6 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
 .outerCallToAction {
     padding: 20px;
 }
-
 .containerCenter {
     display: flex;
     justify-content: center;
@@ -434,21 +447,22 @@ p.lead {
 
 .navbar-inverse {
     font-family: 'Poppins', sans-serif;
-    font-weight: 800;
-    font-size: 2rem;
-    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: #e4e4e4;
     background-color: #313337;
     border-color: #313337;
-    color: white;
     border-radius: 0;
+    height: 25px;
 }
 
 .navbar-inverse .navbar-nav > li > a {
-    color: white;
+    color: #e4e4e4;
 }
 
 .search-bar {
-    margin-top: 10px;
+    margin-top: 6px;
+    color: #e4e4e4;
 }
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
