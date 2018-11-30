@@ -29,21 +29,21 @@
     </script>
 </head>
 
-<div class="container-fluid top-header">
+<div class="container-fluid top-header" height="50">
     <div class="row logo-image">
         <div class="col-md-4">
-            <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/logo.png" alt="Logo" class="img-responsive" width="125" /></a>
+            <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/logo.png" alt="Logo" class="img-responsive" width="90" height="45" /></a>
         </div>
         <div class="col-md-4">
             <div class="container">
-                <div class="search-bar">
+                <div class="search-bar" style="margin-top: 10px;">
                     <form class="form-inline" method="get" asp-action="Search" asp-controller="Products">
                         <div class="form-group mx-sm-12 text-center">
                             <label for="inputPassword2" class="sr-only"></label>
-                            <input list="textSearchData" class="form-control" id="textSearch" name="name" width="100px" placeholder="Search here..." maxlength="40">
+                            <input list="textSearchData" class="form-control search" id="textSearch" name="name" width="100" placeholder="Search here..." maxlength="40">
                             <datalist id="textSearchData"></datalist>
                         </div>
-                        <button type="submit" class="btn btn-primary btnSearch">Go!</button>
+                        <button type="submit" class="btn btn-default btnSearch"><span class="glyphicon glyphicon-search" style="color: #e4e4e4;"></span></button>
                     </form>
 
                 </div>
@@ -57,7 +57,7 @@
 </div>
 
 <body class="bg-back">
-    <nav class="navbar navbar-inverse ">
+    <nav class="navbar navbar-inverse " height="25">
         <!-- navbar top fixed weggehaald-->
         <div class="containerCenter">
             <div class="navbar-header">
