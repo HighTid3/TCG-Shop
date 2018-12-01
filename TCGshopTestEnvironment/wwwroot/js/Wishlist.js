@@ -1,17 +1,18 @@
 ﻿$(document).ready(function() {
 
-    $(function () {
+    $(function() {
         // Document.ready -> link up remove event handler
-        $(".Removefromwishlist").click(function () {
+        $(".Removefromwishlist").click(function() {
             // Get the id from the link
             var recordToDelete = $(this).data("id");
-            if (recordToDelete != '') {
+            if (recordToDelete != "") {
                 // Perform the ajax post
-                $.post("/Wishlist/RemoveFromWishlist", { "id": recordToDelete},
-                    function (data) {
+                $.post("/Wishlist/RemoveFromWishlist",
+                    { "id": recordToDelete },
+                    function(data) {
                         // Successful requests get here
                         // Update the page elements
-                            $('#row-' + data["deleteId"]).fadeOut('slow');
+                        $("#row-" + data["deleteId"]).fadeOut("slow");
                     });
             }
         });

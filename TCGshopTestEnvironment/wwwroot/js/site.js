@@ -3,7 +3,7 @@
 
 // Write your JavaScript code.
 
-$("#textSearch").keyup(function (e) {
+$("#textSearch").keyup(function(e) {
 
     console.log("HELLO");
     // get the value ftom input
@@ -12,11 +12,11 @@ $("#textSearch").keyup(function (e) {
     if (text.length > 0) {
         $.get("/Products/CardAutoCompleteResult",
             { text: text },
-            function (data) {
+            function(data) {
                 $("#textSearchData").empty();
                 //add all data
                 for (i = 0; i < 5; i++) {
-                    $("#textSearchData").append('<option>' + data[i] + "</option>");
+                    $("#textSearchData").append("<option>" + data[i] + "</option>");
                 }
 
                 //if hidden show the select
@@ -31,7 +31,7 @@ $("#textSearch").keyup(function (e) {
 
 $(document).on("click",
     "#result > option",
-    function () {
+    function() {
 
         //add selected value to #search
         $("#textSearch").val($(this).val());
@@ -40,7 +40,7 @@ $(document).on("click",
         $("#textSearch").empty().hide();
     });
 
-$(".AddCart").submit(function (e) {
+$(".AddCart").submit(function(e) {
     e.preventDefault();
 });
 
@@ -57,7 +57,6 @@ if (localStorage.getItem("shoppingCart") === null) {
     console.table(shoppingCart);
 
 
-
     //Fill Table
 }
 
@@ -70,86 +69,94 @@ function ModalBox(imageUrl) {
     document.getElementById("productaddimg").src = storagePath + imageUrl + ".png";
 
     // Get the modal
-    var modal = document.getElementById('myModal');
+    var modal = document.getElementById("myModal");
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
-    var continueshop = document.getElementById('Continueshop');
+    var continueshop = document.getElementById("Continueshop");
 
     modal.style.display = "block";
 
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
+    span.onclick = function() {
         modal.style.display = "none";
-    }
+    };
 
     // When the user clicks on continue shopping button, close the modal
-    continueshop.onclick = function () {
+    continueshop.onclick = function() {
         modal.style.display = "none";
-    }
+    };
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
+    window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    };
 }
 
 //add product to local shoppingcart
 function AddToCart(id, productname, imageUrl, price, grade, count) {
 
-    var product = { 'ProductId': id, 'Name': productname, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Amount': count }
+    var product = {
+        'ProductId': id,
+        'Name': productname,
+        'ImageUrl': imageUrl,
+        'Price': price,
+        'Grade': grade,
+        'Amount': count
+    };
 
     console.log($.inArray(product, shoppingCart));
-    
+
     shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === product.Name)); //check index of the added product
-    if (shoppingCartindex != -1) { // if the shoppingcart already contains the to be added product, get the current stock of the product
+    if (shoppingCartindex != -1
+    ) { // if the shoppingcart already contains the to be added product, get the current stock of the product
         $.ajax
-            ({
-                type: 'POST',
-                url: '/Products/GetStockofCard',
-                data:
-                {
-                    productId: id
-                },
-                success: function (response) {
-                    if (shoppingCart[shoppingCartindex]["Amount"] !== response) { // check if the total amount in the shoppingcart is already the maximum we have in stock, if not execute code
-                        shoppingCart[shoppingCartindex].Amount = (parseInt(shoppingCart[shoppingCartindex].Amount) + parseInt(count));
-                        ShoppingcartBadge();
-                        localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-                        ShoppingcartBadge()
-                        ModalBox(imageUrl);
-                    }
-                    else {
-                        alert("You already have the maximum amount in your shopping basket");
-                    }
+        ({
+            type: "POST",
+            url: "/Products/GetStockofCard",
+            data:
+            {
+                productId: id
+            },
+            success: function(response) {
+                if (shoppingCart[shoppingCartindex]["Amount"] !== response
+                ) { // check if the total amount in the shoppingcart is already the maximum we have in stock, if not execute code
+                    shoppingCart[shoppingCartindex].Amount =
+                        (parseInt(shoppingCart[shoppingCartindex].Amount) + parseInt(count));
+                    ShoppingcartBadge();
+                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+                    ShoppingcartBadge();
+                    ModalBox(imageUrl);
+                } else {
+                    alert("You already have the maximum amount in your shopping basket");
                 }
-            });
-    }
-    else {
+            }
+        });
+    } else {
         shoppingCart.push(product);
         console.table(shoppingCart);
         ShoppingcartBadge();
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-        ShoppingcartBadge()
+        ShoppingcartBadge();
         ModalBox(imageUrl);
     }
 }
-    //$.post("/Products/GetStockofCard", { "productId": id },
-    //    function (data) { if (shoppingCart[shoppingCartindex]["Amount"] === data) { console.log("error") } });
+//$.post("/Products/GetStockofCard", { "productId": id },
+//    function (data) { if (shoppingCart[shoppingCartindex]["Amount"] === data) { console.log("error") } });
 
 
 //method for setting amount in detailmodel
-$('.qty').click(function () {
+$(".qty").click(function() {
     var $t = $(this),
-        $in = $('input[name="'+$t.data('field')+'"]'),
+        $in = $('input[name="' + $t.data("field") + '"]'),
         val = parseInt($in.val()),
-        valMax = $('#productStock').attr('value'),
+        valMax = $("#productStock").attr("value"),
         valMin = 1;
 
     // Check if a number is in the field first
-    if(isNaN(val) || val < valMin) {
+    if (isNaN(val) || val < valMin) {
         // If field value is NOT a number, or
         // if field value is less than minimum,
         // ...set value to 0 and exit function
@@ -163,10 +170,10 @@ $('.qty').click(function () {
     }
 
     // Perform increment or decrement logic
-    if($t.data('func') == 'plus') {
-        if(val < valMax) $in.val(val + 1);
+    if ($t.data("func") == "plus") {
+        if (val < valMax) $in.val(val + 1);
     } else {
-        if(val > valMin) $in.val(val - 1);
+        if (val > valMin) $in.val(val - 1);
     }
 });
 
@@ -174,134 +181,135 @@ $('.qty').click(function () {
 //post method for adding products to database shoppingbasket
 function postToCart(productId, userName, imageUrl, productname, price, grade, amount) {
     shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === productname)); //check index of the added product
-    if (shoppingCartindex != -1) { // if the shoppingcart already contains the to be added product, get the current stock of the product
+    if (shoppingCartindex != -1
+    ) { // if the shoppingcart already contains the to be added product, get the current stock of the product
         $.ajax
-            ({
-                type: 'POST',
-                url: '/Products/GetStockofCard',
-                data:
-                {
-                    productId: productId
-                },
-                success: function (response) {// check if the total amount in the shoppingcart is already the maximum we have in stock, if not execute code
+        ({
+            type: "POST",
+            url: "/Products/GetStockofCard",
+            data:
+            {
+                productId: productId
+            },
+            success:
+                function(response) { // check if the total amount in the shoppingcart is already the maximum we have in stock, if not execute code
                     if (shoppingCart[shoppingCartindex]["Amount"] !== response) {
                         $.ajax
-                            ({
-                                type: 'POST',
-                                url: '/Shopping/AddToShoppingcart',
-                                data:
-                                {
-                                    productId: productId,
-                                    Amount: amount
-                                },
-                                success: function (response) {
-                                    AddToCart(productId, productname, imageUrl, price, grade, amount);
-                                    ModalBox(imageUrl);
+                        ({
+                            type: "POST",
+                            url: "/Shopping/AddToShoppingcart",
+                            data:
+                            {
+                                productId: productId,
+                                Amount: amount
+                            },
+                            success: function(response) {
+                                AddToCart(productId, productname, imageUrl, price, grade, amount);
+                                ModalBox(imageUrl);
 
-                                }
-                            });
+                            }
+                        });
                         return false;
-                    }
-                    else {
+                    } else {
                         alert("You already have the maximum amount in your shopping basket");
                     }
                 }
-            })
-    }
-    else {
+        });
+    } else {
         $.ajax
-            ({
-                type: 'POST',
-                url: '/Shopping/AddToShoppingcart',
-                data:
-                {
-                    productId: productId,
-                    Amount: amount
-                },
-                success: function (response) {
-                    AddToCart(productId, productname, imageUrl, price, grade, amount);
-                    ModalBox(imageUrl);
-
-                }
-            });
-        return false;
-    }
-}
-function AddDbCarttoLocal() {
-    $.ajax
         ({
-            type: 'POST',
-            url: '/Shopping/AddDbCarttoLocal',
-            success: function (data) {
-                data.forEach(function(e) {
-                    console.log(e)
-                    console.log(e["productId"])
-                    var product = {
-                        'ProductId': e["productId"].toString(),
-                        'Name': e["name"],
-                        'ImageUrl': e["imageUrl"],
-                        'Price': e["price"].toString(),
-                        'Grade': e["grade"],
-                        'Amount': e["amount"]
-                    }
-                    shoppingCartindex = shoppingCart.findIndex((obj => obj.ProductId === e["productId"].toString()));
-                    a = JSON.stringify(shoppingCart[shoppingCartindex])
-                    b = JSON.stringify(shoppingCart)
-                    c = b.indexOf(a)
-
-                    if (c == -1) {
-                        shoppingCart.push(product);
-                        console.table(shoppingCart);
-                        localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-                        ShoppingcartBadge();
-                    }
-
-                });
-                window.location.href = "/";
+            type: "POST",
+            url: "/Shopping/AddToShoppingcart",
+            data:
+            {
+                productId: productId,
+                Amount: amount
+            },
+            success: function(response) {
+                AddToCart(productId, productname, imageUrl, price, grade, amount);
+                ModalBox(imageUrl);
 
             }
         });
-}
-
-/*setTimeout(*/function AddLocalCartToDatabase() {
-        if (localStorage.getItem("shoppingCart") !== null) {
-            var local = shoppingCart;
-            $.ajax
-            ({
-                type: 'POST',
-                url: '/Shopping/AddLocalCartToDatabase',
-                data:
-                {
-                    vm: local
-                },
-                success: function() {
-                    //shoppingCart = [];
-                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
-                }
-            });
-        }
-
         return false;
     }
-    /*,500)*/
+}
 
-$("#loginform").submit(function (e) {
+function AddDbCarttoLocal() {
+    $.ajax
+    ({
+        type: "POST",
+        url: "/Shopping/AddDbCarttoLocal",
+        success: function(data) {
+            data.forEach(function(e) {
+                console.log(e);
+                console.log(e["productId"]);
+                var product = {
+                    'ProductId': e["productId"].toString(),
+                    'Name': e["name"],
+                    'ImageUrl': e["imageUrl"],
+                    'Price': e["price"].toString(),
+                    'Grade': e["grade"],
+                    'Amount': e["amount"]
+                };
+                shoppingCartindex = shoppingCart.findIndex((obj => obj.ProductId === e["productId"].toString()));
+                a = JSON.stringify(shoppingCart[shoppingCartindex]);
+                b = JSON.stringify(shoppingCart);
+                c = b.indexOf(a);
+
+                if (c == -1) {
+                    shoppingCart.push(product);
+                    console.table(shoppingCart);
+                    localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+                    ShoppingcartBadge();
+                }
+
+            });
+            window.location.href = "/";
+
+        }
+    });
+}
+
+/*setTimeout(*/
+function AddLocalCartToDatabase() {
+    if (localStorage.getItem("shoppingCart") !== null) {
+        var local = shoppingCart;
+        $.ajax
+        ({
+            type: "POST",
+            url: "/Shopping/AddLocalCartToDatabase",
+            data:
+            {
+                vm: local
+            },
+            success: function() {
+                //shoppingCart = [];
+                localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
+            }
+        });
+    }
+
+    return false;
+}
+/*,500)*/
+
+$("#loginform").submit(function(e) {
     var form = $(this);
-    var urls = form.attr('action');
+    var urls = form.attr("action");
 
     $.ajax({
         type: "POST",
         url: urls,
         data: form.serialize(), // serializes the form's elements.
-        success: function (response) {
+        success: function(response) {
             if (response["status"] == "LoggedIn") {
-                AddLocalCartToDatabase(),  //perform the add local cart items to database cart
+                AddLocalCartToDatabase(), //perform the add local cart items to database cart
                     AddDbCarttoLocal();
+            } else {
+                $("#errormessages").html("Username or Password is incorrect.");
             }
-            else {
-                $("#errormessages").html("Username or Password is incorrect.")
-            }
-            
+
         }
 
     });
@@ -315,8 +323,9 @@ function ShoppingcartBadge() {
     for (index = 0, len = shoppingCart.length; index < len; index++) {
         totalproductamount += parseInt(shoppingCart[index].Amount);
     }
-    document.getElementById('shopcartamountbadge').innerHTML = totalproductamount;
+    document.getElementById("shopcartamountbadge").innerHTML = totalproductamount;
 }
+
 // shoppingcart badge amount
 ShoppingcartBadge();
 
@@ -326,13 +335,13 @@ function postToWishlist(productId) {
     if (productId) {
         $.ajax
         ({
-            type: 'POST',
-            url: '/Wishlist/AddToWishlist',
+            type: "POST",
+            url: "/Wishlist/AddToWishlist",
             data:
             {
                 productId: productId
             },
-            success: function (response) {
+            success: function(response) {
 
             }
         });
@@ -345,11 +354,11 @@ function postToWishlist(productId) {
 function toggleWishlist(classId) {
     var element = document.getElementById(classId);
     if (document.getElementById(classId).classList.contains("clicked")) {
-        $.post("/Wishlist/RemoveFromWishlistbyproduct", { "productId": classId },
-            function () { })
-        element.classList.add("notclicked")
-    }
-    else {
+        $.post("/Wishlist/RemoveFromWishlistbyproduct",
+            { "productId": classId },
+            function() {});
+        element.classList.add("notclicked");
+    } else {
         postToWishlist(classId);
         element.classList.remove("notclicked");
     }
@@ -359,6 +368,7 @@ function toggleWishlist(classId) {
 }
 
 //price input in product edit page
-$('#priceinput').on('input', function () {
-    $(this).val($(this).val().replace(/\./g, ','));
-});
+$("#priceinput").on("input",
+    function() {
+        $(this).val($(this).val().replace(/\./g, ","));
+    });
