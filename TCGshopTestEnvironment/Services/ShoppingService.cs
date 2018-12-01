@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Models.JoinTables;
 using TCGshopTestEnvironment.ViewModels;
@@ -12,10 +10,12 @@ namespace TCGshopTestEnvironment.Services
     public class ShoppingService : IShopping
     {
         private readonly DBModel _context;
+
         public ShoppingService(DBModel context)
         {
             _context = context;
         }
+
         public IQueryable<ShoppingBasket> ShoppingbasketByName(string userid)
         {
             return from s in _context.Basket
@@ -37,9 +37,8 @@ namespace TCGshopTestEnvironment.Services
                     Name = p.Name,
                     Price = p.Price,
                     Grade = p.Grade,
-                    TotalPrice = Math.Round((p.Price * b.Amount),2, MidpointRounding.AwayFromZero)
+                    TotalPrice = Math.Round(p.Price * b.Amount, 2, MidpointRounding.AwayFromZero)
                 };
-
         }
 
         public int CreateOrder(Order order, List<ProductsShopCartViewModel> cartItems)
@@ -58,10 +57,11 @@ namespace TCGshopTestEnvironment.Services
                     Quantity = item.Amount
                 };
                 // Set the order total of the shopping cart
-                orderTotal += (item.Amount * item.Price);
+                orderTotal += item.Amount * item.Price;
 
                 _context.OrderDetails.Add(orderDetail);
             }
+
             // Set the order's total to the orderTotal count
             order.Total = orderTotal;
 
@@ -72,8 +72,6 @@ namespace TCGshopTestEnvironment.Services
 
             // Return the OrderId as the confirmation number
             return order.OrderId;
-
         }
-
     }
 }

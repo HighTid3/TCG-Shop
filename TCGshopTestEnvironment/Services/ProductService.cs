@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Rewrite.Internal.ApacheModRewrite;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.ViewModels;
-using X.PagedList;
 
 namespace TCGshopTestEnvironment.Services
 {
     public class ProductService : IProducts
     {
-        private DBModel _context;
+        private readonly DBModel _context;
 
         public ProductService(DBModel context)
         {
@@ -24,30 +20,46 @@ namespace TCGshopTestEnvironment.Services
         {
             _context.Add(NewProduct);
             _context.SaveChanges();
-
         }
 
-        public Products GetByID(int id)
+        public ProductsDetailModel GetByID(int id)
         {
-
-            return _context.products
-                    .FirstOrDefault(product => product.ProductId == id);
+            return (from p in _context.products
+                let categories = (from c in _context.ProductCategory
+                    where c.ProductId == id
+                    select c.CategoryName).ToList()
+                where p.ProductId == id
+                select new ProductsDetailModel
+                {
+                    CardCatagoryList = categories,
+                    Description = p.Description,
+                    Grade = p.Grade,
+                    Id = p.ProductId,
+                    ImageUrl = p.ImageUrl,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Stock = p.Stock
+                }).FirstOrDefault();
         }
 
+        public Products GetProductsById(int id)
+        {
+            return _context.products
+                .FirstOrDefault(product => product.ProductId == id);
+        }
 
         public IEnumerable<Productsandcategorie> GetbyCardType(string type)
         {
             IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
-                                                            "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
-                                                            "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
-                                                            "GROUP BY products.\"ProductId\"").ToArray();
+                "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
+                "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
+                "GROUP BY products.\"ProductId\"").ToArray();
 
-            List<Productsandcategorie> ProductsAndCategories = new List<Productsandcategorie>();
+            var ProductsAndCategories = new List<Productsandcategorie>();
 
             foreach (var ProductsCat in results)
             {
-
-                List<string> CatNames = new List<string>();
+                var CatNames = new List<string>();
 
                 try
                 {
@@ -55,20 +67,17 @@ namespace TCGshopTestEnvironment.Services
                 }
                 catch (Exception e)
                 {
-                    CatNames = new List<string> { "" };
+                    CatNames = new List<string> {""};
                 }
 
                 if (type != "All")
                 {
                     if (CatNames.Contains(type))
-                    {
-
                         ProductsAndCategories.Add(new Productsandcategorie
                         {
                             prods = ProductsCat,
                             Catnames = CatNames
                         });
-                    }
                 }
                 else
                 {
@@ -105,30 +114,29 @@ namespace TCGshopTestEnvironment.Services
         public IEnumerable<Productsandcategorie> GetByNameSearch(string name)
         {
             IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
-                                                "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
-                                                "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
-                                                "GROUP BY products.\"ProductId\"").ToArray();
+                "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
+                "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
+                "GROUP BY products.\"ProductId\"").ToArray();
 
-            List<Productsandcategorie> ProductsAndCategories = new List<Productsandcategorie>();
+            var ProductsAndCategories = new List<Productsandcategorie>();
 
 
             foreach (var ProductsCat in results)
-            {
                 if (ProductsCat.Name.ToLower().Contains(name.ToLower()) || ProductsCat.Name.ToLower() == name.ToLower())
                 {
-                    List<string> CatNames = new List<string>();
+                    var CatNames = new List<string>();
                     try
                     {
                         CatNames = ProductsCat.CategoryName.Split(',').ToList();
                     }
                     catch (Exception e)
                     {
-                        CatNames = new List<string> { "" };
+                        CatNames = new List<string> {""};
                     }
 
-                    ProductsAndCategories.Add(new Productsandcategorie { prods = ProductsCat, Catnames = CatNames });
+                    ProductsAndCategories.Add(new Productsandcategorie {prods = ProductsCat, Catnames = CatNames});
                 }
-            }
+
             return ProductsAndCategories;
 
             //      return from p in _context.products
@@ -143,20 +151,20 @@ namespace TCGshopTestEnvironment.Services
         public IEnumerable<PopularViewModel> GetMostViewed()
         {
             var result = (from p in _context.products
-                          where p.ViewsDetails > 10
-                          orderby p.ViewsDetails descending
-                          select new PopularViewModel
-                          {
-                              ProductId = p.ProductId,
-                              Name = p.Name,
-                              Price = p.Price,
-                              DateCreated = p.DateCreated,
-                              DateUpdated = p.DateUpdated,
-                              ViewsListed = p.ViewsListed,
-                              ViewsDetails = p.ViewsDetails,
-                              ImageUrl = p.ImageUrl
-                          }).ToList();
+                where p.ViewsDetails > 10
+                orderby p.ViewsDetails descending
+                select new PopularViewModel
+                {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Price = p.Price,
+                    DateCreated = p.DateCreated,
+                    DateUpdated = p.DateUpdated,
+                    ViewsListed = p.ViewsListed,
+                    ViewsDetails = p.ViewsDetails,
+                    ImageUrl = p.ImageUrl
+                }).ToList();
             return result;
-        } 
+        }
     }
 }

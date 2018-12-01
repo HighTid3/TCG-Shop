@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.ViewModels.ManageViewModels;
 
@@ -10,6 +8,7 @@ namespace TCGshopTestEnvironment.Services
     public class ManageService : IManage
     {
         private static DBModel _context;
+
         public ManageService(DBModel context)
         {
             _context = context;
@@ -17,7 +16,8 @@ namespace TCGshopTestEnvironment.Services
 
         public IEnumerable<OrderOverviewViewModel> OrderOverview(string useremail)
         {
-            return from p in _context.Orders where p.Email == useremail
+            return from p in _context.Orders
+                where p.Email == useremail
                 select new OrderOverviewViewModel
                 {
                     OrderDate = p.OrderDate,
@@ -33,7 +33,6 @@ namespace TCGshopTestEnvironment.Services
             return (from p in _context.Orders
                 let orderdetails = (from d in _context.OrderDetails
                     join c in _context.products on d.ProductId equals c.ProductId
-                    
                     where d.OrderId == OrderId
                     select new OrderViewModel
                     {
@@ -61,10 +60,20 @@ namespace TCGshopTestEnvironment.Services
                     PostalCode = p.PostalCode,
                     State = p.State,
                     Total = p.Total
-
                 }).FirstOrDefault();
         }
 
-    }
+        public IEnumerable<UserAccount> GetRegisteredUsers()
+        {
+            return from u in _context.userAccounts
+                select u;
+        }
 
+        public UserAccount GetRegisteredUserbyUsername(string username)
+        {
+            return (from u in _context.userAccounts
+                where u.UserName == username
+                select u).FirstOrDefault();
+        }
+    }
 }

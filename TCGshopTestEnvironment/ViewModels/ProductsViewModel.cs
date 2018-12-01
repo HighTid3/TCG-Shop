@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TCGshopTestEnvironment.ViewModels
 {
@@ -18,5 +15,3 @@ namespace TCGshopTestEnvironment.ViewModels
         public bool Favorites { get; set; }
     }
 }
-
-

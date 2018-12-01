@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 
 namespace TCGshopTestEnvironment.ViewModels
 {
@@ -15,8 +10,5 @@ namespace TCGshopTestEnvironment.ViewModels
         public string Grade { get; set; }
         public int Stock { get; set; }
         public List<string> Category { get; set; }
-
     }
 }
-
-
