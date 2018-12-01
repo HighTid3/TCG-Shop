@@ -181,9 +181,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         public IActionResult Detail(int id)
         {
-
             var model = _assets.GetByID(id);
-
             return View(model);
         }
 

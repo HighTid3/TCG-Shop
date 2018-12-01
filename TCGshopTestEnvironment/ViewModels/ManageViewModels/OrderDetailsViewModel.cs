@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
 {
     public class OrderDetailsViewModel
     {
-
         public string Ordernr { get; set; }
 
         public string Orderstatus { get; set; }
-        public System.DateTime OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }
 
 
         public string FirstName { get; set; }
