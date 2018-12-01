@@ -126,8 +126,8 @@ namespace TCGshopTestEnvironment.Controllers
                 {
                     Amount = new Amount(Currency.EUR, Total.ToString("F", CultureInfo.InvariantCulture)),
                     Description = "Payment for your mock purchase from TCG.Sale",
-                    RedirectUrl = "http://TCG.sale" + Url.Action("Processing", "Checkout") + "?guid=" + order.Guid,
-                    WebhookUrl = "http://TCG.sale" + Url.Action("Webhook", "Checkout")
+                    RedirectUrl = "https://tcg.sale" + Url.Action("Processing", "Checkout") + "?guid=" + order.Guid,
+                    WebhookUrl = "https://tcg.sale" + Url.Action("Webhook", "Checkout")
                 };
 
                 PaymentResponse paymentResponse = await paymentClient.CreatePaymentAsync(paymentRequest);
