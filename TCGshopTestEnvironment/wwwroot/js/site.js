@@ -357,3 +357,8 @@ function toggleWishlist(classId) {
 
 
 }
+
+//price input in product change
+$('#priceinput').on('input', function () {
+    $(this).val($(this).val().replace(/\./g, ','));
+});

@@ -16,21 +16,27 @@
 
                     <div class="col-md-6">
                         <strong style="color: #e4e4e4;">Name</strong> <br />
-                        <h1 class="display-1"><input asp-for="Name" /></h1>
+                        <h1 class="display-1"><input asp-for="Name" style="color: black;"/></h1>
                         <strong style="color: #e4e4e4;">Grade</strong> <br />
-                        <label class="GradeText" style="font-size: 1.5rem;"><input asp-for="Grade" /></label>
+                        <label class="GradeText" style="font-size: 1.5rem;"><input asp-for="Grade" type="number" style="color: black;" min="1"
+                                                                                   step="1"
+                                                                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                                                                   title="Numbers only"></label>
                         <p style="margin-top: 5px;">
                             <strong style="color: #e4e4e4;">Description</strong> <br />
-                            <span> <input asp-for="Description" /></span>
+                            <span> <input asp-for="Description" style="color: black;"/></span>
                         </p>
                         <p>
                             <strong style="color: #e4e4e4;">Stock</strong> <br />
-                            <label value="@Model.Stock" id="productStock" style="color: black"><input asp-for="Stock" /></label>
+                            <label value="@Model.Stock" id="productStock" style="color: black"><input asp-for="Stock" type="number" min="1"
+                                                                                                      step="1"
+                                                                                                      onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                                                                                      title="Numbers only"></label>
                         </p>
 
                         <p>
                             <strong style="color: #e4e4e4;">Price</strong> <br />
-                            <label style="color: #e4e4e4;">€<input asp-for="Price" style="color: black;" /></label>
+                            <label style="color: #e4e4e4;">€<input asp-for="Price" style="color: black;" id="priceinput"/></label>
                         </p>
                         <input type="hidden" asp-for="Id" value="@Model.Id" />
                         <button type="submit" class="btn btn-default">Save</button>
@@ -41,4 +47,3 @@
         </div>
     </div>
 </div>
-
