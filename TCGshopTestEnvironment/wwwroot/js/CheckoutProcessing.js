@@ -19,15 +19,15 @@ var params = getSearchParameters();
 $.ajax({
     type: "GET",
     url: "/Checkout/ProcessingStatus",
-    data: { guid: params.guid },
-    success: function(data) {
+    data: {guid: params.guid},
+    success: function (data) {
         if (data["status"] == "created") {
             setTimeout($.ajax(this), 5000);
         } else {
             $("#ShoppingCartCheckOutProcessing").html("<h1>" + data["status"] + "<h1>");
         }
     },
-    error: function() {
+    error: function () {
         setTimeout($.ajax(this), 5000);
     }
 });
