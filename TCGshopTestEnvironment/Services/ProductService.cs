@@ -27,13 +27,33 @@ namespace TCGshopTestEnvironment.Services
 
         }
 
-        public Products GetByID(int id)
+        public ProductsDetailModel GetByID(int id)
         {
+            return (from p in _context.products
+                let categories = (from c in _context.ProductCategory
+                    where c.ProductId == id
+                    select c.CategoryName).ToList()
+                where p.ProductId == id
+                select new ProductsDetailModel
+                {
+                    CardCatagoryList = categories,
+                    Description = p.Description,
+                    Grade = p.Grade,
+                    Id = p.ProductId,
+                    ImageUrl = p.ImageUrl,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Stock = p.Stock
 
+                }).FirstOrDefault();
+
+        }
+
+        public Products GetProductsById(int id)
+        {
             return _context.products
                     .FirstOrDefault(product => product.ProductId == id);
         }
-
 
         public IEnumerable<Productsandcategorie> GetbyCardType(string type)
         {

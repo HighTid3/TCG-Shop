@@ -188,18 +188,9 @@ namespace TCGshopTestEnvironment.Controllers
 
         public IActionResult Detail(int id)
         {
-            var asset = _assets.GetByID(id);
 
-            var model = new ProductsDetailModel
-            {
-                Id = asset.ProductId,
-                Description = asset.Description,
-                Grade = asset.Grade,
-                Name = asset.Name,
-                Price = asset.Price,
-                Stock = asset.Stock,
-                ImageUrl = asset.ImageUrl
-            };
+            var model = _assets.GetByID(id);
+
             return View(model);
         }
 
@@ -487,6 +478,50 @@ namespace TCGshopTestEnvironment.Controllers
             var stock = _assets.GetByID(productId).Stock;
 
             return Json(stock);
+        }
+
+        [HttpGet]
+        public IActionResult EditProduct(int productid)
+        {
+            var model = _assets.GetByID(productid);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProduct(ProductsDetailModel vm)
+        {
+            Products changedproduct = _assets.GetProductsById(vm.Id);
+
+            var Name = vm.Name;
+            if (changedproduct.Name != Name)
+            {
+                changedproduct.Name = Name;
+            }
+            var Grade = vm.Grade;
+            if (changedproduct.Grade != Grade)
+            {
+                changedproduct.Grade = Grade;
+            }
+            var Description = vm.Description;
+            if (changedproduct.Description != Description)
+            {
+                changedproduct.Description = Description;
+            }
+            var Stock = vm.Stock;
+            if (changedproduct.Stock != Stock)
+            {
+                changedproduct.Stock = Stock;
+            }
+            var Price = vm.Price;
+            if (changedproduct.Price != Price)
+            {
+                changedproduct.Price = Price;
+            }
+
+            _context.products.Update(changedproduct);
+            _context.SaveChanges();
+
+            return RedirectToAction("Detail", new { id = vm.Id});
         }
     }
 }
