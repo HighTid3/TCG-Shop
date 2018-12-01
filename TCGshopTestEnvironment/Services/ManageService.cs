@@ -65,6 +65,19 @@ namespace TCGshopTestEnvironment.Services
                 }).FirstOrDefault();
         }
 
-    }
+        public IEnumerable<UserAccount> GetRegisteredUsers()
+        {
+            return from u in _context.userAccounts
+                select u;
+        }
 
+        public UserAccount GetRegisteredUserbyUsername(string username)
+        {
+            return (from u in _context.userAccounts
+                where u.UserName == username
+                select u).FirstOrDefault();
+        }
+    }
 }
+
+
