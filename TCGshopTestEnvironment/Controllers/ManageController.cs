@@ -377,9 +377,9 @@ namespace TCGshopTestEnvironment.Controllers
                 _context.Database.Migrate();
 
                 //Load Data in DB
-                string categories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\DbRestore\\_categories.sql");
-                string products = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\DbRestore\\_products.sql");
-                string productsCategories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\DbRestore\\_ProductCategory.sql");
+                string categories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_categories.sql");
+                string products = System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_products.sql");
+                string productsCategories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_ProductCategory.sql");
 
                 //Dont await any of them, so they all execute async
                 await _context.Database.ExecuteSqlCommandAsync(categories);
