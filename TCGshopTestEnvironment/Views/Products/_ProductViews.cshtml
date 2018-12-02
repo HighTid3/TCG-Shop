@@ -10,10 +10,7 @@
         <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 405px; width: 270px;">
             <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
                 <div>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-action="EditProduct" asp-route-productid="@asset.Id">Edit Product</a>
-                    }
+                    
                     <h1 class="ProductTitleCat" title="@asset.Name">@asset.Name</h1>
 
                     @*check if product is in wishlist or not, show icon accordingly*@
@@ -36,7 +33,10 @@
                     @*Button action handler, one for signed in users, one for guests*@
                     @if (SignInManager.IsSignedIn(User))
                     {
-
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="EditProduct" asp-route-productid="@asset.Id"><span class="fa fa-pencil editSvg" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span></a>
+                    }
                         if (ViewBag.wishlist.Contains(asset.Id))
                         {
                             <span class="glyphicon glyphicon-star-empty clicked" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>

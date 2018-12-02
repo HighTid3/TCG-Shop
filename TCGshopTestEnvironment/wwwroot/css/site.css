@@ -2,6 +2,12 @@
 for details on configuring this project to bundle and minify static web assets. */
 /*  Clearfix */
 
+.editSvg {
+    color:white;
+    font-size: 25px;
+    padding-right: 10px;
+}
+
 .table#productsIndexTable th, .table#productsIndexTable td, .table#productsIndexTable a {
     color: white;
 }
