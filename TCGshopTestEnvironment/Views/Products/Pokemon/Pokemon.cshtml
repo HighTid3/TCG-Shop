@@ -4,12 +4,6 @@
 @using X.PagedList.Mvc;
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
-@{
-
-    List<string> catagorielist = ViewBag.catagorie as List<string>;
-    List<string> gradeslist = ViewBag.grades as List<string>;
-    List<string> totalcatagorielist = ViewBag.totalCatagory as List<string>;
-}
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -24,27 +18,21 @@
 
 
 
-<div id="asssets">S
+<div id="asssets">
     <div id="productsTable">
         <div class="container-fluid">
             <div class="row" style="margin-top: 10px;">
                 @await Html.PartialAsync("/Views/Products/_Filters.cshtml")
                 <div class="col-md-9">
                     <div class="col-md-12">
-                        
-                        @using (Html.BeginForm(FormMethod.Get, new { id = "TheForm" }))
-                        {
+
                         <div class="col-md-9 float-right text-right">
-                            <span>Sort By: </span>
+                            <span style="color: white">Sort By: </span>
                         </div>
-                        <div class="col-md-3">
-                            <input type="hidden" name="name" value="@ViewBag.name" />
-                            <input type="hidden" name="pageAmount" value="@ViewBag.PageAmount" />
-                            <input type="hidden" name="cardType" value="@ViewBag.cardType"/>
-                        </div>
-                        }
-                        @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })
-                         
+
+                        @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "productformsorting()", @style = "display: block", @id = "sortingform" })
+
+
 
                     </div>
                     @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
