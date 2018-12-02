@@ -369,4 +369,4 @@ function productformsorting() {
     var sorting = $('#sortingform').val();
     document.getElementById("sorting").value = sorting;
     document.getElementById('TheForm').submit();
-};
+}
