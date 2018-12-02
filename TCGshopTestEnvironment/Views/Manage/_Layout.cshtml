@@ -2,14 +2,31 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<div>
-
-    <div class="row">
-        <div class="col-md-3">
-            @await Html.PartialAsync("_ManageNav")
+<style>
+    .dashboard .managenav {
+        background-color: #393a3e;
+    }
+    .dashboard .renderdash {
+    }
+    .margint50 {
+        margin-top: 50px;
+    }
+    .dashboard h4 {
+        color: #e4e4e4;
+        font-size: 3rem;
+    }
+    .dashboard .renderdash {
+    }
+</style>
+<div class="container">
+    <div class="row dashboard margint50 marginb25">
+        <div class="col-md-3"> @*/* dit is de juiste manier om het te centereren .furkan */*@
+          @await Html.PartialAsync("_ManageNav")
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9 renderdash">
+            <div class="" style="background-color: #393a3e;padding:20px;">
             @RenderBody()
+                </div>
         </div>
     </div>
 </div>
