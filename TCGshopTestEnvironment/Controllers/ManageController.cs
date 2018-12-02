@@ -191,6 +191,10 @@ namespace TCGshopTestEnvironment.Controllers
 
 
             var model = _manage.OrderOverview(user.Email);
+            if (User.IsInRole("Admin"))
+            {
+                model = _manage.GetAllOrders();
+            }
             return View(model);
         }
 
@@ -202,7 +206,11 @@ namespace TCGshopTestEnvironment.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
 
-            var model = _manage.Orderdetails(user.Email, orderid);
+            var model = _manage.Orderdetails(orderid);
+            if (user.Email != model.Email && !User.IsInRole("Admin"))
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
             return View(model);
         }
 
