@@ -364,7 +364,6 @@ namespace TCGshopTestEnvironment.Controllers
             return View(model);
         }
 
-
         //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> FixDatabase(bool yes)
@@ -381,7 +380,6 @@ namespace TCGshopTestEnvironment.Controllers
                 string categories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\DbRestore\\_categories.sql");
                 string products = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\DbRestore\\_products.sql");
                 string productsCategories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\DbRestore\\_ProductCategory.sql");
-
 
                 //Dont await any of them, so they all execute async
                 await _context.Database.ExecuteSqlCommandAsync(categories);
