@@ -2,6 +2,15 @@
 for details on configuring this project to bundle and minify static web assets. */
 /*  Clearfix */
 
+.table#productsIndexTable th, .table#productsIndexTable td, .table#productsIndexTable a {
+    color: white;
+}
+.card div {
+    color: white;
+}
+.card .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: transparent;
+}
 .label-primary {
     background-color: #f5b740;
     color: #393a3e;
