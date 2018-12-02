@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Services;
@@ -19,19 +21,22 @@ namespace TCGshopTestEnvironment.Controllers
         private readonly IManage _manage;
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly UserManager<UserAccount> _userManager;
+        private readonly DBModel _context;
 
         public ManageController(
             UserManager<UserAccount> userManager,
             ILogger<ManageController> logger,
             SignInManager<UserAccount> signInManager,
             IEmailSender emailSender,
-            IManage manage)
+            IManage manage,
+            DBModel context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _manage = manage;
+            _context = context;
         }
 
         [TempData] public string StatusMessage { get; set; }
@@ -357,6 +362,34 @@ namespace TCGshopTestEnvironment.Controllers
             });
 
             return View(model);
+        }
+
+
+        //[Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> FixDatabase(bool yes)
+        {
+            if (yes && string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ProductionTCG")))
+            {
+                //Delete DB
+                await _context.Database.EnsureDeletedAsync();
+
+                //Run Migrations
+                _context.Database.Migrate();
+
+                //Load Data in DB
+                string categories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\DbRestore\\_categories.sql");
+                string products = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\DbRestore\\_products.sql");
+                string productsCategories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\DbRestore\\_ProductCategory.sql");
+
+
+                //Dont await any of them, so they all execute async
+                await _context.Database.ExecuteSqlCommandAsync(categories);
+                await _context.Database.ExecuteSqlCommandAsync(products);
+                await _context.Database.ExecuteSqlCommandAsync(productsCategories);
+            }
+
+            return Ok();
         }
 
         #region Helpers
