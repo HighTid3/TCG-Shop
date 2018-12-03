@@ -2,7 +2,7 @@
     shoppingCart.forEach(function (e) {
         floatprice = e.Price.replace(/,/g, ".");
         totalprice = e.Amount * parseFloat(floatprice).toFixed(2);
-        var image = "<div class=\"shoppingCartImg\"><img src=\"" + storagePath + e.ImageUrl + "class=\"imageCell\" /></div>";
+        var image = "<div class=\"shoppingCartImg\"><img src=\"" + storagePath + e.ImageUrl + "\" class=\"imageCell\" /></div>";
         $('#my-ajax-table > tbody:last-child').append('<div class="container" id="'+"row".concat(e.ProductId)+'">' +
             '<div class="row lineCart"><div class="col-md-2 imageShoppingJs"> ' + image + '</div>' +
             '<div class="col-md-4 CartTitleColomn" style=""padding-left:210px;padding-right:10px;>' +
