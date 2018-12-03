@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace TCGshopTestEnvironment.ViewModels
+﻿namespace TCGshopTestEnvironment.ViewModels
 {
     public class ProductsShopCartViewModel
     {
@@ -14,7 +9,6 @@ namespace TCGshopTestEnvironment.ViewModels
         public decimal Price { get; set; }
         public string Grade { get; set; }
         public int Amount { get; set; }
-        public decimal TotalPrice { get; set; } 
+        public decimal TotalPrice { get; set; }
     }
-    
 }

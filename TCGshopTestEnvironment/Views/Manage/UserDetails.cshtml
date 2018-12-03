@@ -1,0 +1,66 @@
+﻿@model TCGshopTestEnvironment.ViewModels.ManageViewModels.UserManagementDetailsViewModel
+@{
+    ViewData["Title"] = "User";
+    ViewData.AddActivePage(ManageNavPages.UserManagement);
+}
+
+<h4>@ViewData["Title"] @Model.Username</h4>
+
+
+<div class="container">
+    <div class="row">
+        <div class="" style="margin-top:30px; margin-bottom: 30px;">
+            <div class="col-md-6" style="margin-bottom: 30px;">
+                    <div class="form-group">
+                        <label asp-for="Username" class="col-md-3 regLabel">Username</label>
+                        <label maxlength="200">@Model.Username</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="col-md-3 regLabel">Email Address</label>
+                        <label maxlength="200">@Model.Email</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="col-md-3 regLabel">First Name</label>
+                        <label  maxlength="200" >@Model.FirstName</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="col-md-3 regLabel">Last Name</label>
+                        <label maxlength="200">@Model.LastName</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Country" class="col-md-3 regLabel"></label>
+                        <label maxlength="200">@Model.Country</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" class="col-md-3 regLabel"></label>
+                        <label maxlength="200">@Model.Address</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ZipCode" class="col-md-3 regLabel"></label>
+                        <label maxlength="10">@Model.ZipCode</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="col-md-3 regLabel"></label>
+                        <label maxlength="200">@Model.PhoneNumber</label>
+
+                    </div>
+                    <p class="col-md-3 regReq">
+                    </p>
+                    <div class="col-md-12 text-center">
+                        <a asp-action="UserEdit" asp-route-username="@Model.Username"><button class="btn btn-primary btnRegister">Edit</button></a>
+                    </div>
+            </div>
+            <div class="col-md-1">
+
+
+            </div>
+        </div>
+    </div>
+</div>

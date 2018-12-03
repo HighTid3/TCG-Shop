@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TCGshopTestEnvironment.ViewModels
+namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
 {
-    public class RegisterViewModel
+    public class UserManagementDetailsViewModel
     {
         [Required]
         [MaxLength(256)]
         [Display(Name = "Username")]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         [EmailAddress(ErrorMessage = "The Email Address already exists")]
         [RegularExpression(
@@ -19,22 +19,9 @@ namespace TCGshopTestEnvironment.ViewModels
         [Display(Name = "Email Address")]
         public string Email { get; set; }
 
-        [MinLength(6, ErrorMessage = "The password must be between 6 and 50 characters long.")]
-        [MaxLength(50, ErrorMessage = "The Password must be between 6 and 50 characters long.")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        [Required]
-        public string Password { get; set; }
+        public bool EmailConfirmed { get; set; }
 
-        [Required]
-        [MaxLength(256)]
-        [Display(Name = "First name")]
-        public string FirstName { get; set; }
-
-        [Required]
-        [MaxLength(256)]
-        [Display(Name = "Last name")]
-        public string LastName { get; set; }
+        [DataType(DataType.PhoneNumber)] public string PhoneNumber { get; set; }
 
         public string Country { get; set; }
 
@@ -42,11 +29,15 @@ namespace TCGshopTestEnvironment.ViewModels
 
         [DataType(DataType.PostalCode)] public string ZipCode { get; set; }
 
-        [DataType(DataType.PhoneNumber)] public string PhoneNumber { get; set; }
+        [Required]
+        [MaxLength(256)]
+        [Display(Name = "Last name")]
+        public string LastName { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm Password")]
-        [Compare("Password", ErrorMessage = "The password does not match the confirmation password.")]
-        public string ConfirmPassword { get; set; }
+        [Required]
+        [MaxLength(256)]
+        [Display(Name = "First name")]
+
+        public string FirstName { get; set; }
     }
 }

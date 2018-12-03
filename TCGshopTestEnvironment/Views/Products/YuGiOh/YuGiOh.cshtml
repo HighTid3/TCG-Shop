@@ -22,20 +22,12 @@
                 @await Html.PartialAsync("/Views/Products/_Filters.cshtml")
                 <div class="col-md-9">
                     <div class="col-md-12">
-                        
-                        @using (Html.BeginForm(FormMethod.Get, new { id = "TheForm" }))
-                        {
+                       
                         <div class="col-md-9 float-right text-right">
-                            <span>Sort By: </span>
+                            <span style="color: white">Sort By: </span>
                         </div>
-                        <div class="col-md-3">
-                            <input type="hidden" name="name" value="@ViewBag.name" />
-                            <input type="hidden" name="pageAmount" value="@ViewBag.PageAmount" />
-                            <input type="hidden" name="cardType" value="@ViewBag.cardType"/>
-                        </div>
-                        }
-                        @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })
-                         
+
+                        @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "productformsorting()", @style = "display: block", @id = "sortingform" })                         
 
                     </div>
                     @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
@@ -47,7 +39,7 @@
                             </div>
 
                             <div class="col-md-5 paginationbutton" style="float:right;">
-                               <span> Results per page: </span>
+                                <span style="color: white"> Results per page: </span>
                                 <input type="button" value="8" onclick="location.href='@Url.Action("Index", new { ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=8'" />
                                 <input type="button" value="16" onclick="location.href='@Url.Action("Index", new { ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=16'" />
                                 <input type="button" value="32" onclick="location.href='@Url.Action("Index", new { ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=32'" />

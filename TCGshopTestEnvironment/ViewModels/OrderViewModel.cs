@@ -2,24 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using TCGshopTestEnvironment.Models;
 
 namespace TCGshopTestEnvironment.ViewModels
 {
     public class OrderViewModel
     {
-        [ScaffoldColumn(false)]
-        public int OrderId { get; set; }
+        [ScaffoldColumn(false)] public int OrderId { get; set; }
 
-        [ScaffoldColumn(false)]
-        public System.DateTime OrderDate { get; set; }
+        [ScaffoldColumn(false)] public DateTime OrderDate { get; set; }
 
-        [ScaffoldColumn(false)]
-        public string Username { get; set; }
+        [ScaffoldColumn(false)] public string Username { get; set; }
 
         [Required(ErrorMessage = "First Name is required")]
         [DisplayName("First Name")]
@@ -58,15 +50,13 @@ namespace TCGshopTestEnvironment.ViewModels
 
         [Required(ErrorMessage = "Email Address is required")]
         [DisplayName("Email Address")]
-
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}",
             ErrorMessage = "Email is is not valid.")]
         [DataType(DataType.EmailAddress)]
 
         public string Email { get; set; }
-        [ScaffoldColumn(false)]
 
-        public decimal Total { get; set; }
+        [ScaffoldColumn(false)] public decimal Total { get; set; }
 
         public List<ProductsShopCartViewModel> OrderDetails { get; set; }
 

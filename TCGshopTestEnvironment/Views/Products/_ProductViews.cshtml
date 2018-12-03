@@ -7,10 +7,10 @@
 
     @foreach (var asset in ViewBag.OnePageOfProducts)
     {
-        
         <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 405px; width: 270px;">
             <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
                 <div>
+                    
                     <h1 class="ProductTitleCat" title="@asset.Name">@asset.Name</h1>
 
                     @*check if product is in wishlist or not, show icon accordingly*@
@@ -26,13 +26,17 @@
                 <div class="">
                 <div class="col-md-6">
 
-                <h4 class="priceh4">€@asset.Price</h4>
+                    <h4 class="priceh4">€@asset.Price</h4>
+
                 </div>
                 <div class="col-md-6">
-                @*Button action handler, one for signed in users, one for guests*@
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    
+                    @*Button action handler, one for signed in users, one for guests*@
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="EditProduct" asp-route-productid="@asset.Id"><span class="fa fa-pencil editSvg"></span></a>
+                    }
                         if (ViewBag.wishlist.Contains(asset.Id))
                         {
                             <span class="glyphicon glyphicon-star-empty clicked" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>
@@ -42,15 +46,16 @@
                             <span class="glyphicon glyphicon-star-empty notclicked" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>
                         }
 
-                   <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '@asset.Name', '@asset.Price', '@asset.Grade', '1');AddLocalCartToDatabase()" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;background-color: transparent; border-color: transparent;margin-bottom: 10px;" > <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
-                    @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
-                }
-                else
-                {
-                    <button id="AddCartBtn" onclick="AddToCart('@asset.Id', '@asset.Name', '@asset.ImageUrl', '@asset.Price', '@asset.Grade', '1')" class="btnSignIn AddCart" style="background-color:transparent;border-color:transparent; padding-left:50px; margin-bottom: 10px;"> <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
-                    @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
-                }
-                    </div>
+                        <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '@asset.Name', '@asset.Price', '@asset.Grade', '1');AddLocalCartToDatabase()" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;background-color: transparent; border-color: transparent;margin-bottom: 10px;"> <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+                        @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
+                    }
+                    else
+                    {
+                        <button id="AddCartBtn" onclick="AddToCart('@asset.Id', '@asset.Name', '@asset.ImageUrl', '@asset.Price', '@asset.Grade', '1')" class="btnSignIn AddCart" style="background-color:transparent;border-color:transparent; padding-left:50px; margin-bottom: 10px;"> <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
+                        @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
+                    }
+
+                </div>
                     </div>
             </div>
         </div>

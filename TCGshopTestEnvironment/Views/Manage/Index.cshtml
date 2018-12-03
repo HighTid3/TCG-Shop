@@ -5,6 +5,9 @@
 }
 
 <h4>@ViewData["Title"]</h4>
+
+
+
 @Html.Partial("_StatusMessage", Model.StatusMessage)
 <div class="row">
     <div class="col-md-6">
@@ -300,7 +303,7 @@
                 <input asp-for="ZipCode" class="form-control" />
                 <span asp-validation-for="ZipCode" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Save</button>
+            <button type="submit" class="btn btn-default btnSearch">Save</button>
         </form>
     </div>
 </div>

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TCGshopTestEnvironment.ViewModels
 {
@@ -22,7 +19,5 @@ namespace TCGshopTestEnvironment.ViewModels
         public int ViewsDetails { get; set; }
 
         public string ImageUrl { get; set; }
-
-    
     }
 }

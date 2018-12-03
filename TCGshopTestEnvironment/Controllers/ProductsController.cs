@@ -1,27 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2;
-using TCGshopTestEnvironment.Services;
-using TCGshopTestEnvironment.ViewModels;
-using X.PagedList.Mvc;
-using X.PagedList;
 using Microsoft.EntityFrameworkCore;
+using Minio;
+using Minio.Exceptions;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Models.JoinTables;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Net.Http.Headers;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using System.Net;
-using Minio;
-using Minio.DataModel;
-using Minio.Exceptions;
-using Microsoft.AspNetCore.Identity;
+using TCGshopTestEnvironment.Services;
+using TCGshopTestEnvironment.ViewModels;
+using X.PagedList;
 
 namespace TCGshopTestEnvironment.Controllers
 {
@@ -83,8 +76,8 @@ namespace TCGshopTestEnvironment.Controllers
                 ViewBag.wishlist = wishlistproducts;
             }
 
-                //viewbags to send to the view
-                ViewBag.page = page;
+            //viewbags to send to the view
+            ViewBag.page = page;
             ViewBag.PageAmount = pageAmount;
             ViewBag.name = "Name";
             ViewBag.totalCategory = cardscategory;
@@ -119,7 +112,7 @@ namespace TCGshopTestEnvironment.Controllers
                     Stock = result.prods.Stock,
                     CardCatagoryList = result.Catnames,
                     Favorites = false,
-                    
+
                 });
 
             //filters
@@ -188,18 +181,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         public IActionResult Detail(int id)
         {
-            var asset = _assets.GetByID(id);
-
-            var model = new ProductsDetailModel
-            {
-                Id = asset.ProductId,
-                Description = asset.Description,
-                Grade = asset.Grade,
-                Name = asset.Name,
-                Price = asset.Price,
-                Stock = asset.Stock,
-                ImageUrl = asset.ImageUrl
-            };
+            var model = _assets.GetByID(id);
             return View(model);
         }
 
@@ -344,7 +326,7 @@ namespace TCGshopTestEnvironment.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+
                 Products Product = new Products
                 {
                     Name = vm.Name,
@@ -397,7 +379,7 @@ namespace TCGshopTestEnvironment.Controllers
             if (!ModelState.IsValid)
 
             {
-                return Json(new {status = "error", message = "The model is not correct"});
+                return Json(new { status = "error", message = "The model is not correct" });
             }
 
 
@@ -472,7 +454,7 @@ namespace TCGshopTestEnvironment.Controllers
                     status = "Error",
                     message = "File Upload Error:" + e.Message
                 });
-        }
+            }
 
         }
 
@@ -487,6 +469,52 @@ namespace TCGshopTestEnvironment.Controllers
             var stock = _assets.GetByID(productId).Stock;
 
             return Json(stock);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult EditProduct(int productid)
+        {
+            var model = _assets.GetByID(productid);
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> EditProduct(ProductsDetailModel vm)
+        {
+            Products changedproduct = _assets.GetProductsById(vm.Id);
+
+            var Name = vm.Name;
+            if (changedproduct.Name != Name)
+            {
+                changedproduct.Name = Name;
+            }
+            var Grade = vm.Grade;
+            if (changedproduct.Grade != Grade)
+            {
+                changedproduct.Grade = Grade;
+            }
+            var Description = vm.Description;
+            if (changedproduct.Description != Description)
+            {
+                changedproduct.Description = Description;
+            }
+            var Stock = vm.Stock;
+            if (changedproduct.Stock != Stock)
+            {
+                changedproduct.Stock = Stock;
+            }
+            var Price = vm.Price;
+            if (changedproduct.Price != Price)
+            {
+                changedproduct.Price = Price;
+            }
+
+            _context.products.Update(changedproduct);
+            _context.SaveChanges();
+
+            return RedirectToAction("Detail", new { id = vm.Id });
         }
     }
 }

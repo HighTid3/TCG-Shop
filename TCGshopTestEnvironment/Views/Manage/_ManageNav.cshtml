@@ -4,9 +4,81 @@
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
 
-<ul class="nav nav-pills nav-stacked">
-    <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-action="Index">Change Personal Details</a></li>
-    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a asp-action="ChangePassword">Password</a></li>
-    <li class="@ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"><a asp-action="Orders">Orders</a></li>
-</ul>
+<style>
+    .managenav a {
+        color: white;
+}
+    .dashboardSvg {
+        color: #e4e4e4;
+        font-size: 8rem;
+        text-align: center;
+    }
+    .navmanagTitle {
+        font-size: 23px;
+        color: white;
+    }
+</style>
 
+<ul class="nav nav-pills nav-stacked">
+    <div class="">
+        <div class="row">
+            <div class="managenav col-md-12 navLeftItem" style="margin-bottom:10px;padding: 20px 0;">
+                <div class="col-md-7">
+                    <h5 class="navmanagTitle">
+                        <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-action="Index">My Personal <br /> Details</a></li>
+                    </h5>
+                </div>
+                <div class="col-md-5 text-center">
+                    <i class="fa fa-user dashboardSvg"></i>
+                </div>
+            </div>
+            <div class="managenav col-md-12 navLeftItem" style="margin-bottom:10px;padding: 20px 0;">
+                <div class="col-md-7">
+                    <h5 class="navmanagTitle">
+                        <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a asp-action="ChangePassword">Change password</a></li>
+                    </h5>
+                </div>
+                <div class="col-md-5 text-center">
+                    <h5 class="navmanagTitle">
+                        <i class="fa fa-cog dashboardSvg"></i>
+                    </h5>
+                </div>
+            </div>
+            <div class="managenav col-md-12 navLeftItem" style="margin-bottom:10px;padding: 20px 0;">
+                <div class="col-md-7">
+                    <h5 class="navmanagTitle">
+                        <li class="@ManageNavPages.OrdersNavClass(ViewContext)"><a asp-action="Orders">View <br /> Orders</a></li>
+                    </h5>
+                </div>
+                <div class="col-md-5 text-center">
+                    <i class="fa fa-inbox dashboardSvg"></i>
+                </div>
+            </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="managenav col-md-12 navLeftItem" style="margin-bottom:10px;padding: 20px 0;">
+                    <div class="col-md-7">
+                        <h5 class="navmanagTitle">
+                            <li class="@ManageNavPages.UserManagementNavClass(ViewContext)"><a asp-action="UserManagement">User Management</a></li>
+                        </h5>
+                    </div>
+                    <div class="col-md-5 text-center">
+                        <i class="fa fa-th-list dashboardSvg"></i>
+                    </div>
+                </div>
+                <div class="managenav col-md-12 navLeftItem" style="margin-bottom:10px;padding: 20px 0;">
+                    <div class="col-md-7">
+                        <h5 class="navmanagTitle">
+                            <li class="@ManageNavPages.NewProductNavClass(ViewContext)"><a asp-action="NewProduct" asp-controller="Products">Add Card</a></li>
+                        </h5>
+                    </div>
+                    <div class="col-md-5 text-center">
+                        <i class="fa fa-plus-square dashboardSvg"></i>
+                    </div>
+                </div>
+            }
+            </div>
+        </div>
+
+    
+</ul>

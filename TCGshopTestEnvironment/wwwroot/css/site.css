@@ -2,6 +2,45 @@
 for details on configuring this project to bundle and minify static web assets. */
 /*  Clearfix */
 
+.editSvg {
+    color:white;
+    font-size: 25px;
+    padding-right: 10px;
+}
+
+.table#productsIndexTable th, .table#productsIndexTable td, .table#productsIndexTable a {
+    color: white;
+}
+.card div {
+    color: white;
+}
+.card .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: transparent;
+}
+.label-primary {
+    background-color: #f5b740;
+    color: #393a3e;
+}
+
+.panel {
+    background-color: #393a3e;
+    color: white;
+}
+.panel a {
+    color: white;
+    font-weight: 700;
+}
+.table-hover > tbody > tr:hover {
+    background-color: transparent;
+    font-weight: 500;
+}
+.panel-footer {
+    background-color: #393a3e;
+}
+.panel-primary {
+    border-color: transparent;
+}
+
 .paginationbutton input[type="button"] {
     position: relative;
     padding: 6.5px 10px;

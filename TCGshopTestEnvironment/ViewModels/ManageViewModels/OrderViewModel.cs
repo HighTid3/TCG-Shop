@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TCGshopTestEnvironment.Models;
-
-namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
+﻿namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
 {
     public class OrderViewModel
     {
@@ -19,6 +13,5 @@ namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
         public decimal UnitPrice { get; set; }
 
         public decimal TotalPrice { get; set; }
-        
     }
 }

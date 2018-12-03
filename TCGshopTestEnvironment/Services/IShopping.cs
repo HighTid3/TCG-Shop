@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using TCGshopTestEnvironment.Models.JoinTables;
 using TCGshopTestEnvironment.ViewModels;
 
@@ -13,6 +10,4 @@ namespace TCGshopTestEnvironment.Services
 
         IQueryable<ProductsShopCartViewModel> ShoppinCartItems(string name);
     }
-
-
 }

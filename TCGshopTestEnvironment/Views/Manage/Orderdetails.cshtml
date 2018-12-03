@@ -57,17 +57,17 @@
                     <tbody>
                     @foreach (var order in Model.Orderdetails)
                     {
-                        <a asp-action="">
+
                             <tr class="assetRow">
                                 <td class="">@order.ProductId</td>
-                                <td class="">@order.ProductName</td>
+                                <td class=""><a asp-controller="Products" asp-action="Detail" asp-route-id="@order.ProductId" style="color: white"> @order.ProductName</a></td>
                                 <td class="">@order.Grade</td>
                                 <td class="">@order.Quantity</td>
                                 <td class="">@order.UnitPrice</td>
                                 <td class="">@order.TotalPrice</td>
 
                             </tr>
-                        </a>
+
                     }
                     </tbody>
                 </table>

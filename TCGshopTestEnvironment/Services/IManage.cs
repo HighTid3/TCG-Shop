@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.ViewModels.ManageViewModels;
 
 namespace TCGshopTestEnvironment.Services
@@ -9,9 +7,15 @@ namespace TCGshopTestEnvironment.Services
     public interface IManage
     {
         IEnumerable<OrderOverviewViewModel> OrderOverview(string useremail);
+        IEnumerable<OrderOverviewViewModel> GetAllOrders();
 
-        OrderDetailsViewModel Orderdetails(string useremail, int OrderId);
+
+        OrderDetailsViewModel Orderdetails(int OrderId);
+
+        
+
+        IEnumerable<UserAccount> GetRegisteredUsers();
+
+        UserAccount GetRegisteredUserbyUsername(string username);
     }
-
-
 }
