@@ -80,7 +80,7 @@ i {
 .chip {
     display: inline-block;
     height: 32px;
-    
+
     font-weight: 500;
     color: rgba(0,0,0,0.6);
     line-height: 32px;
@@ -133,7 +133,7 @@ i {
         border: 0;
         color: rgba(0,0,0,0.6);
         display: inline-block;
-        
+
         height: 3rem;
         line-height: 32px;
         outline: 0;
@@ -146,8 +146,6 @@ i {
             border: 0 !important;
             box-shadow: none !important;
         }
-
-
 
 ::-webkit-input-placeholder {
     color: #d1d1d1;
@@ -192,7 +190,6 @@ i {
     }
 
 .autocomplete-content {
-    
     display: block;
     opacity: 1;
     position: static;

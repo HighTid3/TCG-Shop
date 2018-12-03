@@ -21,19 +21,17 @@
     <div id="productsTable" style="background-color:#313336;width: 700px;padding-top:50px;padding-bottom:40px;">
         <table class="table table-condensed" id="productsIndexTable">
             <thead>
-                
             </thead>
             <tbody>
                 @foreach (var asset in @Model)
                 {
                     <div class="container" id="row-@asset.WishlistId">
-                    <div class="row assetRow" >
+                    <div class="row assetRow">
                         <div class="col-md-2 text-center">
                             <img src="@(Startup.storagePath + asset.ImageUrl)" class="" width="100" />
                         </div>
                         <div class="col-md-2" style="color:#efefef;"> <h1>@asset.Name</h1> <small style="text-transform:uppercase;font-weight: 500;"> Grade: @asset.Grade</small></div>
                         <div class="col-md-2">
-
                         </div>
                         <div class="col-md-3">
                             <button id="AddCartBtn" onclick="postToCart('@asset.Id', '@User.Identity.Name', '@asset.ImageUrl', '@asset.Name', '@asset.Price', '@asset.Grade', '1')" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
@@ -45,9 +43,8 @@
                                 </a>
                             </div>
                         </div>
-
                         </div>
-                            <hr style="width: 650px; float: left; clear: right;color:#666666 !important;"/>
+                            <hr style="width: 650px; float: left; clear: right;color:#666666 !important;" />
                        </div>
 
                        }

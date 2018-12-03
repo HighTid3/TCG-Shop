@@ -7,16 +7,12 @@
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-4">
-
         </div>
     </div>
 </div>
-
-
 
 <div id="asssets">
     <div id="productsTable">
@@ -31,9 +27,6 @@
                         </div>
 
                         @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "productformsorting()", @style = "display: block", @id = "sortingform" })
-
-
-
                     </div>
                     @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
 
@@ -45,10 +38,10 @@
 
                             <div class="col-md-3 paginationbutton">
                                 <span style="color: white"> Results per page: </span>
-                                <input type="button" value="8" onclick="location.href = '@Url.Action("Index", new {ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=8'"/>
-                                <input type="button" value="16" onclick="location.href = '@Url.Action("Index", new {ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=16'"/>
-                                <input type="button" value="32" onclick="location.href = '@Url.Action("Index", new {ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=32'"/>
-                                <input type="button" value="64" onclick="location.href = '@Url.Action("Index", new {ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=64'"/>
+                                <input type="button" value="8" onclick="location.href = '@Url.Action("Index", new {ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=8'" />
+                                <input type="button" value="16" onclick="location.href = '@Url.Action("Index", new {ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=16'" />
+                                <input type="button" value="32" onclick="location.href = '@Url.Action("Index", new {ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=32'" />
+                                <input type="button" value="64" onclick="location.href = '@Url.Action("Index", new {ViewBag.page, ViewBag.CardType, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=64'" />
                             </div>
                         </div>
                     </div>

@@ -15,7 +15,6 @@ function transformToAssocArray(prmstr) {
 
 var params = getSearchParameters();
 
-
 $.ajax({
     type: "GET",
     url: "/Checkout/ProcessingStatus",

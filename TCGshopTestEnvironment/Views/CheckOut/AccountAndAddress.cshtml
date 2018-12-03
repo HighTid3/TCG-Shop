@@ -175,13 +175,9 @@
                     </div>
                 </div>
             </form>
-
-
         </div>
-
     </div>
 </div>
-
 
 <script>
     //Local Input Validation
@@ -275,22 +271,15 @@
         };
     });
 
-
-
-
-
     //Posting Date + Shopping Cart
     $("#AccountAndAddressForm").submit(function(e) {
 
-
         var form = $(this);
-
 
         var dform = objectifyForm(form.serializeArray());
 
         var stupidArray = [];
         stupidArray.push(dform);
-
 
         function objectifyForm(formArray) { //serialize data function
 
@@ -300,7 +289,6 @@
             }
             return returnArray;
         }
-
 
         var d = { OrderViewModel: stupidArray, OrderDetails: shoppingCart };
 
@@ -316,11 +304,8 @@
             }
         });
 
-
         e.preventDefault(); // avoid to execute the actual submit of the form.
     });
-
-
 
     //Autofill street based on postcode
     $("input[id='PostalCode']").keyup(function count() {
@@ -356,10 +341,8 @@
                     $("input[id='State']").trigger("keyup");
                     $("input[id='Country']").trigger("keyup");
 
-
                 }
             });
         }
     });
-
 </script>

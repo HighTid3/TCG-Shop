@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System.Threading.Tasks;
 
 namespace TCGshopTestEnvironment.Services
 {
@@ -36,7 +36,7 @@ namespace TCGshopTestEnvironment.Services
             // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
             msg.TrackingSettings = new TrackingSettings
             {
-                ClickTracking = new ClickTracking {Enable = false}
+                ClickTracking = new ClickTracking { Enable = false }
             };
 
             return client.SendEmailAsync(msg);

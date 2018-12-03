@@ -4,7 +4,6 @@
 // Write your JavaScript code.
 
 $("#textSearch").keyup(function (e) {
-
     console.log("HELLO");
     // get the value ftom input
     var text = $(this).val();
@@ -25,14 +24,11 @@ $("#textSearch").keyup(function (e) {
                 }
             });
     }
-
 });
-
 
 $(document).on("click",
     "#result > option",
     function () {
-
         //add selected value to #search
         $("#textSearch").val($(this).val());
 
@@ -44,23 +40,18 @@ $(".AddCart").submit(function (e) {
     e.preventDefault();
 });
 
-
 //Check if Local Storage has already been set
 if (localStorage.getItem("shoppingCart") === null) {
     console.log("Shopping Cart Empty");
     var shoppingCart = [];
-
 } else {
     console.log("Shopping Not Cart Empty");
     console.log("Trying to restore Cart");
     var shoppingCart = JSON.parse(localStorage.getItem("shoppingCart"));
     console.table(shoppingCart);
 
-
-
     //Fill Table
 }
-
 
 //modalbox for popup addtocart
 function ModalBox(imageUrl) {
@@ -98,11 +89,10 @@ function ModalBox(imageUrl) {
 
 //add product to local shoppingcart
 function AddToCart(id, productname, imageUrl, price, grade, count) {
-
     var product = { 'ProductId': id, 'Name': productname, 'ImageUrl': imageUrl, 'Price': price, 'Grade': grade, 'Amount': count }
 
     console.log($.inArray(product, shoppingCart));
-    
+
     shoppingCartindex = shoppingCart.findIndex((obj => obj.Name === product.Name)); //check index of the added product
     if (shoppingCartindex != -1) { // if the shoppingcart already contains the to be added product, get the current stock of the product
         $.ajax
@@ -136,20 +126,19 @@ function AddToCart(id, productname, imageUrl, price, grade, count) {
         ModalBox(imageUrl);
     }
 }
-    //$.post("/Products/GetStockofCard", { "productId": id },
-    //    function (data) { if (shoppingCart[shoppingCartindex]["Amount"] === data) { console.log("error") } });
-
+//$.post("/Products/GetStockofCard", { "productId": id },
+//    function (data) { if (shoppingCart[shoppingCartindex]["Amount"] === data) { console.log("error") } });
 
 //method for setting amount in detailmodel
 $('.qty').click(function () {
     var $t = $(this),
-        $in = $('input[name="'+$t.data('field')+'"]'),
+        $in = $('input[name="' + $t.data('field') + '"]'),
         val = parseInt($in.val()),
         valMax = $('#productStock').attr('value'),
         valMin = 1;
 
     // Check if a number is in the field first
-    if(isNaN(val) || val < valMin) {
+    if (isNaN(val) || val < valMin) {
         // If field value is NOT a number, or
         // if field value is less than minimum,
         // ...set value to 0 and exit function
@@ -163,13 +152,12 @@ $('.qty').click(function () {
     }
 
     // Perform increment or decrement logic
-    if($t.data('func') == 'plus') {
-        if(val < valMax) $in.val(val + 1);
+    if ($t.data('func') == 'plus') {
+        if (val < valMax) $in.val(val + 1);
     } else {
-        if(val > valMin) $in.val(val - 1);
+        if (val > valMin) $in.val(val - 1);
     }
 });
-
 
 //post method for adding products to database shoppingbasket
 function postToCart(productId, userName, imageUrl, productname, price, grade, amount) {
@@ -197,7 +185,6 @@ function postToCart(productId, userName, imageUrl, productname, price, grade, am
                                 success: function (response) {
                                     AddToCart(productId, productname, imageUrl, price, grade, amount);
                                     ModalBox(imageUrl);
-
                                 }
                             });
                         return false;
@@ -221,7 +208,6 @@ function postToCart(productId, userName, imageUrl, productname, price, grade, am
                 success: function (response) {
                     AddToCart(productId, productname, imageUrl, price, grade, amount);
                     ModalBox(imageUrl);
-
                 }
             });
         return false;
@@ -233,7 +219,7 @@ function AddDbCarttoLocal() {
             type: 'POST',
             url: '/Shopping/AddDbCarttoLocal',
             success: function (data) {
-                data.forEach(function(e) {
+                data.forEach(function (e) {
                     console.log(e)
                     console.log(e["productId"])
                     var product = {
@@ -255,18 +241,16 @@ function AddDbCarttoLocal() {
                         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
                         ShoppingcartBadge();
                     }
-
                 });
                 window.location.href = "/";
-
             }
         });
 }
 
 /*setTimeout(*/function AddLocalCartToDatabase() {
-        if (localStorage.getItem("shoppingCart") !== null) {
-            var local = shoppingCart;
-            $.ajax
+    if (localStorage.getItem("shoppingCart") !== null) {
+        var local = shoppingCart;
+        $.ajax
             ({
                 type: 'POST',
                 url: '/Shopping/AddLocalCartToDatabase',
@@ -274,16 +258,16 @@ function AddDbCarttoLocal() {
                 {
                     vm: local
                 },
-                success: function() {
+                success: function () {
                     //shoppingCart = [];
                     localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
                 }
             });
-        }
-
-        return false;
     }
-    /*,500)*/
+
+    return false;
+}
+/*,500)*/
 
 $("#loginform").submit(function (e) {
     var form = $(this);
@@ -301,13 +285,10 @@ $("#loginform").submit(function (e) {
             else {
                 $("#errormessages").html("Username or Password is incorrect.")
             }
-            
         }
-
     });
     e.preventDefault();
 });
-
 
 function ShoppingcartBadge() {
     var totalproductamount = 0;
@@ -322,20 +303,18 @@ ShoppingcartBadge();
 
 //post method for adding products to favorites
 function postToWishlist(productId) {
-
     if (productId) {
         $.ajax
-        ({
-            type: 'POST',
-            url: '/Wishlist/AddToWishlist',
-            data:
-            {
-                productId: productId
-            },
-            success: function (response) {
-
-            }
-        });
+            ({
+                type: 'POST',
+                url: '/Wishlist/AddToWishlist',
+                data:
+                {
+                    productId: productId
+                },
+                success: function (response) {
+                }
+            });
     }
 
     return false;
@@ -354,15 +333,12 @@ function toggleWishlist(classId) {
         element.classList.remove("notclicked");
     }
     element.classList.toggle("clicked");
-
-
 }
 
 //price input in product edit page
 $('#priceinput').on('input', function () {
     $(this).val($(this).val().replace(/\./g, ','));
 });
-
 
 //add current sort to form on submit
 function productformsorting() {

@@ -5,18 +5,12 @@
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
 
-
-
-
 <div class="container">
     <div class="row">
         <div class="col-md-4">
-
         </div>
     </div>
 </div>
-
-
 
 <div id="asssets">
     <div id="productsTable">
@@ -30,8 +24,6 @@
                             </div>
 
                         @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "productformsorting()", @style = "display: block", @id = "sortingform" })
-
-
                     </div>
                     @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
 

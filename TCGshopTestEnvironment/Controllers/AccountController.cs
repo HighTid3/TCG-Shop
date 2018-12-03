@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using TCGshopTestEnvironment.Models;
-using TCGshopTestEnvironment.ViewModels;
-using TCGshopTestEnvironment.Controllers;
-using TCGshopTestEnvironment.Services;
-using System.Text.Encodings.Web;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using System.ComponentModel.DataAnnotations;
 using PostcodeAPI;
 using PostcodeAPI.Wrappers;
+using System;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
+using TCGshopTestEnvironment.Models;
+using TCGshopTestEnvironment.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,15 +16,13 @@ namespace TCGshopTestEnvironment.Controllers
 {
     public class AccountController : Controller
     {
-
         private readonly UserManager<UserAccount> _userManager;
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly IEmailSender _emailSender;
 
         //Dit is voor de Postcode naar straat api. (We hebben een limiet van 100 calls)
         // Instantiate the client with your API key
-        private readonly PostcodeApiClient _postcodeApiClient = new PostcodeApiClient("K95SESr2l162I7u1KxQn61zEc1s36rak5j3SAld9"); 
-
+        private readonly PostcodeApiClient _postcodeApiClient = new PostcodeApiClient("K95SESr2l162I7u1KxQn61zEc1s36rak5j3SAld9");
 
         public AccountController(UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager, IEmailSender emailSender)
         {
@@ -65,14 +58,12 @@ namespace TCGshopTestEnvironment.Controllers
         [HttpGet]
         public async Task<IActionResult> ForgotPassword()
         {
-
             return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> ForgotPasswordConfirmation()
         {
-
             return View();
         }
 
@@ -90,7 +81,7 @@ namespace TCGshopTestEnvironment.Controllers
                     return RedirectToAction("ForgotPasswordConfirmation", "Account");
                 }
 
-                // For more information on how to enable account confirmation and password reset please 
+                // For more information on how to enable account confirmation and password reset please
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 //var callbackUrl = Url.Page(
@@ -107,7 +98,6 @@ namespace TCGshopTestEnvironment.Controllers
                     Protocol = HttpContext.Request.Scheme
                 });
 
-
                 await _emailSender.SendEmailAsync(
                     vm.Email,
                     "Reset Password",
@@ -121,7 +111,6 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         public ResetPasswordViewModel RpInput { get; set; }
-
 
         //Reset Password
         [HttpGet]
@@ -172,19 +161,14 @@ namespace TCGshopTestEnvironment.Controllers
         [HttpGet]
         public async Task<IActionResult> ResetPasswordConfirmation()
         {
-
             return View();
         }
-
-
-
 
         [HttpGet]
         public IActionResult Login()
         {
             ViewBag.Title = "Login Page";
             return View();
-
         }
 
         [HttpPost]
@@ -195,29 +179,25 @@ namespace TCGshopTestEnvironment.Controllers
                 var result = await _signInManager.PasswordSignInAsync(vm.UserName, vm.Password, vm.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return Json(new {  Status = "LoggedIn" });
+                    return Json(new { Status = "LoggedIn" });
                 }
                 //ModelState.AddModelError("", "Username or password is incorrect.");
-                return Json(new { Status = "Nok" , message = "Username or password is incorrect." });
+                return Json(new { Status = "Nok", message = "Username or password is incorrect." });
             }
 
             return Json(new { Status = "Nok" });
         }
-
-
 
         public IActionResult Register()
         {
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel vm)
         {
             if (ModelState.IsValid)
             {
-
                 var user = new UserAccount
                 {
                     UserName = vm.UserName,
@@ -228,8 +208,6 @@ namespace TCGshopTestEnvironment.Controllers
                     PhoneNumber = vm.PhoneNumber,
                     LastName = vm.LastName,
                     FirstName = vm.FirstName
-                        
-                    
                 };
                 var result = await _userManager.CreateAsync(user, vm.Password);
 
@@ -250,11 +228,8 @@ namespace TCGshopTestEnvironment.Controllers
                         Protocol = HttpContext.Request.Scheme
                     });
 
-
-
                     await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
                         "Please confirm your account by <a href=" + callbackUrl + ">clicking here</a>.");
-
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -264,11 +239,9 @@ namespace TCGshopTestEnvironment.Controllers
                     {
                         ModelState.AddModelError("", error.Description);
                     }
-
-
                 }
             }
-                return View(vm);
+            return View(vm);
         }
 
         [HttpPost]
@@ -285,7 +258,6 @@ namespace TCGshopTestEnvironment.Controllers
         {
             ApiHalResultWrapper result = _postcodeApiClient.GetAddress(postcode, huisnummer);
             return Json(result);
-
         }
 
         [HttpGet]
@@ -304,7 +276,6 @@ namespace TCGshopTestEnvironment.Controllers
             return Content(fake);
         }
     }
-
 }
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

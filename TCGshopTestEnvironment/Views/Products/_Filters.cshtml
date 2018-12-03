@@ -8,7 +8,6 @@
     List<string> totalcatagorielist = ViewBag.totalCatagory as List<string>;
 }
 
-
 @using System.Data.SqlClient
 @using X.PagedList.Mvc;
 @using X.PagedList;
@@ -16,7 +15,6 @@
 
 <!--filtering-->
 <div class="col-md-1">
-
 </div>
 <div class="col-md-2 filter">
     <div>
@@ -24,7 +22,7 @@
         {
             <input type="hidden" name="name" value="@ViewBag.name" />
             <input type="hidden" name="pageAmount" value="@ViewBag.PageAmount" />
-            <input type="hidden" name="cardType" value="@ViewBag.cardType"/>
+            <input type="hidden" name="cardType" value="@ViewBag.cardType" />
             <input type ="hidden" name="Sortby" id="sorting" />
 
             <h3 class="FilterTitle">Price</h3>
@@ -34,9 +32,6 @@
                 € <input type="tel" data-facet="prijs" placeholder="0" value="@if (@ViewBag.PriceLow == 0) { } else {@ViewBag.PriceLow}" name="priceLow" style="width: 54px; color:black">
                 to <input type="tel" data-facet="prijs" placeholder="10000" value="@if (@ViewBag.PriceHigh == 10000) { } else {@ViewBag.PriceHigh}" name="priceHigh" style="width: 54px; color:black">
                                                                                                                                                                                                                                     </div>
-
-
-
 
             @*@Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })*@
 
@@ -50,7 +45,7 @@
                 if (catagorielist == null || catagorielist.Count == 0)
                 {
                     <div>
-                        <input type="checkbox" id="@categorie" name="catagorie" value=@categorie onchange="productformsorting()"/>
+                        <input type="checkbox" id="@categorie" name="catagorie" value=@categorie onchange="productformsorting()" />
                         <label for="@categorie">@categorie</label>
                     </div>
                 }
@@ -59,20 +54,18 @@
                     if (catagorielist.Contains(categorie))
                     {
                         <div>
-                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie checked="checked" onchange="productformsorting()"/>
+                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie checked="checked" onchange="productformsorting()" />
                             <label for="@categorie">@categorie</label>
                         </div>
                     }
                     else
                     {
                         <div>
-                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie onchange="productformsorting()"/>
+                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie onchange="productformsorting()" />
                             <label for="@categorie">@categorie</label>
                         </div>
                     }
                 }
-
-
 
             }
             <h3 class="FilterTitle">Grades</h3>
@@ -81,20 +74,18 @@
                 if (gradeslist.Contains(grade))
                 {
                     <div>
-                        <input type="checkbox" id="@grade" name="grades" value="@grade" checked="checked" onchange="productformsorting()"/>
+                        <input type="checkbox" id="@grade" name="grades" value="@grade" checked="checked" onchange="productformsorting()" />
                         <label for="@grade">@grade</label>
                     </div>
                 }
                 else
                 {
                     <div>
-                        <input type="checkbox" id="@grade" name="grades" value="@grade" onchange="productformsorting()"/>
+                        <input type="checkbox" id="@grade" name="grades" value="@grade" onchange="productformsorting()" />
                         <label for="@grade">@grade</label>
                     </div>
                 }
             }
-
-
 
             <div class="text-center">
                 <input type="submit" value="Filter" class="btn btn-primary btnRegister" style="margin-bottom: 15px;" />

@@ -1,15 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Session;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
-using Newtonsoft.Json;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Models.JoinTables;
 using TCGshopTestEnvironment.Services;
@@ -62,22 +56,18 @@ namespace TCGshopTestEnvironment.Controllers
                 if (assetModel.Select(x => x.ProductsId).Contains(productId)
                 ) // the basket already contains the product, add the amount by 1
                 {
-
                     ShoppingBasket updatedmodel = assetModel.FirstOrDefault(x => x.ProductsId == productId);
                     updatedmodel.Amount += Amount;
                     _context.Update(updatedmodel);
                     _context.SaveChanges();
-
                 }
-
                 else // else add the product to the basket
                 {
                     var cart = new ShoppingBasket
-                        {UserId = user.Id, ProductsId = productId, Amount = Amount, DateCreated = DateTime.Now};
+                    { UserId = user.Id, ProductsId = productId, Amount = Amount, DateCreated = DateTime.Now };
                     _context.Basket.Add(cart);
                     _context.SaveChanges();
                 }
-
             }
 
             return Json(new { success = true });
@@ -110,22 +100,19 @@ namespace TCGshopTestEnvironment.Controllers
 
                 var results = new ShoppingCartRemoveViewModel
                 {
-
                     DeleteId = id,
                     ItemCount = itemCount,
                     CartTotal = Math.Round((itemCount * price), 2, MidpointRounding.AwayFromZero)
-
                 };
                 return Json(results);
             }
 
-            return Json(new {success = true});
+            return Json(new { success = true });
         }
 
         [HttpGet]
         public IActionResult CheckOut()
         {
-
             return View();
         }
 
@@ -137,28 +124,24 @@ namespace TCGshopTestEnvironment.Controllers
             foreach (var product in vm)
             {
                 var dbProduct = _context.products.Where(x => x.ProductId == product.ProductId).Select(x => x).SingleOrDefault();
-                
-                ShoppingCart.Add(new ProductsShopCartViewModel{
-                        ProductId = dbProduct.ProductId,
-                        Amount = product.Amount,
-                        Name = dbProduct.Name,
-                        ImageUrl = dbProduct.ImageUrl,
-                        Price = dbProduct.Price,
-                        Grade = dbProduct.Grade,
-                        TotalPrice = (dbProduct.Price * product.Amount)
 
-                    }
-                
+                ShoppingCart.Add(new ProductsShopCartViewModel
+                {
+                    ProductId = dbProduct.ProductId,
+                    Amount = product.Amount,
+                    Name = dbProduct.Name,
+                    ImageUrl = dbProduct.ImageUrl,
+                    Price = dbProduct.Price,
+                    Grade = dbProduct.Grade,
+                    TotalPrice = (dbProduct.Price * product.Amount)
+                }
+
                 );
-
             }
 
             _context.SaveChanges();
             return Json(ShoppingCart);
         }
-
-
-
 
         [HttpPost]
         public async Task<ActionResult> AddLocalCartToDatabase(List<ProductsShopCartViewModel> vm)
@@ -171,12 +154,10 @@ namespace TCGshopTestEnvironment.Controllers
                 {
                     var cart = new ShoppingBasket
                     {
-
                         Amount = product.Amount,
                         DateCreated = DateTime.Now,
                         UserId = user.Id,
                         ProductsId = product.ProductId
-
                     };
                     _context.Basket.Add(cart);
                 }
@@ -188,13 +169,11 @@ namespace TCGshopTestEnvironment.Controllers
                         updatedmodel.Amount = product.Amount;
                         _context.Update(updatedmodel);
                     }
-
                 }
             }
             _context.SaveChanges();
             return Json(new { success = true });
         }
-
 
         public async Task<ActionResult> AddDbCarttoLocal()
         {
@@ -203,7 +182,6 @@ namespace TCGshopTestEnvironment.Controllers
 
             return Json(cartproducts);
         }
-
 
         public async Task<IActionResult> SetAmountinShoppingCart(int id, int amount)
         {
@@ -214,7 +192,6 @@ namespace TCGshopTestEnvironment.Controllers
 
                 if (cartItem != null)
                 {
-
                     if (amount < 1)
                     {
                         _context.Basket.Remove(cartItem);

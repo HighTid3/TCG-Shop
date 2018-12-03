@@ -10,14 +10,13 @@
         <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 405px; width: 270px;">
             <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
                 <div>
-                    
+
                     <h1 class="ProductTitleCat" title="@asset.Name">@asset.Name</h1>
                     @*check if product is in wishlist or not, show icon accordingly*@
-
                 </div>
-                <label class="GradeText">[@asset.Grade]</label><br/>
+                <label class="GradeText">[@asset.Grade]</label><br />
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                    <img src="@(Startup.storagePath + asset.ImageUrl )" class="imageCell"/>
+                    <img src="@(Startup.storagePath + asset.ImageUrl )" class="imageCell" />
                 </a>
                 <br>
                 @*@asset.Stock*@
@@ -26,7 +25,6 @@
                 <div class="col-md-6">
 
                     <h4 class="priceh4">€@asset.Price</h4>
-
                 </div>
                 <div class="col-md-6">
                     @*Button action handler, one for signed in users, one for guests*@
@@ -53,7 +51,6 @@
                         <button id="AddCartBtn" onclick="AddToCart('@asset.Id', '@asset.Name', '@asset.ImageUrl', '@asset.Price', '@asset.Grade', '1')" class="btnSignIn AddCart" style="background-color:transparent;border-color:transparent; padding-left:50px; margin-bottom: 10px;"> <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                         @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
                     }
-
                 </div>
                     </div>
             </div>

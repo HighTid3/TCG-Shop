@@ -1,5 +1,3 @@
-using System;
-
 namespace TCGshopTestEnvironment.Models
 {
     public class ErrorViewModel

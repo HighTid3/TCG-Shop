@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.ViewModels;
 
@@ -25,21 +25,21 @@ namespace TCGshopTestEnvironment.Services
         public ProductsDetailModel GetByID(int id)
         {
             return (from p in _context.products
-                let categories = (from c in _context.ProductCategory
-                    where c.ProductId == id
-                    select c.CategoryName).ToList()
-                where p.ProductId == id
-                select new ProductsDetailModel
-                {
-                    CardCatagoryList = categories,
-                    Description = p.Description,
-                    Grade = p.Grade,
-                    Id = p.ProductId,
-                    ImageUrl = p.ImageUrl,
-                    Name = p.Name,
-                    Price = p.Price,
-                    Stock = p.Stock
-                }).FirstOrDefault();
+                    let categories = (from c in _context.ProductCategory
+                                      where c.ProductId == id
+                                      select c.CategoryName).ToList()
+                    where p.ProductId == id
+                    select new ProductsDetailModel
+                    {
+                        CardCatagoryList = categories,
+                        Description = p.Description,
+                        Grade = p.Grade,
+                        Id = p.ProductId,
+                        ImageUrl = p.ImageUrl,
+                        Name = p.Name,
+                        Price = p.Price,
+                        Stock = p.Stock
+                    }).FirstOrDefault();
         }
 
         public Products GetProductsById(int id)
@@ -67,7 +67,7 @@ namespace TCGshopTestEnvironment.Services
                 }
                 catch (Exception e)
                 {
-                    CatNames = new List<string> {""};
+                    CatNames = new List<string> { "" };
                 }
 
                 if (type != "All")
@@ -110,7 +110,6 @@ namespace TCGshopTestEnvironment.Services
         //           select new Productsandcategorie { prods = p, Catnames = categorienames };
         //}
 
-
         public IEnumerable<Productsandcategorie> GetByNameSearch(string name)
         {
             IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
@@ -119,7 +118,6 @@ namespace TCGshopTestEnvironment.Services
                 "GROUP BY products.\"ProductId\"").ToArray();
 
             var ProductsAndCategories = new List<Productsandcategorie>();
-
 
             foreach (var ProductsCat in results)
                 if (ProductsCat.Name.ToLower().Contains(name.ToLower()) || ProductsCat.Name.ToLower() == name.ToLower())
@@ -131,10 +129,10 @@ namespace TCGshopTestEnvironment.Services
                     }
                     catch (Exception e)
                     {
-                        CatNames = new List<string> {""};
+                        CatNames = new List<string> { "" };
                     }
 
-                    ProductsAndCategories.Add(new Productsandcategorie {prods = ProductsCat, Catnames = CatNames});
+                    ProductsAndCategories.Add(new Productsandcategorie { prods = ProductsCat, Catnames = CatNames });
                 }
 
             return ProductsAndCategories;
