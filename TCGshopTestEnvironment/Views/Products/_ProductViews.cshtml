@@ -30,10 +30,10 @@
                     @*Button action handler, one for signed in users, one for guests*@
                     @if (SignInManager.IsSignedIn(User))
                     {
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-action="EditProduct" asp-route-productid="@asset.Id"><span class="fa fa-pencil editSvg"></span></a>
-                    }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="EditProduct" asp-route-productid="@asset.Id"><span class="fa fa-pencil editSvg"></span></a>
+                        }
                         if (ViewBag.wishlist.Contains(asset.Id))
                         {
                             <span class="glyphicon glyphicon-star-empty clicked" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span>

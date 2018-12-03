@@ -43,10 +43,6 @@
                     @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
                 }
             </div>
-            @if (User.IsInRole("Admin"))
-            {
-                <a asp-action="EditProduct" asp-route-productid="@Model.Id"><button class="btn btn-primary btnSignIn AddCart">Edit</button></a>
-            }
             </div>
     </div>
 </div>

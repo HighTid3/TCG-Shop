@@ -14,7 +14,7 @@
                 <div class="row detailProduct" style="background-color: #393a3e;padding:20px;">
                     <div class="col-md-6 text-center">
                         <tr class="assetRow">
-                            <td class=""><img src="@(Startup.storagePath + Model.ImageUrl)" class="" style="height: 300px; width: 240px;" /></td>
+                        <td class=""><img src="@(Startup.storagePath + Model.ImageUrl)" class="" style="height: 300px; width: 240px;" /></td>
                     </div>
 
                     <div class="col-md-6">
@@ -32,9 +32,9 @@
                         <p>
                             <strong style="color: #e4e4e4;">Stock</strong> <br />
                             <label value="@Model.Stock" id="productStock"  ><input asp-for="Stock" class="form-control" type="number" min="1" style="color: black"
-                                                                                                      step="1"
-                                                                                                      onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                                                                                      title="Numbers only"></label>
+                                                                                   step="1"
+                                                                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                                                                   title="Numbers only"></label>
                         </p>
 
                         <p>
@@ -46,6 +46,7 @@
                     </div>
                 </div>
             </form>
+            <a asp-action="DeleteProduct" asp-route-productid="@Model.Id" asp-route-returnUrl="@ViewBag.returnUrl"><button class="btn btn-primary btnSignIn AddCart" >Delete</button></a>
         </div>
     </div>
 </div>

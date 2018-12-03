@@ -469,6 +469,9 @@ namespace TCGshopTestEnvironment.Controllers
         [HttpGet]
         public IActionResult EditProduct(int productid)
         {
+
+            ViewBag.returnUrl = Request.Headers["Referer"].ToString();
+            
             var model = _assets.GetByID(productid);
             return View(model);
         }
@@ -509,6 +512,17 @@ namespace TCGshopTestEnvironment.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Detail", new { id = vm.Id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteProduct(int productid, string returnUrl)
+        {
+
+            Products changedproduct = _assets.GetProductsById(productid);
+            changedproduct.Removed = true;
+            _context.products.Update(changedproduct);
+            _context.SaveChanges();
+            return Redirect(returnUrl);
         }
     }
 }
