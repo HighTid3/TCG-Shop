@@ -28,13 +28,12 @@
         var storagePath = "@Startup.storagePath";
     </script>
 </head>
-
 <div class="container-fluid top-header" height="50">
     <div class="row logo-image">
-        <div class="col-md-4" style="margin-top: 5px;">
+        <div class="col-lg-4 col-md-4 col-xs-3 col-sm-4" style="margin-top: 5px;">
             <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/logo.png" alt="Logo" class="img-responsive" width="90" height="45" /></a>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-6 col-xs-8 col-sm-6">
             <div class="">
                 <div class="search-bar text-center">
                     <form class="form-inline" method="get" asp-action="Search" asp-controller="Products">
@@ -49,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-3">
             @await Html.PartialAsync("_LoginPartial")
 
         </div>
