@@ -19,29 +19,34 @@
 
                     <div class="col-md-6">
                         <strong style="color: #e4e4e4;">Name</strong> <br />
-                        <input asp-for="Name" class="form-control"  style="color: black;" />
+                        <input asp-for="Name" class="form-control" style="color: black;" />
                         <strong style="color: #e4e4e4;">Grade</strong> <br />
-                        <label class="GradeText" style="font-size: 1.5rem;"><input asp-for="Grade" class="form-control"  type="number" style="color: black;" min="1"
-                                                                                   step="1"
-                                                                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                                                                   title="Numbers only"></label>
+                        <label class="GradeText" style="font-size: 1.5rem;">
+                            <input asp-for="Grade" class="form-control" type="number" style="color: black;" min="1"
+                                   step="1"
+                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                   title="Numbers only">
+                        </label>
                         <p style="margin-top: 5px;">
                             <strong style="color: #e4e4e4;">Description</strong> <br />
                             <span> <input asp-for="Description" class="form-control" style="color: black;" /></span>
                         </p>
                         <p>
                             <strong style="color: #e4e4e4;">Stock</strong> <br />
-                            <label value="@Model.Stock" id="productStock"  ><input asp-for="Stock" class="form-control" type="number" min="1" style="color: black"
-                                                                                   step="1"
-                                                                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                                                                   title="Numbers only"></label>
+                            <label value="@Model.Stock" id="productStock">
+                                <input asp-for="Stock" class="form-control" type="number" min="1" style="color: black"
+                                       step="1"
+                                       onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                       title="Numbers only">
+                            </label>
                         </p>
 
                         <p>
                             <strong style="color: #e4e4e4;">Price</strong> <br />
-                            <label style="color: #e4e4e4;"><input asp-for="Price"  class="form-control" style="color: black;" id="priceinput" /></label>
+                            <label style="color: #e4e4e4;"><input asp-for="Price" class="form-control" style="color: black;" id="priceinput" /></label>
                         </p>
                         <input type="hidden" asp-for="Id" value="@Model.Id" />
+                        <input type="hidden" asp-for="returnUrl" value="@ViewBag.returnUrl" />
                         <button type="submit" class="btn btn-default btnSearch">Save</button>
                     </div>
                 </div>

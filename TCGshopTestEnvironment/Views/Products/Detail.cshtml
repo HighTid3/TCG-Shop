@@ -11,7 +11,7 @@
             <div class="row detailProduct">
                 <div class="col-md-6 text-center">
                     <tr class="assetRow">
-                        <td class=""><img src="@(Startup.storagePath + Model.ImageUrl)" class="" style="height: 300px; width: 240px;" /></td>
+                    <td class=""><img src="@(Startup.storagePath + Model.ImageUrl)" class="" style="height: 300px; width: 240px;" /></td>
                 </div>
                 <div class="col-md-6">
                     <h1 class="display-1" style="color:#e4e4e4;">@Model.Name</h1>
@@ -42,7 +42,12 @@
                     <button id="AddCartBtn" onclick="AddToCart('@Model.Id', '@Model.Name',  '@Model.ImageUrl', '@Model.Price', '@Model.Grade', document.getElementById('SelectedAmount').value)" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                     @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
                 }
+
             </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="EditProduct" asp-route-productid="@Model.Id" asp-route-returnUrl="@ViewBag.returnUrl"><button class="btn btn-primary btnSignIn">Edit Card</button></a>
+            }
             </div>
     </div>
 </div>

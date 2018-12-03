@@ -180,8 +180,16 @@ namespace TCGshopTestEnvironment.Controllers
             return View();
         }
 
-        public IActionResult Detail(int id)
+        public IActionResult Detail(int id, string returnUrl)
         {
+            if (string.IsNullOrEmpty(returnUrl) || returnUrl == "d")
+            {
+                ViewBag.returnUrl = Request.Headers["Referer"].ToString();
+            }
+            else
+            {
+                ViewBag.returnUrl = returnUrl;
+            }
             var model = _assets.GetByID(id);
             return View(model);
         }
@@ -467,18 +475,24 @@ namespace TCGshopTestEnvironment.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult EditProduct(int productid)
+        public IActionResult EditProduct(int productid, string returnUrl)
         {
 
-            ViewBag.returnUrl = Request.Headers["Referer"].ToString();
-            
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                ViewBag.returnUrl = Request.Headers["Referer"].ToString();
+            }
+            else
+            {
+                ViewBag.returnUrl = returnUrl;
+            }
             var model = _assets.GetByID(productid);
             return View(model);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> EditProduct(ProductsDetailModel vm)
+        public async Task<IActionResult> EditProduct(ProductsDetailModel vm, string returnUrl)
         {
             Products changedproduct = _assets.GetProductsById(vm.Id);
 
@@ -511,7 +525,7 @@ namespace TCGshopTestEnvironment.Controllers
             _context.products.Update(changedproduct);
             _context.SaveChanges();
 
-            return RedirectToAction("Detail", new { id = vm.Id });
+            return RedirectToAction("Detail", new { id = vm.Id, vm.returnUrl });
         }
 
         [HttpGet]
