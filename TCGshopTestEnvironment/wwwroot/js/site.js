@@ -67,7 +67,7 @@ function ModalBox(imageUrl) {
     //modal popup box
 
     //add img to the modal
-    document.getElementById("productaddimg").src = storagePath + imageUrl + ".png";
+    document.getElementById("productaddimg").src = storagePath + imageUrl;
 
     // Get the modal
     var modal = document.getElementById('myModal');
