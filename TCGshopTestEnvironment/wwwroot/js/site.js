@@ -362,3 +362,11 @@ function toggleWishlist(classId) {
 $('#priceinput').on('input', function () {
     $(this).val($(this).val().replace(/\./g, ','));
 });
+
+
+//add current sort to form on submit
+function productformsorting() {
+    var sorting = $('#sortingform').val();
+    document.getElementById("sorting").value = sorting;
+    document.getElementById('TheForm').submit();
+}

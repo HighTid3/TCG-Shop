@@ -28,7 +28,19 @@ namespace TCGshopTestEnvironment.Services
                 };
         }
 
-        public OrderDetailsViewModel Orderdetails(string useremail, int OrderId)
+        public IEnumerable<OrderOverviewViewModel> GetAllOrders()
+        {
+            return from p in _context.Orders
+                select new OrderOverviewViewModel
+                {
+                    OrderDate = p.OrderDate,
+                    Ordernr = p.Guid.ToString(),
+                    Status = p.PaymentStatus,
+                    TotalPrice = p.Total,
+                    OrderId = p.OrderId
+                };
+        }
+        public OrderDetailsViewModel Orderdetails(int OrderId)
         {
             return (from p in _context.Orders
                 let orderdetails = (from d in _context.OrderDetails
@@ -44,7 +56,7 @@ namespace TCGshopTestEnvironment.Services
                         UnitPrice = d.UnitPrice,
                         TotalPrice = d.UnitPrice * d.Quantity
                     }).ToList()
-                where p.Email == useremail
+                where p.OrderId == OrderId
                 select new OrderDetailsViewModel
                 {
                     City = p.City,

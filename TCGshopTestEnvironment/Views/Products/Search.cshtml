@@ -3,7 +3,7 @@
 }
 @{
 
-    List<string> catagorielist= ViewBag.catagorie as List<string>;
+    List<string> catagorielist = ViewBag.catagorie as List<string>;
     List<string> gradeslist = ViewBag.grades as List<string>;
 }
 
@@ -31,29 +31,43 @@
 
                 <!--filtering-->
                 @await Html.PartialAsync("/Views/Products/_Filters.cshtml")
-
-
-                <!--product views-->
                 <div class="col-md-9">
-                    @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
-
                     <div class="col-md-12">
-                        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh }))
+                        <div class="col-md-9 float-right text-right">
+                            <span style="color: white">Sort By: </span>
+                        </div>
+
+                        @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "productformsorting()", @style = "display: block", @id = "sortingform" })
 
 
-                        @*<a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="8" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>8</button></a>
-                <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="16" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>16</button></a>
-                <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="32" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>32</button></a>
-                <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="62" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>62</button></a>*@
+                    </div>
 
-                        <input type="button" value="8" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=8'" />
-                        <input type="button" value="16" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=16'" />
-                        <input type="button" value="32" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=32'" />
-                        <input type="button" value="64" onclick="location.href='@Url.Action("Search", new { ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=64'" />
+                    <!--product views-->
+                    <div class="col-md-9">
+                        @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
 
+                        <div class="col-md-12">
+                            <div class="row" style="margin-top: 100px;">
+                                <div class="col-md-7">
+                                    @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Search", new { page, ViewBag.PageAmount, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh }))
+                                </div>
+
+                                @*<a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="8" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>8</button></a>
+                                    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="16" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>16</button></a>
+                                    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="32" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>32</button></a>
+                                    <a asp-controller="Products" asp-action="Search" asp-route-page="@ViewBag.page" asp-route-pageAmount="62" asp-route-name="@ViewBag.name" asp-route-sortBy="@ViewBag.sortBy" asp-route-catagorie="@ViewBag.catagorie"><button>62</button></a>*@
+                                <div class="col-md-5 paginationbutton" style="float: right;">
+                                    <span style="color: white"> Results per page: </span>
+                                    <input type="button" value="8" onclick="location.href = '@Url.Action("Search", new {ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=8'" />
+                                    <input type="button" value="16" onclick="location.href = '@Url.Action("Search", new {ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=16'" />
+                                    <input type="button" value="32" onclick="location.href = '@Url.Action("Search", new {ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=32'" />
+                                    <input type="button" value="64" onclick="location.href = '@Url.Action("Search", new {ViewBag.page, ViewBag.name, ViewBag.sortBy, ViewBag.catagorie, ViewBag.grades, ViewBag.PriceLow, ViewBag.PriceHigh})&pageAmount=64'" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>

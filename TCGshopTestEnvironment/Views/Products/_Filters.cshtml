@@ -19,16 +19,26 @@
 
 </div>
 <div class="col-md-2 filter">
-    <h3>Sorting</h3>
     <div>
-        <!--sorting-->
         @using (Html.BeginForm(FormMethod.Get, new { id = "TheForm" }))
         {
             <input type="hidden" name="name" value="@ViewBag.name" />
             <input type="hidden" name="pageAmount" value="@ViewBag.PageAmount" />
             <input type="hidden" name="cardType" value="@ViewBag.cardType"/>
+            <input type ="hidden" name="Sortby" id="sorting" />
 
-            @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })
+            <h3 class="FilterTitle">Price</h3>
+
+            <!--Price Range Slider-->
+            <div class="price-filter" style="padding-top: 10px; padding-bottom: 10px;">
+                € <input type="tel" data-facet="prijs" placeholder="0" value="@if (@ViewBag.PriceLow == 0) { } else {@ViewBag.PriceLow}" name="priceLow" style="width: 54px; color:black">
+                to <input type="tel" data-facet="prijs" placeholder="10000" value="@if (@ViewBag.PriceHigh == 10000) { } else {@ViewBag.PriceHigh}" name="priceHigh" style="width: 54px; color:black">
+                                                                                                                                                                                                                                    </div>
+
+
+
+
+            @*@Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "document.getElementById('TheForm').submit();", @style = "display: block" })*@
 
             @*}*@
             <!--catagorie filter-->
@@ -40,7 +50,7 @@
                 if (catagorielist == null || catagorielist.Count == 0)
                 {
                     <div>
-                        <input type="checkbox" id="@categorie" name="catagorie" value=@categorie onchange="document.getElementById('TheForm').submit();"/>
+                        <input type="checkbox" id="@categorie" name="catagorie" value=@categorie onchange="productformsorting()"/>
                         <label for="@categorie">@categorie</label>
                     </div>
                 }
@@ -49,14 +59,14 @@
                     if (catagorielist.Contains(categorie))
                     {
                         <div>
-                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie checked="checked" onchange="document.getElementById('TheForm').submit();"/>
+                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie checked="checked" onchange="productformsorting()"/>
                             <label for="@categorie">@categorie</label>
                         </div>
                     }
                     else
                     {
                         <div>
-                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie onchange="document.getElementById('TheForm').submit();"/>
+                            <input type="checkbox" id="@categorie" name="catagorie" value=@categorie onchange="productformsorting()"/>
                             <label for="@categorie">@categorie</label>
                         </div>
                     }
@@ -71,29 +81,20 @@
                 if (gradeslist.Contains(grade))
                 {
                     <div>
-                        <input type="checkbox" id="@grade" name="grades" value="@grade" checked="checked" onchange="document.getElementById('TheForm').submit();"/>
+                        <input type="checkbox" id="@grade" name="grades" value="@grade" checked="checked" onchange="productformsorting()"/>
                         <label for="@grade">@grade</label>
                     </div>
                 }
                 else
                 {
                     <div>
-                        <input type="checkbox" id="@grade" name="grades" value="@grade" onchange="document.getElementById('TheForm').submit();"/>
+                        <input type="checkbox" id="@grade" name="grades" value="@grade" onchange="productformsorting()"/>
                         <label for="@grade">@grade</label>
                     </div>
                 }
             }
 
-            <h3 class="FilterTitle">Price</h3>
 
-            <!--Price Range Slider-->
-            <div class="price-filter" style="padding-top: 10px; padding-bottom: 10px;">
-
-
-
-                € <input type="tel" data-facet="prijs" placeholder="0" value="@if (@ViewBag.PriceLow == 0) { } else {@ViewBag.PriceLow}" name="priceLow" style="width: 54px;">
-                to <input type="tel" data-facet="prijs" placeholder="10000" value="@if (@ViewBag.PriceHigh == 10000) { } else {@ViewBag.PriceHigh}" name="priceHigh" style="width: 54px;">
-            </div>
 
             <div class="text-center">
                 <input type="submit" value="Filter" class="btn btn-primary btnRegister" style="margin-bottom: 15px;" />

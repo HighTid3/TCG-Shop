@@ -7,8 +7,12 @@ namespace TCGshopTestEnvironment.Services
     public interface IManage
     {
         IEnumerable<OrderOverviewViewModel> OrderOverview(string useremail);
+        IEnumerable<OrderOverviewViewModel> GetAllOrders();
 
-        OrderDetailsViewModel Orderdetails(string useremail, int OrderId);
+
+        OrderDetailsViewModel Orderdetails(int OrderId);
+
+        
 
         IEnumerable<UserAccount> GetRegisteredUsers();
 

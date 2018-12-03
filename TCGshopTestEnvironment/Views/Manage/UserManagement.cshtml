@@ -27,7 +27,11 @@
                     <td>
                         <a asp-action="UserEdit" asp-route-username="@user.Username">Edit</a> |
                         <a asp-action="UserDetails" asp-route-username="@user.Username">Details</a> |
-                        <a asp-action="UserDelete" asp-route-username="@user.Username">Delete</a>
+                        @if (!user.Username.Equals("admin@admin.com")) // needs to be changed to a role check
+                        {
+                            <a asp-action="UserDelete" asp-route-username="@user.Username">Delete</a>
+                        }
+
                     </td>
                 </tr>
             }

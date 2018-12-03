@@ -191,6 +191,10 @@ namespace TCGshopTestEnvironment.Controllers
 
 
             var model = _manage.OrderOverview(user.Email);
+            if (User.IsInRole("Admin"))
+            {
+                model = _manage.GetAllOrders();
+            }
             return View(model);
         }
 
@@ -202,7 +206,11 @@ namespace TCGshopTestEnvironment.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
 
-            var model = _manage.Orderdetails(user.Email, orderid);
+            var model = _manage.Orderdetails(orderid);
+            if (user.Email != model.Email && !User.IsInRole("Admin"))
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
             return View(model);
         }
 
@@ -352,17 +360,41 @@ namespace TCGshopTestEnvironment.Controllers
         [HttpGet]
         public async Task<IActionResult> UserDelete(string username)
         {
-            var asset = _manage.GetRegisteredUsers();
+            var asset = _manage.GetRegisteredUserbyUsername(username);
 
-            var model = asset.Select(result => new UserManagementViewModel
+            var model = new UserManagementDetailsViewModel
             {
-                Email = result.Email,
-                EmailConfirmed = result.EmailConfirmed,
-                Username = result.UserName
-            });
+                Email = asset.Email,
+                EmailConfirmed = asset.EmailConfirmed,
+                Username = asset.UserName,
+                Address = asset.Address,
+                Country = asset.Country,
+                FirstName = asset.FirstName,
+                LastName = asset.LastName,
+                PhoneNumber = asset.PhoneNumber,
+                ZipCode = asset.ZipCode
+            };
 
             return View(model);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task <IActionResult> UserDelete(UserManagementViewModel vm)
+        {
+            var user = _manage.GetRegisteredUserbyUsername(vm.Username);
+            var currentuser = await _userManager.GetUserAsync(User);
+            if (user != currentuser)
+            {
+                _context.userAccounts.Remove(user);
+                _context.SaveChanges();
+            }
+
+
+            return RedirectToAction("UserManagement");
+        }
+
 
         //[Authorize(Roles = "Admin")]
         [HttpGet]
