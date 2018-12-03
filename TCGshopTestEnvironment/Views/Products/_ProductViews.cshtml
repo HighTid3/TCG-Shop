@@ -35,7 +35,7 @@
                     {
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-action="EditProduct" asp-route-productid="@asset.Id"><span class="fa fa-pencil editSvg" onclick="toggleWishlist(@asset.Id)" id="@asset.Id"></span></a>
+                        <a asp-action="EditProduct" asp-route-productid="@asset.Id"><span class="fa fa-pencil editSvg"></span></a>
                     }
                         if (ViewBag.wishlist.Contains(asset.Id))
                         {
