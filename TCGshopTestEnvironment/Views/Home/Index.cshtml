@@ -143,7 +143,7 @@
                     <h1 class="ProductTitleCat" title="@product.Name">@product.Name</h1>
                 </div>
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@product.ProductId">
-                    <img src="@(Startup.storagePath + product.ImageUrl + ".png")" class="imageCell" style="height: 185px; width: 120px;"/>
+                    <img src="@(Startup.storagePath + product.ImageUrl)" class="imageCell" style="height: 185px; width: 120px;"/>
                 </a>
                 <br>
                 <h4 style="color: rgb(230, 230, 230);">€@product.Price</h4>
