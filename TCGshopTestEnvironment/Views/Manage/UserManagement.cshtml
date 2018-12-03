@@ -6,6 +6,8 @@
 
 <h4>@ViewData["Title"]</h4>
 
+<script type='text/javascript' src='//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+
 <div class="panel panel-primary">
 
     <!-- /.box-header -->
@@ -14,14 +16,17 @@
             <thead>
                 <tr>
                     <td><b>Username</b></td>
+                    <td><b>Name</b></td>
                     <td><b>Email</b></td>
                     <td><b>Email Confirmed?</b></td>
+                    <td><b>Options</b></td>
                 </tr>
             </thead>
             @foreach (var user in Model)
             {
                 <tr>
                     <td>@user.Username</td>
+                    <td>@user.Name</td>
                     <td>@user.Email</td>
                     <td>@user.EmailConfirmed</td>
                     <td>
@@ -41,3 +46,17 @@
         <p class="box-title"><b>Total Users till @String.Format("{0 : dddd, MMMM d, yyyy}", DateTime.Now)  : </b><span class="label label-primary">@Model.Count()</span></p>
     </div>
 </div>
+@section scripts{
+    <script>
+        $(function () {
+            $('#example1').DataTable({
+                "paging": false,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true
+            });
+        });
+    </script>
+}  

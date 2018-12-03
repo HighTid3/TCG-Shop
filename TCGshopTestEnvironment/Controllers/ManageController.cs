@@ -221,7 +221,8 @@ namespace TCGshopTestEnvironment.Controllers
             {
                 Email = result.Email,
                 EmailConfirmed = result.EmailConfirmed,
-                Username = result.UserName
+                Username = result.UserName,
+                Name = $"{result.FirstName} {result.LastName}"
             });
             return View(model);
         }
