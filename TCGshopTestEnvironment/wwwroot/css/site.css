@@ -2,6 +2,17 @@
 for details on configuring this project to bundle and minify static web assets. */
 /*  Clearfix */
 
+@media (max-width: 760px) {
+    button.btn.btn-default.btnSearch {
+        display: none;
+    }
+}
+.col-md-12.totalpriceoverzicht {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
 .editSvg {
     color:white;
     font-size: 25px;
@@ -225,6 +236,8 @@ img.imageCell {
 
 .detailProduct {
     margin: 35px;
+    background-color: #393a3e;
+    padding: 25px;
 }
 .col-md-4 .text-danger.validation-summary-errors {
     width: 220px;
