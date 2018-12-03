@@ -34,5 +34,7 @@ namespace TCGshopTestEnvironment.Models
         public virtual List<ProductCategory> Category { get; set; }
 
         public virtual List<Wishlist> User { get; set; }
+
+        public bool Removed { get; set; }
     }
 }

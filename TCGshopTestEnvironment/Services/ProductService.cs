@@ -53,6 +53,7 @@ namespace TCGshopTestEnvironment.Services
             IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
                 "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
                 "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
+                "WHERE products.\"Removed\" = 'False'" +
                 "GROUP BY products.\"ProductId\"").ToArray();
 
             var ProductsAndCategories = new List<Productsandcategorie>();
@@ -66,7 +67,7 @@ namespace TCGshopTestEnvironment.Services
                     CatNames = ProductsCat.CategoryName.Split(',').ToList();
                 }
                 catch (Exception e)
-                {
+                {   
                     CatNames = new List<string> { "" };
                 }
 
@@ -115,6 +116,7 @@ namespace TCGshopTestEnvironment.Services
             IEnumerable<ProductsCat> results = _context.ProductsCat.FromSql(
                 "SELECT products.*, string_agg(\"CategoryName\", \',\') as CategoryName " +
                 "FROM products LEFT JOIN \"ProductCategory\" ON products.\"ProductId\" = \"ProductCategory\".\"ProductId\" " +
+                "WHERE products.\"Removed\" = 'False'" +
                 "GROUP BY products.\"ProductId\"").ToArray();
 
             var ProductsAndCategories = new List<Productsandcategorie>();
