@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Session;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using Mollie.Api.Client;
 using Mollie.Api.Client.Abstract;
 using Mollie.Api.Models;
 using Mollie.Api.Models.Payment.Request;
 using Mollie.Api.Models.Payment.Response;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using TCGshopTestEnvironment.Models;
-using TCGshopTestEnvironment.Models.JoinTables;
 using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels;
-
 
 namespace TCGshopTestEnvironment.Controllers
 {
@@ -61,17 +51,14 @@ namespace TCGshopTestEnvironment.Controllers
         [HttpPost]
         public async Task<IActionResult> AccountAndAddress([FromBody] AccountAndAddressViewModel OrderDetails)
         {
-            
-        //return Ok(OrderDetails);
+            //return Ok(OrderDetails);
 
-
-        var values = OrderDetails.OrderViewModel;
+            var values = OrderDetails.OrderViewModel;
             var order = new Order();
             //var user = await _userManager.GetUserAsync(User);
 
             try
             {
-
                 //Creating Order
                 //order.Email = user.Email; //Get From User Account
                 order.Email = values[0].Email; //Get From Form
@@ -87,7 +74,6 @@ namespace TCGshopTestEnvironment.Controllers
                 order.Paid = false;
                 //order.OrderDetails = OrderDetails.OrderDetails;
 
-
                 decimal Total = 0;
 
                 List<OrderDetail> OrderDetail = new List<OrderDetail>(); //Creating Empty List of Orders
@@ -99,27 +85,23 @@ namespace TCGshopTestEnvironment.Controllers
                     var dbProduct = _context.products.Where(x => x.ProductId == product.ProductId).Select(x => x).SingleOrDefault();
 
                     OrderDetail.Add(new OrderDetail
-                        {
-                            OrderId = order.OrderId,
-                            ProductId = dbProduct.ProductId,
-                            Quantity = product.Amount,
-                            UnitPrice = dbProduct.Price,
-                            Product = dbProduct,
-                            Order = order
-                        }
+                    {
+                        OrderId = order.OrderId,
+                        ProductId = dbProduct.ProductId,
+                        Quantity = product.Amount,
+                        UnitPrice = dbProduct.Price,
+                        Product = dbProduct,
+                        Order = order
+                    }
 
                     );
 
                     //Updating Total
                     Total = Total + product.Amount * dbProduct.Price;
-
                 }
-
 
                 order.Total = Total;
                 order.OrderDetails = OrderDetail;
-
-
 
                 //Now We Need To Create A Mollie Payment Token
                 PaymentRequest paymentRequest = new PaymentRequest()
@@ -142,14 +124,12 @@ namespace TCGshopTestEnvironment.Controllers
                 await _context.SaveChangesAsync();
 
                 return Json(paymentResponse.Links.Checkout.Href);
-
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return Ok();
             }
-
         }
 
         [HttpGet]
@@ -165,14 +145,13 @@ namespace TCGshopTestEnvironment.Controllers
             var dbOrder = _context.Orders.Where(x => x.Guid == guid).Select(x => x).SingleOrDefault();
             try
             {
-                return Json(new {status = dbOrder.PaymentStatus});
+                return Json(new { status = dbOrder.PaymentStatus });
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return StatusCode(500);
             }
-            
         }
 
         [HttpPost]
@@ -191,17 +170,6 @@ namespace TCGshopTestEnvironment.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
-
         }
-
-
-
-
-
-
-
-
-
-
     }
 }

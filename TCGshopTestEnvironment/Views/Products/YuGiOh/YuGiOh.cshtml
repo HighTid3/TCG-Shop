@@ -8,12 +8,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4">
-
         </div>
     </div>
 </div>
-
-
 
 <div id="asssets">
     <div id="productsTable">
@@ -22,13 +19,12 @@
                 @await Html.PartialAsync("/Views/Products/_Filters.cshtml")
                 <div class="col-md-9">
                     <div class="col-md-12">
-                       
+
                         <div class="col-md-9 float-right text-right">
                             <span style="color: white">Sort By: </span>
                         </div>
 
-                        @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "productformsorting()", @style = "display: block", @id = "sortingform" })                         
-
+                        @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "productformsorting()", @style = "display: block", @id = "sortingform" })
                     </div>
                     @await Html.PartialAsync("/Views/Products/_ProductViews.cshtml")
 

@@ -8,29 +8,28 @@
     <div class="row">
         <div class="" style="margin-top:30px; margin-bottom: 30px;">
             <div class="col-md-3">
-
             </div>
             <div class="col-md-6 borderRegister" style="margin-bottom: 30px;">
                 <form class="" method="post" asp-controller="Account" asp-action="Register">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="UserName" class="col-md-3 regLabel">Username*</label>
-                        <input asp-for="UserName" class="form-control" maxlength="200"/>
+                        <input asp-for="UserName" class="form-control" maxlength="200" />
                         <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Email" class="col-md-3 regLabel">Email Address*</label>
-                        <input asp-for="Email" class="form-control" maxlength="200"/>
+                        <input asp-for="Email" class="form-control" maxlength="200" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="FirstName" class="col-md-3 regLabel">First Name*</label>
-                        <input asp-for="FirstName" class="form-control" maxlength="200"/>
+                        <input asp-for="FirstName" class="form-control" maxlength="200" />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="LastName" class="col-md-3 regLabel">Last Name*</label>
-                        <input asp-for="LastName" class="form-control" maxlength="200"/>
+                        <input asp-for="LastName" class="form-control" maxlength="200" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -291,29 +290,28 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Address" class="col-md-3 regLabel"></label>
-                        <input asp-for="Address" class="form-control" maxlength="200"/>
+                        <input asp-for="Address" class="form-control" maxlength="200" />
                         <span asp-validation-for="Address"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="ZipCode" class="col-md-3 regLabel"></label>
-                        <input asp-for="ZipCode" class="form-control" maxlength="10"/>
+                        <input asp-for="ZipCode" class="form-control" maxlength="10" />
                         <span asp-validation-for="ZipCode"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="PhoneNumber" class="col-md-3 regLabel"></label>
-                        <input asp-for="PhoneNumber" class="form-control" maxlength="200"/>
+                        <input asp-for="PhoneNumber" class="form-control" maxlength="200" />
                         <span asp-validation-for="PhoneNumber"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Password" class="col-md-3 regLabel">Password*</label>
-                        <input asp-for="Password" class="form-control"/>
+                        <input asp-for="Password" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="ConfirmPassword" class="col-md-3 regLabel">Confirm Password*</label>
-                        <input asp-for="ConfirmPassword" class="form-control"/>
+                        <input asp-for="ConfirmPassword" class="form-control" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-
                     </div>
                 <p class="col-md-3 regReq">
                     *Required fields
@@ -324,8 +322,6 @@
                 </form>
             </div>
             <div class="col-md-1">
-
-
             </div>
         </div>
     </div>

@@ -16,25 +16,25 @@ namespace TCGshopTestEnvironment.Services
         public IQueryable<Wishlist> WishlistByUserid(string userid)
         {
             return from s in _context.wishlists
-                where s.UserId == userid
-                select new Wishlist
-                    {Id = s.Id, ProductId = s.ProductId, UserId = s.UserId, User = s.User, Product = s.Product};
+                   where s.UserId == userid
+                   select new Wishlist
+                   { Id = s.Id, ProductId = s.ProductId, UserId = s.UserId, User = s.User, Product = s.Product };
         }
 
         public IQueryable<WishlistViewModel> WishlistItems(string userid)
         {
             return from p in _context.products
-                from b in _context.wishlists
-                where b.UserId == userid && p.ProductId == b.ProductId
-                select new WishlistViewModel
-                {
-                    WishlistId = b.Id,
-                    Id = b.ProductId,
-                    ImageUrl = p.ImageUrl,
-                    Name = p.Name,
-                    Price = p.Price,
-                    Grade = p.Grade
-                };
+                   from b in _context.wishlists
+                   where b.UserId == userid && p.ProductId == b.ProductId
+                   select new WishlistViewModel
+                   {
+                       WishlistId = b.Id,
+                       Id = b.ProductId,
+                       ImageUrl = p.ImageUrl,
+                       Name = p.Name,
+                       Price = p.Price,
+                       Grade = p.Grade
+                   };
         }
     }
 }

@@ -4,8 +4,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-
-
 <!-- Why the FUCK is this line here? <br style="margin-top: 100px;">-->
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
     <ol class="carousel-indicators">
@@ -21,13 +19,13 @@
                         <div class="row">
                             <div class="col-md-6 col-xl-6">
                                 <div class="text-center">
-                                    <center><img class="img-fluid text-center" src="~/images/THC.png" style="height: 250px; width: 290px;"/></center>
+                                    <center><img class="img-fluid text-center" src="~/images/THC.png" style="height: 250px; width: 290px;" /></center>
                                 </div>
                             </div>
                             <div class=col-md-6 col-xl-6>
                                 <h3>Legendary Hero Collection</h3>
                                 <p class="lead">
-                                    Get ready to dispense some Dueling Justice this season when the Yu-Gi-Oh! TCG presents the Legendary Hero Decks, featuring 3 unique archetypes including: 
+                                    Get ready to dispense some Dueling Justice this season when the Yu-Gi-Oh! TCG presents the Legendary Hero Decks, featuring 3 unique archetypes including:
                                     "Destiny HERO's", "Aesir" and "The Phantom Knights". Get them now!
                                 </p>
                                 <div class="row">
@@ -56,7 +54,7 @@
                             <div class="row">
                                 <div class="col-md-6 col-xl-6">
                                     <div class="text-center">
-                                        <center><img class="img-fluid text-center" src="~/images/THC.png" style="height: 250px; width: 290px;"/></center>
+                                        <center><img class="img-fluid text-center" src="~/images/THC.png" style="height: 250px; width: 290px;" /></center>
                                     </div>
                                 </div>
                                 <div class=col-md-6 col-xl-6>
@@ -92,7 +90,7 @@
                             <div class="row">
                                 <div class="col-md-6 col-xl-6">
                                     <div class="text-center">
-                                        <center><img class="img-fluid text-center" src="~/images/THC.png" style="height: 250px; width: 290px;"/></center>
+                                        <center><img class="img-fluid text-center" src="~/images/THC.png" style="height: 250px; width: 290px;" /></center>
                                     </div>
                                 </div>
                                 <div class=col-md-6 col-xl-6>
@@ -143,7 +141,7 @@
                     <h1 class="ProductTitleCat" title="@product.Name">@product.Name</h1>
                 </div>
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@product.ProductId">
-                    <img src="@(Startup.storagePath + product.ImageUrl)" class="imageCell" style="height: 185px; width: 120px;"/>
+                    <img src="@(Startup.storagePath + product.ImageUrl)" class="imageCell" style="height: 185px; width: 120px;" />
                 </a>
                 <br>
                 <h4 style="color: rgb(230, 230, 230);">€@product.Price</h4>

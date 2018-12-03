@@ -13,13 +13,12 @@
         <th>Order number</th>
         <th>Total Price</th>
         <th>Order Status</th>
-
     </tr>
     </thead>
     <tbody>
     @foreach (var order in Model)
     {
-        
+
             <tr class="assetRow">
                 <td class="">@order.OrderDate</td>
                 <td class="">@order.Ordernr</td>
@@ -28,7 +27,7 @@
                 <td class="">
                     <a asp-action="OrderDetails" asp-route-orderid="@order.OrderId">Details</a>
                 </td></tr>
-        
+
     }
     </tbody>
 </table>

@@ -13,12 +13,12 @@
                 <div asp-validation-summary="All"><label  id="errormessages"></label></div>
                 <div class="form-group">
                     <label asp-for="UserName"></label>
-                    <input asp-for="UserName" class="form-control" maxlength="200"/>
+                    <input asp-for="UserName" class="form-control" maxlength="200" />
                     <span asp-validation-for="UserName"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Password"></label>
-                    <input asp-for="Password" size="10" class="form-control"/>
+                    <input asp-for="Password" size="10" class="form-control" />
                     <span asp-validation-for="Password"></span>
                 </div>
                 <div class="form-group">
@@ -35,7 +35,6 @@
                     <a asp-area="" asp-controller="Account" asp-action="Register">Register</a><br />
                     <a asp-area="" asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
                 </p>
-
             </form>
         </div>
 

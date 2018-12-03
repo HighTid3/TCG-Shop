@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using TCGshopTestEnvironment.Models;
-using TCGshopTestEnvironment.Models.JoinTables;
 using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels;
 
@@ -25,6 +23,7 @@ namespace TCGshopTestEnvironment.Controllers
             _signInManager = signInManager;
             _assets = assets;
         }
+
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -47,13 +46,10 @@ namespace TCGshopTestEnvironment.Controllers
 
             if (!assetModel.Select(x => x.ProductId).Contains(productId)) // the basket already contains the product, add the amount by 1
             {
-                var wishlist = new Wishlist { UserId = user.Id, ProductId = productId};
+                var wishlist = new Wishlist { UserId = user.Id, ProductId = productId };
                 _context.wishlists.Add(wishlist);
                 _context.SaveChanges();
-
-
             }
-
 
             return Json(new { success = true });
         }
@@ -70,9 +66,7 @@ namespace TCGshopTestEnvironment.Controllers
             }
             var results = new ShoppingCartRemoveViewModel
             {
-
                 DeleteId = id
-
             };
             return Json(results);
         }
@@ -89,6 +83,5 @@ namespace TCGshopTestEnvironment.Controllers
             }
             return Json(new { success = true });
         }
-
     }
 }

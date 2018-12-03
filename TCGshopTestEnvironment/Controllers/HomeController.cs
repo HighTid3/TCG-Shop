@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Services;
 
@@ -14,11 +10,13 @@ namespace TCGshopTestEnvironment.Controllers
     {
         private readonly IProducts _assets;
         private DBModel _context;
+
         public HomeController(IProducts assets, DBModel context)
         {
             _assets = assets;
             _context = context;
         }
+
         public IActionResult Index()
         {
             var assetModel = _assets.GetMostViewed();
@@ -50,6 +48,5 @@ namespace TCGshopTestEnvironment.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-       
-      }
+    }
 }

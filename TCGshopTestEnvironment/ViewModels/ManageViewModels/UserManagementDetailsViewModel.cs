@@ -37,7 +37,6 @@ namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
         [Required]
         [MaxLength(256)]
         [Display(Name = "First name")]
-
         public string FirstName { get; set; }
     }
 }

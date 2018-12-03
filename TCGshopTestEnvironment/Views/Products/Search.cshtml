@@ -7,14 +7,10 @@
     List<string> gradeslist = ViewBag.grades as List<string>;
 }
 
-
 @using System.Data.SqlClient
 @using X.PagedList.Mvc;
 @using X.PagedList;
 @using X.PagedList.Mvc.Core
-
-
-
 
 <div class="container">
     <div class="row">
@@ -28,7 +24,6 @@
         <div class="container-fluid">
             <div class="row" style="margin-top: 10px;">
 
-
                 <!--filtering-->
                 @await Html.PartialAsync("/Views/Products/_Filters.cshtml")
                 <div class="col-md-9">
@@ -38,8 +33,6 @@
                         </div>
 
                         @Html.DropDownList("Sortby", new SelectList(ViewBag.Sorting, "Value", "Text", ViewBag.SelectSort), new { onChange = "productformsorting()", @style = "display: block", @id = "sortingform" })
-
-
                     </div>
 
                     <!--product views-->

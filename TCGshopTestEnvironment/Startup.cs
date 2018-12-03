@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Services;
 
@@ -21,6 +18,7 @@ namespace TCGshopTestEnvironment
     {
         //S3
         public static string accessKey = Environment.GetEnvironmentVariable("accessKey");
+
         public static string secretKey = Environment.GetEnvironmentVariable("secretKey");
         public static string s3Server = Environment.GetEnvironmentVariable("s3Server");
         public static string storagePath = "https://cdn.tcg.sale/tcg-upload/";
@@ -72,7 +70,6 @@ namespace TCGshopTestEnvironment
                 // Email Settings
                 options.SignIn.RequireConfirmedEmail = ValidateEmail;
                 Console.WriteLine("RequireConfirmedEmail is " + ValidateEmail);
-
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -82,10 +79,8 @@ namespace TCGshopTestEnvironment
             services.AddScoped<IWishlist, WishlistService>();
             services.AddScoped<IManage, ManageService>();
 
-
             var connection = @"User ID=postgres;Password=test;Host=localhost;Port=5432;Database=TCG;Pooling=true;";
 
-            
             // Heroku provides PostgreSQL connection URL via env variable
             var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
             var dbSsl = Environment.GetEnvironmentVariable("DATABASE_SSL");
@@ -95,11 +90,9 @@ namespace TCGshopTestEnvironment
             if (connUrl == null)
             {
                 connStr = connection;
-
             }
             else
             {
-
                 // Parse connection URL to connection string for Npgsql
                 connUrl = connUrl.Replace("postgres://", string.Empty);
 
@@ -119,13 +112,9 @@ namespace TCGshopTestEnvironment
                 {
                     connStr = connStr + "Use SSL Stream=True;SSL Mode=Require;TrustServerCertificate=True;";
                 }
-
             }
 
-
-            
             services.AddDbContext<DBModel>(options => options.UseNpgsql(connStr));
-
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
@@ -133,8 +122,8 @@ namespace TCGshopTestEnvironment
             //sessions configuration for shopping basket
             services.AddDistributedMemoryCache();
             services.AddSession();
-
         }
+
         private async Task CreateRoles(IServiceProvider serviceProvider)
         {
             //adding custom roles
@@ -172,6 +161,7 @@ namespace TCGshopTestEnvironment
                 }
             }
         }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
