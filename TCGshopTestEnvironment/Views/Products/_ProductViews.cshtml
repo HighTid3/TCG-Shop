@@ -18,7 +18,7 @@
                 </div>
                 <label class="GradeText">[@asset.Grade]</label><br/>
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                    <img src="@(Startup.storagePath + asset.ImageUrl + ".png")" class="imageCell"/>
+                    <img src="@(Startup.storagePath + asset.ImageUrl )" class="imageCell"/>
                 </a>
                 <br>
                 @*@asset.Stock*@
