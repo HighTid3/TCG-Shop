@@ -151,19 +151,20 @@ namespace TCGshopTestEnvironment.Services
         public IEnumerable<PopularViewModel> GetMostViewed()
         {
             var result = (from p in _context.products
-                where p.ViewsDetails > 10
-                orderby p.ViewsDetails descending
-                select new PopularViewModel
-                {
-                    ProductId = p.ProductId,
-                    Name = p.Name,
-                    Price = p.Price,
-                    DateCreated = p.DateCreated,
-                    DateUpdated = p.DateUpdated,
-                    ViewsListed = p.ViewsListed,
-                    ViewsDetails = p.ViewsDetails,
-                    ImageUrl = p.ImageUrl
-                }).ToList();
+                          where p.ViewsDetails > 10
+                          orderby p.ViewsDetails descending
+                          select new PopularViewModel
+                          {
+                              ProductId = p.ProductId,
+                              Name = p.Name,
+                              Price = p.Price,
+                              DateCreated = p.DateCreated,
+                              DateUpdated = p.DateUpdated,
+                              ViewsListed = p.ViewsListed,
+                              ViewsDetails = p.ViewsDetails,
+                              ImageUrl = p.ImageUrl
+                          }).Take(6).ToList();
+
             return result;
         }
     }
