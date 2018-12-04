@@ -16,7 +16,7 @@ namespace TCGshopTestEnvironment.Services
 
         public IEnumerable<OrderOverviewViewModel> OrderOverview(string useremail)
         {
-            return from p in _context.Orders
+            return (from p in _context.Orders
                    where p.Email == useremail
                    select new OrderOverviewViewModel
                    {
@@ -25,12 +25,12 @@ namespace TCGshopTestEnvironment.Services
                        Status = p.PaymentStatus,
                        TotalPrice = p.Total,
                        OrderId = p.OrderId
-                   };
+                   }).OrderByDescending(x => x.OrderDate);
         }
 
         public IEnumerable<OrderOverviewViewModel> GetAllOrders()
         {
-            return from p in _context.Orders
+            return (from p in _context.Orders
                    select new OrderOverviewViewModel
                    {
                        OrderDate = p.OrderDate,
@@ -38,7 +38,7 @@ namespace TCGshopTestEnvironment.Services
                        Status = p.PaymentStatus,
                        TotalPrice = p.Total,
                        OrderId = p.OrderId
-                   };
+                   }).OrderByDescending(x => x.OrderDate);
         }
 
         public OrderDetailsViewModel Orderdetails(int OrderId)

@@ -346,3 +346,30 @@ function productformsorting() {
     document.getElementById("sorting").value = sorting;
     document.getElementById('TheForm').submit();
 }
+
+// show save text when changing order status
+function ChangeOrderStatus(orderid) {
+    document.getElementById(orderid).style.visibility = "visible";
+}
+
+//post the changed order status to controller method
+function SaveOrderStatus(orderid) {
+    document.getElementById(orderid).style.visibility = "hidden";
+    var orderstatus = document.getElementById("dropdown" + orderid).value;
+    if (orderid) {
+        $.ajax
+        ({
+            type: 'POST',
+            url: '/Manage/ChangeorderStatus',
+            data:
+            {
+                orderstatus: orderstatus,
+                orderid: orderid
+            },
+            success: function (response) {
+            }
+        });
+    }
+    return false;
+
+}

@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TCGshopTestEnvironment.Models;
@@ -188,11 +190,26 @@ namespace TCGshopTestEnvironment.Controllers
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
+
+
+
             var model = _manage.OrderOverview(user.Email);
             if (User.IsInRole("Admin"))
             {
                 model = _manage.GetAllOrders();
             }
+            // sorting list for product sorting
+            var OrderStatuslist = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Paid", Value = "paid"},
+                new SelectListItem {Text = "Created", Value = "created"},
+                new SelectListItem {Text = "Cancelled", Value = "Canceled"},
+                new SelectListItem {Text = "Expired", Value = "Expired"},
+                new SelectListItem {Text = "Shipped", Value = "Shipped"},
+                new SelectListItem {Text = "Completed", Value = "Completed"},
+
+            };
+            ViewBag.OrderStatus = OrderStatuslist;
             return View(model);
         }
 
@@ -417,6 +434,18 @@ namespace TCGshopTestEnvironment.Controllers
 
             return Ok();
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public JsonResult ChangeorderStatus(string orderstatus, int orderid)
+        {
+            var model = _context.Orders.Single(x => x.OrderId == orderid);
+            model.PaymentStatus = orderstatus;
+            _context.Orders.Update(model);
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+
 
         #region Helpers
 
