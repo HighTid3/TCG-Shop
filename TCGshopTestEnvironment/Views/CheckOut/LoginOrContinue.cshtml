@@ -1,0 +1,45 @@
+﻿@model TCGshopTestEnvironment.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Log In or Continue without registering";
+}
+
+<div class="containerCenter">
+    <div class="row innerBox justify-content-center">
+        <h2 class="LoginTitle">@ViewData["Title"]</h2>
+        <div class="col-md-4">
+
+
+            <form method="post" asp-action="Login" asp-controller="Account" id="loginform">
+                <div asp-validation-summary="All"></div>
+                <div class="form-group">
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" class="form-control" maxlength="200" />
+                    <span asp-validation-for="UserName"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" size="10" class="form-control" />
+                    <span asp-validation-for="Password"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RememberMe"></label>
+                    <input asp-for="RememberMe" />
+                    <span asp-validation-for="RememberMe"></span>
+                </div>
+                <input asp-for="Href" type="hidden" value="Checkout" id="href"/>
+                <p><input type="submit" value="Login" class="btn btn-primary btnSignIn" /></p>
+                <div class="form-group">
+                    <p>
+                        <a asp-area="" asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <div class="signUpBox">
+
+                <a href="/checkout/start"><button class="btn btn-default btnSignIn" style="width: 100% !important;">Continue without logging in</button></a>
+            </div>
+        </div>
+    </div>
+</div>

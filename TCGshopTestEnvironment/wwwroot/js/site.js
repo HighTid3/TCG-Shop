@@ -213,7 +213,7 @@ function postToCart(productId, userName, imageUrl, productname, price, grade, am
         return false;
     }
 }
-function AddDbCarttoLocal() {
+function AddDbCarttoLocal(href) {
     $.ajax
         ({
             type: 'POST',
@@ -242,7 +242,12 @@ function AddDbCarttoLocal() {
                         ShoppingcartBadge();
                     }
                 });
-                window.location.href = "/";
+                if (href !== "Checkout") {
+                    window.location.href = "/";
+                } else {
+                    window.location.href = "/checkout/start";
+                }
+
             }
         });
 }
@@ -280,7 +285,7 @@ $("#loginform").submit(function (e) {
         success: function (response) {
             if (response["status"] == "LoggedIn") {
                 AddLocalCartToDatabase(),  //perform the add local cart items to database cart
-                    AddDbCarttoLocal();
+                    AddDbCarttoLocal(document.getElementById("href").value);
             }
             else {
                 $("#errormessages").html("Username or Password is incorrect.")

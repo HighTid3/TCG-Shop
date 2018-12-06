@@ -214,6 +214,7 @@ body {
 img.imageCell {
     width: 190px;
     height: 280px;
+    transition: .3s ease
 }
 
 .ProductTitleCat {
@@ -277,7 +278,18 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
     /*margin: 20px;
     height: 100%;
     width: 235px;*/
+
 }
+
+.imagehover:hover {
+    opacity: 0.4;
+    transition: .3s ease
+    
+}
+
+
+
+
 .innerColomnSquare {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);

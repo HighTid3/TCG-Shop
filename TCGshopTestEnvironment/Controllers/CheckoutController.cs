@@ -68,6 +68,7 @@ namespace TCGshopTestEnvironment.Controllers
         [HttpPost]
         public async Task<IActionResult> AccountAndAddress([FromBody] AccountAndAddressViewModel OrderDetails)
         {
+            var user = await _userManager.GetUserAsync(User);
             //return Ok(OrderDetails);
 
             var values = OrderDetails.OrderViewModel;
@@ -77,8 +78,8 @@ namespace TCGshopTestEnvironment.Controllers
             try
             {
                 //Creating Order
-                //order.Email = user.Email; //Get From User Account
-                order.Email = values[0].Email; //Get From Form
+                order.Email = user!= null ? user.Email : values[0].Email;
+                 //Get From Form
                 order.Guid = Guid.NewGuid();
                 order.OrderDate = DateTime.Now;
                 order.FirstName = values[0].FirstName;
@@ -187,6 +188,12 @@ namespace TCGshopTestEnvironment.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult LoginOrContinue()
+        {
+            return View();
         }
     }
 }

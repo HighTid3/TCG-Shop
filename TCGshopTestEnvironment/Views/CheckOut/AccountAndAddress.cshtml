@@ -2,6 +2,9 @@
 @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">*@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+@inject UserManager<UserAccount> UserManager
+@inject SignInManager<UserAccount> SignInManager        
+
 <style>
     .input-group-addon, .input-group-btn { width: auto !important; }
 </style>
@@ -42,7 +45,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-asterisk"></i>
                             </div>
-                            <input asp-for="FirstName" id="FirstName"  type="text" aria-describedby="FirstNameHelpBlock" required="required" class="form-control">
+                            <input asp-for="FirstName" id="FirstName"  type="text" aria-describedby="FirstNameHelpBlock" placeholder="Puk" required="required" class="form-control">
                             <div class="input-group-addon" id="FirstNameExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
@@ -51,13 +54,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="LastName" class="control-label col-xs-4">Last Name</label>
+                    <label asp-for="LastName" class="control-label col-xs-4">Last Name</label>
                     <div class="col-xs-8">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-asterisk"></i>
                             </div>
-                            <input id="LastName" name="LastName" placeholder="van de petteflet" type="text" aria-describedby="LastNameHelpBlock" required="required" class="form-control">
+                            <input asp-for="LastName" id="LastName" name="LastName" placeholder="van de petteflet" type="text" aria-describedby="LastNameHelpBlock" required="required" class="form-control">
                             <div class="input-group-addon" id="LastNameExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
@@ -66,13 +69,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="PostalCode" class="control-label col-xs-4">Postal Code</label>
+                    <label asp-for="PostalCode" class="control-label col-xs-4">Postal Code</label>
                     <div class="col-xs-8">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-asterisk"></i>
                             </div>
-                            <input id="PostalCode" name="PostalCode" placeholder="1234AB" type="text" aria-describedby="PostalCodeHelpBlock" required="required" class="form-control">
+                            <input asp-for="PostalCode" id="PostalCode" name="PostalCode" placeholder="1234AB" type="text" aria-describedby="PostalCodeHelpBlock" required="required" class="form-control">
                             <div class="input-group-addon" id="PostalCodeExclamation">
                                 <i class="fa fa-exclamation"></i>
                             </div>
@@ -155,6 +158,8 @@
                         <span id="CountryHelpBlock" class="help-block"></span>
                     </div>
                 </div>
+            @if (!SignInManager.IsSignedIn(User))
+            {
                 <div class="form-group">
                     <label for="Email" class="control-label col-xs-4">Email</label>
                     <div class="col-xs-8">
@@ -170,6 +175,7 @@
                         <span id="EmailHelpBlock" class="help-block"></span>
                     </div>
                 </div>
+            }
                 <div class="form-group row">
                     <div class="col-xs-offset-4 col-xs-8">
                         <button name="submit" type="submit" class="btn btn-primary btnSearch">Submit</button>
@@ -182,7 +188,7 @@
 
 <script>
     //Local Input Validation
-    $("input[id='FirstName']").keyup(function() {
+    $("input[id='FirstName']").keyup(function () {
         if ($(this).val().length < 1) {
             $("#FirstNameHelpBlock").text("First Name is required");
             $("#FirstNameExclamation").show();
@@ -192,7 +198,7 @@
         };
     });
 
-    $("input[id='LastName']").keyup(function() {
+    $("input[id='LastName']").keyup(function () {
         if ($(this).val().length < 1) {
             $("#LastNameHelpBlock").text("Last Name is required");
             $("#LastNameExclamation").show();
@@ -202,7 +208,7 @@
         };
     });
 
-    $("input[id='PostalCode']").keyup(function() {
+    $("input[id='PostalCode']").keyup(function () {
         if ($(this).val().length < 1) {
             $("#PostalCodeHelpBlock").text("Postal Code is required");
             $("#PostalCodeExclamation").show();
@@ -212,7 +218,7 @@
         };
     });
 
-    $("input[id='HouseNumber']").keyup(function() {
+    $("input[id='HouseNumber']").keyup(function () {
         if ($(this).val().length < 1) {
             $("#HouseNumberHelpBlock").text("House Number is required");
             $("#HouseNumberExclamation").show();
@@ -222,7 +228,7 @@
         };
     });
 
-    $("input[id='Street']").keyup(function() {
+    $("input[id='Street']").keyup(function () {
         if ($(this).val().length < 1) {
             $("#StreetHelpBlock").text("Street is required");
             $("#StreetExclamation").show();
@@ -232,7 +238,7 @@
         };
     });
 
-    $("input[id='City']").keyup(function() {
+    $("input[id='City']").keyup(function () {
         if ($(this).val().length < 1) {
             $("#CityHelpBlock").text("City is required");
             $("#CityExclamation").show();
@@ -242,7 +248,7 @@
         };
     });
 
-    $("input[id='State']").keyup(function() {
+    $("input[id='State']").keyup(function () {
         if ($(this).val().length < 1) {
             $("#StateHelpBlock").text("State is required");
             $("#StateExclamation").show();
@@ -252,7 +258,7 @@
         };
     });
 
-    $("input[id='Country']").keyup(function() {
+    $("input[id='Country']").keyup(function () {
         if ($(this).val().length < 1) {
             $("#CountryHelpBlock").text("Country is required");
             $("#CountryExclamation").show();
@@ -262,7 +268,7 @@
         };
     });
 
-    $("input[id='Email']").keyup(function() {
+    $("input[id='Email']").keyup(function () {
         if ($(this).val().length < 1) {
             $("#EmailHelpBlock").text("Email is required");
             $("#EmailExclamation").show();
@@ -273,7 +279,7 @@
     });
 
     //Posting Date + Shopping Cart
-    $("#AccountAndAddressForm").submit(function(e) {
+    $("#AccountAndAddressForm").submit(function (e) {
 
         var form = $(this);
 
@@ -298,7 +304,7 @@
             url: "/Checkout/AccountAndAddress",
             data: JSON.stringify(d),
             contentType: "application/json",
-            success: function(data) {
+            success: function (data) {
                 console.log('response', data);
                 window.location.href = data;
 
@@ -323,7 +329,7 @@
                 dataType: 'json',
                 cache: true,
                 //success
-                success: function(data) {
+                success: function (data) {
                     console.log(data);
                     console.log("Street: " + data["_embedded"]["addresses"][0]["street"]);
                     console.log("Street: " + data["_embedded"]["addresses"][0]["city"]["label"]);
@@ -347,3 +353,15 @@
         }
     });
 </script>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <script>
+        $(document).ready(function () {
+
+            $("input[id='PostalCode']").trigger("keyup");
+            $("input[id='FirstName']").trigger("keyup");
+            $("input[id='LastName']").trigger("keyup");
+        });
+    </script>
+}
