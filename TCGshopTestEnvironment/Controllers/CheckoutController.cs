@@ -33,8 +33,9 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Start()
+        public async Task<IActionResult> Start()
         {
+            
             //TODO
             //Logic for logged in users
 
@@ -43,8 +44,24 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public ActionResult AccountAndAddress()
+        public async Task<ActionResult> AccountAndAddress()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var model = new CheckoutViewModel
+                {
+                    Address = user.Address,
+                    Country = user.Country,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PostalCode = user.ZipCode,
+
+
+                };
+                return PartialView(model);
+            }
             return PartialView();
         }
 
