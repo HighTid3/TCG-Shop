@@ -33,8 +33,9 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Start()
+        public async Task<IActionResult> Start()
         {
+            
             //TODO
             //Logic for logged in users
 
@@ -43,14 +44,31 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public ActionResult AccountAndAddress()
+        public async Task<ActionResult> AccountAndAddress()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var model = new CheckoutViewModel
+                {
+                    Address = user.Address,
+                    Country = user.Country,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PostalCode = user.ZipCode,
+
+
+                };
+                return PartialView(model);
+            }
             return PartialView();
         }
 
         [HttpPost]
         public async Task<IActionResult> AccountAndAddress([FromBody] AccountAndAddressViewModel OrderDetails)
         {
+            var user = await _userManager.GetUserAsync(User);
             //return Ok(OrderDetails);
 
             var values = OrderDetails.OrderViewModel;
@@ -60,8 +78,8 @@ namespace TCGshopTestEnvironment.Controllers
             try
             {
                 //Creating Order
-                //order.Email = user.Email; //Get From User Account
-                order.Email = values[0].Email; //Get From Form
+                order.Email = user!= null ? user.Email : values[0].Email;
+                 //Get From Form
                 order.Guid = Guid.NewGuid();
                 order.OrderDate = DateTime.Now;
                 order.FirstName = values[0].FirstName;
@@ -170,6 +188,12 @@ namespace TCGshopTestEnvironment.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult LoginOrContinue()
+        {
+            return View();
         }
     }
 }

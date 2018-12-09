@@ -14,5 +14,7 @@ namespace TCGshopTestEnvironment.ViewModels
         public string Password { get; set; }
 
         [Display(Name = "Remember Me")] public bool RememberMe { get; set; }
+
+        public string Href { get; set; }
     }
 }

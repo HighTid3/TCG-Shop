@@ -213,7 +213,7 @@ function postToCart(productId, userName, imageUrl, productname, price, grade, am
         return false;
     }
 }
-function AddDbCarttoLocal() {
+function AddDbCarttoLocal(href) {
     $.ajax
         ({
             type: 'POST',
@@ -242,7 +242,12 @@ function AddDbCarttoLocal() {
                         ShoppingcartBadge();
                     }
                 });
-                window.location.href = "/";
+                if (href !== "Checkout") {
+                    window.location.href = "/";
+                } else {
+                    window.location.href = "/checkout/start";
+                }
+
             }
         });
 }
@@ -280,7 +285,7 @@ $("#loginform").submit(function (e) {
         success: function (response) {
             if (response["status"] == "LoggedIn") {
                 AddLocalCartToDatabase(),  //perform the add local cart items to database cart
-                    AddDbCarttoLocal();
+                    AddDbCarttoLocal(document.getElementById("href").value);
             }
             else {
                 $("#errormessages").html("Username or Password is incorrect.")
@@ -345,4 +350,31 @@ function productformsorting() {
     var sorting = $('#sortingform').val();
     document.getElementById("sorting").value = sorting;
     document.getElementById('TheForm').submit();
+}
+
+// show save text when changing order status
+function ChangeOrderStatus(orderid) {
+    document.getElementById(orderid).style.visibility = "visible";
+}
+
+//post the changed order status to controller method
+function SaveOrderStatus(orderid) {
+    document.getElementById(orderid).style.visibility = "hidden";
+    var orderstatus = document.getElementById("dropdown" + orderid).value;
+    if (orderid) {
+        $.ajax
+        ({
+            type: 'POST',
+            url: '/Manage/ChangeorderStatus',
+            data:
+            {
+                orderstatus: orderstatus,
+                orderid: orderid
+            },
+            success: function (response) {
+            }
+        });
+    }
+    return false;
+
 }
