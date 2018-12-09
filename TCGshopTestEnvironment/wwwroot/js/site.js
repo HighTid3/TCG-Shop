@@ -346,3 +346,4 @@ function productformsorting() {
     document.getElementById("sorting").value = sorting;
     document.getElementById('TheForm').submit();
 }
+
