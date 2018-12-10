@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels;
@@ -23,13 +24,21 @@ namespace TCGshopTestEnvironment.Controllers
         private IShopping _assets;
         private readonly UserManager<UserAccount> _userManager;
         private readonly SignInManager<UserAccount> _signInManager;
+        private readonly IHttpContextAccessor _httpcontext;
 
-        public CheckoutController(DBModel context, IShopping assets, UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager)
+        public CheckoutController(DBModel context, IShopping assets, UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager, IHttpContextAccessor httpcontext)
         {
             _context = context;
             _assets = assets;
             _userManager = userManager;
             _signInManager = signInManager;
+            _httpcontext = httpcontext;
+        }
+
+        public string BaseUrl()
+        {
+            var request = _httpcontext.HttpContext.Request.Host.ToString();
+            return request;
         }
 
         [HttpGet]
@@ -46,6 +55,7 @@ namespace TCGshopTestEnvironment.Controllers
         [HttpGet]
         public async Task<ActionResult> AccountAndAddress()
         {
+            
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
@@ -119,11 +129,16 @@ namespace TCGshopTestEnvironment.Controllers
                 }
 
                 //deleting shoppingcart
-                var userbasket = _assets.ShoppingbasketByName(user.Id).ToList();
-                _context.Basket.RemoveRange(userbasket);
+                if (user != null)
+                {
+                    var userbasket = _assets.ShoppingbasketByName(user.Id).ToList();
+                    _context.Basket.RemoveRange(userbasket);
+                }
+
 
                 order.Total = Total;
                 order.OrderDetails = OrderDetail;
+
 
                 //Now We Need To Create A Mollie Payment Token
                 PaymentRequest paymentRequest = new PaymentRequest()
@@ -167,7 +182,15 @@ namespace TCGshopTestEnvironment.Controllers
             var dbOrder = _context.Orders.Where(x => x.Guid == guid).Select(x => x).SingleOrDefault();
             try
             {
-                return Json(new { status = dbOrder.PaymentStatus });
+                //return Json(new { status = dbOrder.PaymentStatus });
+                if (dbOrder.PaymentStatus.ToLower() == "paid")
+                {
+                    return PartialView("_CheckoutSucces", dbOrder);
+                }
+                else
+                {
+                    return Json(new { status = dbOrder.PaymentStatus });
+                }
             }
             catch (Exception e)
             {
@@ -200,6 +223,18 @@ namespace TCGshopTestEnvironment.Controllers
         public IActionResult LoginOrContinue()
         {
             return View();
+        }
+
+        public ActionResult CheckoutResult(string result)
+        {
+            if (result == "paid")
+            {
+                return PartialView("_CheckoutSucces");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }
