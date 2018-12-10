@@ -33,7 +33,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Start()
+        public IActionResult Start()
         {
             
             //TODO
@@ -118,6 +118,10 @@ namespace TCGshopTestEnvironment.Controllers
                     Total = Total + product.Amount * dbProduct.Price;
                 }
 
+                //deleting shoppingcart
+                var userbasket = _assets.ShoppingbasketByName(user.Id).ToList();
+                _context.Basket.RemoveRange(userbasket);
+
                 order.Total = Total;
                 order.OrderDetails = OrderDetail;
 
@@ -184,6 +188,8 @@ namespace TCGshopTestEnvironment.Controllers
             //Update dbOrder
             dbOrder.PaymentStatus = result.Status.ToString();
             _context.Update(dbOrder);
+
+
 
             await _context.SaveChangesAsync();
 

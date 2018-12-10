@@ -230,7 +230,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> UserManagement()
+        public IActionResult UserManagement()
         {
             var asset = _manage.GetRegisteredUsers();
 
@@ -246,7 +246,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> UserDetails(string username)
+        public IActionResult UserDetails(string username)
         {
             var asset = _manage.GetRegisteredUserbyUsername(username);
 
@@ -268,7 +268,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> UserEdit(string username)
+        public IActionResult UserEdit(string username)
         {
             var asset = _manage.GetRegisteredUserbyUsername(username);
 
@@ -373,7 +373,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> UserDelete(string username)
+        public IActionResult UserDelete(string username)
         {
             var asset = _manage.GetRegisteredUserbyUsername(username);
 

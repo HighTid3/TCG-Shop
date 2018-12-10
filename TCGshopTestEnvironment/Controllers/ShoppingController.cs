@@ -117,7 +117,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CheckOut(List<ProductsShopCartViewModel> vm)
+        public IActionResult CheckOut(List<ProductsShopCartViewModel> vm)
         {
             List<ProductsShopCartViewModel> ShoppingCart = new List<ProductsShopCartViewModel>();
 

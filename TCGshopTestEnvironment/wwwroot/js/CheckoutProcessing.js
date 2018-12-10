@@ -23,6 +23,7 @@ $.ajax({
         if (data["status"] == "created") {
             setTimeout($.ajax(this), 5000);
         } else {
+            shoppingCart.clear();
             $("#ShoppingCartCheckOutProcessing").html("<h1>" + data["status"] + "<h1>");
         }
     },
