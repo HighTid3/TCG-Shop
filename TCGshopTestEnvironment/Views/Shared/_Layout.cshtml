@@ -3,25 +3,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TCGshopTestEnvironment</title>
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">*@
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - TCG.Sale</title>
 
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link href="https://fonts.googleapis.com/css?family=Oswald:200,400,700" rel="stylesheet">
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Poppins:200,400,600,800" rel="stylesheet">
-    </environment>
+    <!--Loading All External Scripts-->
+    <!--Javascript-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true" defer="defer"></script>
+
+    <!--CSS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,400,700" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,400,600,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--End of External Scripts-->
     <script>
         var storagePath = "@Startup.storagePath";
     </script>
@@ -29,7 +32,9 @@
 <div class="container-fluid top-header" height="50">
     <div class="row logo-image">
         <div class="col-lg-4 col-md-4 col-xs-3 col-sm-4" style="margin-top: 5px;">
-            <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/logo.png" alt="Logo" class="img-responsive" width="90" height="45" /></a>
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/images/logo.png" alt="Logo" class="img-responsive" width="90" height="45"/>
+            </a>
         </div>
         <div class="col-lg-4 col-md-6 col-xs-8 col-sm-6">
             <div class="">
@@ -40,7 +45,9 @@
                             <input list="textSearchData" class="form-control search" id="textSearch" name="name" width="100" placeholder="Search here..." maxlength="40">
                             <datalist id="textSearchData"></datalist>
                         </div>
-                        <button type="submit" class="btn btn-default btnSearch"><span class="glyphicon glyphicon-search" style="color: #e4e4e4;"></span></button>
+                        <button type="submit" class="btn btn-default btnSearch">
+                            <span class="glyphicon glyphicon-search" style="color: #e4e4e4;"></span>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -52,145 +59,160 @@
 </div>
 
 <body class="bg-back">
-    <nav class="navbar navbar-inverse ">
-        <!-- navbar top fixed weggehaald-->
+<nav class="navbar navbar-inverse ">
+    <!-- navbar top fixed weggehaald-->
+    <div class="containerCenter">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TCGshopTestEnvironment</a> -->
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Pokemon
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                        <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="Pokemon">All Pokemon Cards</a>>
+                        <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="NewProduct">Add Product</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Yu-Gi-Oh!
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="YuGiOh">All YuGiOh Cards</a>>
+                        <a class="dropdown-item" href="#">Another action</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Magic the Gathering
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="Magic">All Magic: The Gathering Cards</a>>
+                    </div>
+                </li>
+
+                <!-- ><li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li> -->
+                <li>
+                    <a asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="All">Cards</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                </li>
+                @await Html.PartialAsync("_shoppingBasket")
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<partial name="_CookieConsentPartial"/>
+
+<!--Global Modal-->
+<!-- The Modal -->
+<div id="Modal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content" id="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <div class="modal-body">
+            <p>Some text in the Modal..</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('Modal');
+
+// Get the <span> element that closes the modal
+    var span = document.getElementById("closeModal");
+
+// When the user clicks on the button, open the modal 
+    function GlobalModal() {
+        modal.style.display = "block";
+        
+    }
+
+// When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+// When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+
+@RenderBody()
+
+<div style="margin-top: 100px; background-color: #313336; color: white; padding-top: 10px; padding-bottom: 25px;">
+    <footer>
         <div class="containerCenter">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TCGshopTestEnvironment</a> -->
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Pokemon
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                            <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="Pokemon">All Pokemon Cards</a>>
-                            <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="NewProduct">Add Product</a>
-                       </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Yu-Gi-Oh!
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="YuGiOh">All YuGiOh Cards</a>>
-                            <a class="dropdown-item" href="#">Another action</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Magic the Gathering
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="Magic">All Magic: The Gathering Cards</a>>
-                        </div>
-                    </li>
-
-                    <!-- ><li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li> -->
-                    <li><a asp-area="" asp-controller="Products" asp-action="Index" asp-route-CardType="All">Cards</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    @await Html.PartialAsync("_shoppingBasket")
-                </ul>
+            <div class="row footerRow">
+                <div class="col-md-3 extraInfo">
+                    <h1 class="footertitle">Information</h1>
+                    <p>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br/>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br/>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br/>
+                        <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br/>
+                    </p>
+                </div>
+                <div class="col-md-3 extraInfo">
+                    <h1 class="footertitle">Category</h1>
+                    <p>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br/>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br/>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br/>
+                        <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br/>
+                    </p>
+                </div>
+                <div class="col-md-3 extraInfo">
+                    <h1 class="footertitle">Legal Info</h1>
+                    <p>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br/>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br/>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br/>
+                        <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br/>
+                    </p>
+                </div>
+                <div class="col-md-3 extraInfo">
+                    <h1 class="footertitle">Social Media</h1>
+                    <p>
+                        Facebook Logo
+                    </p>
+                </div>
             </div>
         </div>
-    </nav>
-
-    <partial name="_CookieConsentPartial" />
-
-    @RenderBody()
-
-    <div style="margin-top:100px;background-color:#313336;color:white;padding-top: 10px;padding-bottom: 25px;">
-        <footer>
-            <div class="containerCenter">
-                <div class="row footerRow">
-                    <div class="col-md-3 extraInfo">
-                        <h1 class="footertitle">Information</h1>
-                        <p>
-                            <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
-                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                            <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
-                        </p>
-                    </div>
-                    <div class="col-md-3 extraInfo">
-                        <h1 class="footertitle">Category</h1>
-                        <p>
-                            <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
-                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                            <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
-                        </p>
-                    </div>
-                    <div class="col-md-3 extraInfo">
-                        <h1 class="footertitle">Legal Info</h1>
-                        <p>
-                            <a asp-area="" asp-controller="Home" asp-action="Index">- Home</a><br />
-                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                            <a asp-area="" asp-controller="Home" asp-action="Index">- About Us</a><br />
-                            <a asp-area="" asp-controller="Home" asp-action="Contact">- Contact</a><br />
-                        </p>
-                    </div>
-                    <div class="col-md-3 extraInfo">
-                        <h1 class="footertitle">Social Media</h1>
-                        <p>
-                            Facebook Logo
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
-    <div style="background-color: #313336; color: white;">
-        <footer>
-            <div class="containerCenter">
-                <div class="row copy-info text-center>
+    </footer>
+</div>
+<div style="background-color: #313336; color: white;">
+    <footer>
+    <div class="containerCenter">
+        <div class="row copy-info text-center>
                     <div class="col-md-12">
-                        <p class=text-center>&copy; 2018 TCG Shop -  All rights reserved</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
+            <p class=text-center>&copy; 2018 TCG Shop - All rights reserved</p>
+        </div>
     </div>
-
-    <environment include="Development">
-        
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.1.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"></script>
-
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"></script>
-
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    @RenderSection("Scripts", required: false)
+</div>
+</footer>
+</div>
+@RenderSection("Scripts", required: false)
 </body>
 </html>
