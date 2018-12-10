@@ -84,7 +84,7 @@ function getCoord(e) {
 	TweenMax.to(hair, 1, {x: hairX, scaleY: hairS, transformOrigin: "center bottom", ease: Expo.easeOut});
 	
 	document.body.removeChild(div);
-};
+}
 
 function onEmailInput(e) {
 	getCoord(e);
