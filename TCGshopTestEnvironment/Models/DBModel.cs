@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TCGshopTestEnvironment.Models.JoinTables;
 
@@ -12,7 +8,6 @@ namespace TCGshopTestEnvironment.Models
     {
         public DBModel(DbContextOptions<DBModel> options) : base(options)
         {
-
         }
 
         public DbSet<UserAccount> userAccounts { get; set; }
@@ -26,14 +21,12 @@ namespace TCGshopTestEnvironment.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
 
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //productcategory jointable
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ProductCategory>()
-                .HasKey(t => new {t.ProductId, t.CategoryName});
+                .HasKey(t => new { t.ProductId, t.CategoryName });
             modelBuilder.Entity<ProductCategory>()
                 .HasOne(ma => ma.Category)
                 .WithMany(m => m.Products)
@@ -44,7 +37,7 @@ namespace TCGshopTestEnvironment.Models
                 .HasForeignKey(ma => ma.ProductId);
 
             modelBuilder.Entity<Wishlist>()
-                .HasKey(t => new { t.Id});
+                .HasKey(t => new { t.Id });
             modelBuilder.Entity<Wishlist>()
                 .HasOne(ma => ma.User)
                 .WithMany(m => m.Products)
@@ -53,10 +46,6 @@ namespace TCGshopTestEnvironment.Models
                 .HasOne(ma => ma.Product)
                 .WithMany(m => m.User)
                 .HasForeignKey(ma => ma.ProductId);
-
-
         }
     }
 }
-
-

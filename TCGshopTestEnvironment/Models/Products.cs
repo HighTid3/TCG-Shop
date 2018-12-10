@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using TCGshopTestEnvironment.Models.JoinTables;
 
 namespace TCGshopTestEnvironment.Models
@@ -39,5 +34,7 @@ namespace TCGshopTestEnvironment.Models
         public virtual List<ProductCategory> Category { get; set; }
 
         public virtual List<Wishlist> User { get; set; }
+
+        public bool Removed { get; set; }
     }
 }

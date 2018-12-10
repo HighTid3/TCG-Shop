@@ -11,9 +11,8 @@
             <div class="row detailProduct">
                 <div class="col-md-6 text-center">
                     <tr class="assetRow">
-                        <td class=""><img src="@(Startup.storagePath + Model.ImageUrl + ".png")" class="" style="height: 300px; width: 240px;" /></td>
+                    <td class=""><img src="@(Startup.storagePath + Model.ImageUrl)" class=""/></td>
                 </div>
-
                 <div class="col-md-6">
                     <h1 class="display-1" style="color:#e4e4e4;">@Model.Name</h1>
                     <label class="GradeText" style="font-size: 1.5rem;">[@Model.Grade]</label>
@@ -25,17 +24,13 @@
                         <strong style="color:#e4e4e4;">Stock</strong> <br />
                         <label value="@Model.Stock" id="productStock">@Model.Stock</label>
                     </p>
-
                     <p>
-
                         <h3 style="color:#e4e4e4;"> €@Model.Price</h3>
                     </p>
-
                 </div>
                 <button class="qty" type="button" data-func="minus" data-field="field1">-1</button>
                 <input type="text" id="SelectedAmount" name="field1" value="1" readonly="" />
                 <button class="qty" type="button" data-func="plus" data-field="field1">+1</button>
-
                 @*Button action handler, one for signed in users, one for guests*@
                 @if (SignInManager.IsSignedIn(User))
                 {
@@ -49,8 +44,10 @@
                 }
 
             </div>
-            <a asp-action="EditProduct" asp-route-productid="@Model.Id"><button class="btn btn-primary btnSignIn AddCart">Edit</button></a>
-        </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="EditProduct" asp-route-productid="@Model.Id" asp-route-returnUrl="@ViewBag.returnUrl"><button class="btn btn-primary btnSignIn">Edit Card</button></a>
+            }
+            </div>
     </div>
 </div>
-

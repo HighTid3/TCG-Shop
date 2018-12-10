@@ -1,13 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels.ManageViewModels;
@@ -153,7 +154,7 @@ namespace TCGshopTestEnvironment.Controllers
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-            var model = new ChangePasswordViewModel {StatusMessage = StatusMessage};
+            var model = new ChangePasswordViewModel { StatusMessage = StatusMessage };
             return View(model);
         }
 
@@ -190,11 +191,25 @@ namespace TCGshopTestEnvironment.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
 
+
+
             var model = _manage.OrderOverview(user.Email);
             if (User.IsInRole("Admin"))
             {
                 model = _manage.GetAllOrders();
             }
+            // sorting list for product sorting
+            var OrderStatuslist = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Paid", Value = "paid"},
+                new SelectListItem {Text = "Created", Value = "created"},
+                new SelectListItem {Text = "Cancelled", Value = "Canceled"},
+                new SelectListItem {Text = "Expired", Value = "Expired"},
+                new SelectListItem {Text = "Shipped", Value = "Shipped"},
+                new SelectListItem {Text = "Completed", Value = "Completed"},
+
+            };
+            ViewBag.OrderStatus = OrderStatuslist;
             return View(model);
         }
 
@@ -204,7 +219,6 @@ namespace TCGshopTestEnvironment.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-
 
             var model = _manage.Orderdetails(orderid);
             if (user.Email != model.Email && !User.IsInRole("Admin"))
@@ -224,7 +238,8 @@ namespace TCGshopTestEnvironment.Controllers
             {
                 Email = result.Email,
                 EmailConfirmed = result.EmailConfirmed,
-                Username = result.UserName
+                Username = result.UserName,
+                Name = $"{result.FirstName} {result.LastName}"
             });
             return View(model);
         }
@@ -353,7 +368,7 @@ namespace TCGshopTestEnvironment.Controllers
             }
 
             StatusMessage = "Your profile has been updated";
-            return RedirectToAction("UserDetails", new {username = user.UserName});
+            return RedirectToAction("UserDetails", new { username = user.UserName });
         }
 
         [Authorize(Roles = "Admin")]
@@ -381,7 +396,7 @@ namespace TCGshopTestEnvironment.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> UserDelete(UserManagementViewModel vm)
+        public async Task<IActionResult> UserDelete(UserManagementViewModel vm)
         {
             var user = _manage.GetRegisteredUserbyUsername(vm.Username);
             var currentuser = await _userManager.GetUserAsync(User);
@@ -391,10 +406,8 @@ namespace TCGshopTestEnvironment.Controllers
                 _context.SaveChanges();
             }
 
-
             return RedirectToAction("UserManagement");
         }
-
 
         //[Authorize(Roles = "Admin")]
         [HttpGet]
@@ -422,6 +435,18 @@ namespace TCGshopTestEnvironment.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public JsonResult ChangeorderStatus(string orderstatus, int orderid)
+        {
+            var model = _context.Orders.Single(x => x.OrderId == orderid);
+            model.PaymentStatus = orderstatus;
+            _context.Orders.Update(model);
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -429,6 +454,6 @@ namespace TCGshopTestEnvironment.Controllers
             foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
         }
 
-        #endregion
+        #endregion Helpers
     }
 }

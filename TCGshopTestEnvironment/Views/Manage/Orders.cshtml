@@ -8,27 +8,39 @@
 
 <table class="table table-condensed" id="productsIndexTable">
     <thead>
-    <tr>
-        <th>Order Date</th>
-        <th>Order number</th>
-        <th>Total Price</th>
-        <th>Order Status</th>
-
-    </tr>
+        <tr>
+            <th>Order Date</th>
+            <th>Order number</th>
+            <th>Total Price</th>
+            <th>Order Status</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var order in Model)
-    {
-        
-            <tr class="assetRow">
-                <td class="">@order.OrderDate</td>
-                <td class="">@order.Ordernr</td>
-                <td class="">€@order.TotalPrice</td>
+        @foreach (var order in Model)
+        {
+
+        <tr class="assetRow">
+            <td class="">@order.OrderDate</td>
+            <td class="">@order.Ordernr</td>
+            <td class="">€@order.TotalPrice</td>
+            @if (User.IsInRole("Admin"))
+            {
+
+                <td style="color: black">@Html.DropDownList("OrderStatus", new SelectList(ViewBag.OrderStatus, "Value", "Text", @order.Status), new { onChange = "ChangeOrderStatus("+@order.OrderId+")", @style = "display: block", @id = "dropdown"+@order.OrderId+"" })<a href="#" style="visibility: hidden" id="@order.OrderId" onclick="SaveOrderStatus(@order.OrderId)">save</a></td>
+            }
+            else
+            {
                 <td class="">@order.Status</td>
-                <td class="">
-                    <a asp-action="OrderDetails" asp-route-orderid="@order.OrderId">Details</a>
-                </td></tr>
-        
-    }
+            }
+
+
+
+            <td class="">
+                <a asp-action="OrderDetails" asp-route-orderid="@order.OrderId">Details</a>
+            </td>
+        </tr>
+
+        }
     </tbody>
+    
 </table>

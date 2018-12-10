@@ -8,7 +8,9 @@ namespace TCGshopTestEnvironment.Services
     public interface IProducts
     {
         Products GetProductsById(int id);
+
         ProductsDetailModel GetByID(int id);
+
         void Add(Products NewProduct);
 
         IEnumerable<Productsandcategorie> GetbyCardType(string type);

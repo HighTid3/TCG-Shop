@@ -6,4 +6,3 @@
     },
     error: function (errorData) { onError(errorData); }
 });
-

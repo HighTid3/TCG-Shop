@@ -14,15 +14,12 @@ $(document).ready(function () {
         $.each(result, function (i, field) {
             //console.log(field)
             data = Object.assign({ [field]: null }, data);
-
         });
         $('.chips-autocomplete').material_chip({
             autocompleteData: data
         });
         console.table(data);
     });
-
-
 });
 
 $('#NewProduct').submit(function () {
@@ -38,8 +35,6 @@ $('#NewProduct').submit(function () {
         $("#HiddenCategroyInput").append('<input type="hidden" name="Category[]" value="' + Chips[i].tag + '">');
     }
 });
-
-
 
 //This Might be a bad idea, #YOLO
 $('#NewProductChip').on("keyup", function () {
@@ -60,13 +55,8 @@ $('#NewProductChip').on("keyup", function () {
 
         //For Filling Preview
         $("#NewProductCategory").append('<div class="chip">' + Chips[i].tag + '</div> ');
-
     }
-
-
 });
-
-
 
 $('#Name').bind('input',function() {
     $('#NewProductName').text($('#Name').val());
@@ -79,8 +69,6 @@ $('#Grade').bind('input', function () {
 $('#Price').bind('input', function () {
     $('#NewProductPrice').text("€" + $('#Price').val());
 });
-
-
 
 //Auto File Uploader
 var Upload = function (file) {
@@ -133,8 +121,6 @@ Upload.prototype.doUpload = function () {
                 $("#ImageUrl").attr("value", data["image"]);
             }
 
-
-            
             // your callback here
         },
         error: function (error) {

@@ -1,5 +1,4 @@
-﻿
-@inject SignInManager<UserAccount> SignInManager
+﻿@inject SignInManager<UserAccount> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
@@ -79,6 +78,4 @@
             }
             </div>
         </div>
-
-    
 </ul>

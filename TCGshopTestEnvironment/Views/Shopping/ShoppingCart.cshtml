@@ -10,7 +10,6 @@
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-
 @*@if (SignInManager.IsSignedIn(User))
 {
 <div class="container">
@@ -19,7 +18,7 @@
 <h2>Shopping Cart <small>Logged in user</small> </h2>
 <div id="productsTable">
     <table class="table table-condensed" id="productsIndexTable">
-       
+
         <tbody>
             <div class="container">
             <div class="row">
@@ -32,7 +31,7 @@
                 <div class="col-md-2">
                     <h2>@asset.Name</h2>
                     <small style="text-transform:uppercase;"><strong>Grade:</strong> @asset.Grade</small><br /><br />
-                    Amount: <input id="item-count-@asset.CartID" type="number" value="@asset.Amount" class="ShoppingQuant" min="1" oninput="this.value = Math.abs(this.value)" onchange="inputvalidatewithstock(@asset.ProductId,@asset.CartID)"/><br /><br />
+                    Amount: <input id="item-count-@asset.CartID" type="number" value="@asset.Amount" class="ShoppingQuant" min="1" oninput="this.value = Math.abs(this.value)" onchange="inputvalidatewithstock(@asset.ProductId,@asset.CartID)" /><br /><br />
                     <a href="#" class="RemoveLink"
                        data-id='["@asset.CartID","@asset.Price","@asset.ProductId"]'>
                         Remove
@@ -44,7 +43,6 @@
                     <p style="padding-top:10px;"><span class="priceperpiece">Total Price:</span>
                     <span style="font-size:3.5rem;" id="item-total-@asset.CartID"><br />€@asset.TotalPrice</span></p>
                 </div>
-
             </div>
             }
             </div>
@@ -95,17 +93,22 @@ else
                    <button class="btn btn-primary" id="clearall" onclick="window.location.reload()">Clear All</button>
                </div>
                <div class="col-md-6" style="padding-top:35px;">
-                   
-                   <a href="/checkout/start"><button class="btn btn-default btnSignIn" style="width: 100% !important;">Checkout</button></a>
+                   @if (SignInManager.IsSignedIn(User))
+                   {
+                       <a href="/checkout/start"><button class="btn btn-default btnSignIn" style="width: 100% !important;">Checkout</button></a>
+                   }
+                   else
+                   {
+                       <a asp-action="LoginOrContinue" asp-controller="Checkout"><button class="btn btn-default btnSignIn" style="width: 100% !important;">Checkout</button></a>
+                   }
+
                </div>
                 </div>
-
                 </div>
         </div>
     </div>
 </div>
 @*}*@
-
 
 <script type="text/javascript">
 document.getElementById("clearall").addEventListener('click', function () {
@@ -116,6 +119,5 @@ document.getElementById("clearall").addEventListener('click', function () {
   }
 });
 </script>
-
 
 <script type='text/javascript' src='/js/ShoppingCart.js' defer='defer'></script>*

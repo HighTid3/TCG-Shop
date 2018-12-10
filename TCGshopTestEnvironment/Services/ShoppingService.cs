@@ -19,33 +19,33 @@ namespace TCGshopTestEnvironment.Services
         public IQueryable<ShoppingBasket> ShoppingbasketByName(string userid)
         {
             return from s in _context.Basket
-                where s.UserId == userid
-                select new ShoppingBasket {Amount = s.Amount, Id = s.Id, ProductsId = s.ProductsId, UserId = s.UserId};
+                   where s.UserId == userid
+                   select new ShoppingBasket { Amount = s.Amount, Id = s.Id, ProductsId = s.ProductsId, UserId = s.UserId };
         }
 
         public IQueryable<ProductsShopCartViewModel> ShoppinCartItems(string userid)
         {
             return from p in _context.products
-                from b in _context.Basket
-                where b.UserId == userid && p.ProductId == b.ProductsId
-                select new ProductsShopCartViewModel
-                {
-                    CartID = b.Id,
-                    Amount = b.Amount,
-                    ProductId = b.ProductsId,
-                    ImageUrl = p.ImageUrl,
-                    Name = p.Name,
-                    Price = p.Price,
-                    Grade = p.Grade,
-                    TotalPrice = Math.Round(p.Price * b.Amount, 2, MidpointRounding.AwayFromZero)
-                };
+                   from b in _context.Basket
+                   where b.UserId == userid && p.ProductId == b.ProductsId
+                   select new ProductsShopCartViewModel
+                   {
+                       CartID = b.Id,
+                       Amount = b.Amount,
+                       ProductId = b.ProductsId,
+                       ImageUrl = p.ImageUrl,
+                       Name = p.Name,
+                       Price = p.Price,
+                       Grade = p.Grade,
+                       TotalPrice = Math.Round(p.Price * b.Amount, 2, MidpointRounding.AwayFromZero)
+                   };
         }
 
         public int CreateOrder(Order order, List<ProductsShopCartViewModel> cartItems)
         {
             decimal orderTotal = 0;
 
-            // Iterate over the items in the cart, 
+            // Iterate over the items in the cart,
             // adding the order details for each
             foreach (var item in cartItems)
             {

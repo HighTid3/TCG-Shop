@@ -1,4 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\
 for details on configuring this project to bundle and minify static web assets. */
 /*  Clearfix */
 
@@ -330,6 +330,7 @@ body {
 img.imageCell {
     width: 190px;
     height: 280px;
+    transition: .3s ease
 }
 
 .ProductTitleCat {
@@ -393,7 +394,18 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
     /*margin: 20px;
     height: 100%;
     width: 235px;*/
+
 }
+
+.imagehover:hover {
+    opacity: 0.4;
+    transition: .3s ease
+    
+}
+
+
+
+
 .innerColomnSquare {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
@@ -714,7 +726,6 @@ p.lead {
     to {top: 0; opacity: 1}
 }
 
-
 .sk-folding-cube {
     margin: 20px auto;
     width: 40px;
@@ -855,8 +866,8 @@ p.lead {
 }
 
 /*removes the arrow in input boxes*/
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

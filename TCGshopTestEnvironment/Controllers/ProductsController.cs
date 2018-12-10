@@ -39,8 +39,8 @@ namespace TCGshopTestEnvironment.Controllers
         //Minio
         // Initialize the client with access credentials.
         private static MinioClient minio = new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey).WithSSL();
-        //Minio
 
+        //Minio
 
         public ProductsController(IProducts assets, DBModel context, UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager, IWishlist wishlist)
         {
@@ -60,7 +60,6 @@ namespace TCGshopTestEnvironment.Controllers
 
             float priceL = priceLow ?? 0;
             float priceH = priceHigh ?? 10000;
-
 
             //queries to get cards and catagories from database
             var assetModels = _assets.GetbyCardType(cardType);
@@ -112,7 +111,6 @@ namespace TCGshopTestEnvironment.Controllers
                     Stock = result.prods.Stock,
                     CardCatagoryList = result.Catnames,
                     Favorites = false,
-
                 });
 
             //filters
@@ -147,12 +145,15 @@ namespace TCGshopTestEnvironment.Controllers
                 case "name_desc":
                     listingResult = listingResult.OrderByDescending(s => s.Name);
                     break;
+
                 case "Price":
                     listingResult = listingResult.OrderByDescending(s => s.Price);
                     break;
+
                 case "price_desc":
                     listingResult = listingResult.OrderBy(s => s.Price);
                     break;
+
                 default:
                     listingResult = listingResult.OrderBy(s => s.Name);
                     break;
@@ -179,8 +180,16 @@ namespace TCGshopTestEnvironment.Controllers
             return View();
         }
 
-        public IActionResult Detail(int id)
+        public IActionResult Detail(int id, string returnUrl)
         {
+            if (string.IsNullOrEmpty(returnUrl) || returnUrl == "d")
+            {
+                ViewBag.returnUrl = Request.Headers["Referer"].ToString();
+            }
+            else
+            {
+                ViewBag.returnUrl = returnUrl;
+            }
             var model = _assets.GetByID(id);
             return View(model);
         }
@@ -196,7 +205,6 @@ namespace TCGshopTestEnvironment.Controllers
 
                 float priceL = priceLow ?? 0;
                 float priceH = priceHigh ?? 10000;
-
 
                 //queries to get items and catagories from database
                 var assetmodel = _assets.GetByNameSearch(name.ToLower());
@@ -236,7 +244,6 @@ namespace TCGshopTestEnvironment.Controllers
                 ViewBag.SelectSort = sortBy ?? "Name A-Z";
                 ViewBag.sortBy = sortBy;
 
-
                 // bind all products from database to productviewmodel
                 var listingResult = assetmodel
                     .Select(result => new ProductsViewModel
@@ -250,13 +257,11 @@ namespace TCGshopTestEnvironment.Controllers
                         CardCatagoryList = result.Catnames
                     });
 
-
                 //filters
                 if (catagorie.Count > 0)
                 {
                     listingResult = listingResult.Where(x => x.CardCatagoryList.Intersect(catagorie).Any());
                 }
-
 
                 if (priceL > 0 || priceH < 10000)
                 {
@@ -277,17 +282,19 @@ namespace TCGshopTestEnvironment.Controllers
                     case "name_desc":
                         listingResult = listingResult.OrderByDescending(s => s.Name);
                         break;
+
                     case "Price":
                         listingResult = listingResult.OrderByDescending(s => s.Price);
                         break;
+
                     case "price_desc":
                         listingResult = listingResult.OrderBy(s => s.Price);
                         break;
+
                     default:
                         listingResult = listingResult.OrderBy(s => s.Name);
                         break;
                 }
-
 
                 var onePageOfProducts = await listingResult.ToPagedListAsync(pageNmber, pageAmnt);
                 ViewBag.OnePageOfProducts = onePageOfProducts;
@@ -305,7 +312,6 @@ namespace TCGshopTestEnvironment.Controllers
 
             return Json(cardname);
         }
-
 
         //Adding New product
         [HttpGet]
@@ -326,7 +332,6 @@ namespace TCGshopTestEnvironment.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 Products Product = new Products
                 {
                     Name = vm.Name,
@@ -382,7 +387,6 @@ namespace TCGshopTestEnvironment.Controllers
                 return Json(new { status = "error", message = "The model is not correct" });
             }
 
-
             //Check MIME
             if (formFile.CardImageUpload.ContentType.ToLower() != "image/png")
                 return Json(new
@@ -413,7 +417,6 @@ namespace TCGshopTestEnvironment.Controllers
             //string ext = System.IO.Path.GetExtension(formFile.CardImageUpload.FileName); //Get the file extension
 
             string objectName = Guid.NewGuid() + ".png";
-
 
             var filePath = System.IO.Path.GetTempFileName() + objectName; //Create Temp File with Random GUID
 
@@ -455,7 +458,6 @@ namespace TCGshopTestEnvironment.Controllers
                     message = "File Upload Error:" + e.Message
                 });
             }
-
         }
 
         [HttpGet]
@@ -473,15 +475,24 @@ namespace TCGshopTestEnvironment.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult EditProduct(int productid)
+        public IActionResult EditProduct(int productid, string returnUrl)
         {
+
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                ViewBag.returnUrl = Request.Headers["Referer"].ToString();
+            }
+            else
+            {
+                ViewBag.returnUrl = returnUrl;
+            }
             var model = _assets.GetByID(productid);
             return View(model);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> EditProduct(ProductsDetailModel vm)
+        public async Task<IActionResult> EditProduct(ProductsDetailModel vm, string returnUrl)
         {
             Products changedproduct = _assets.GetProductsById(vm.Id);
 
@@ -514,7 +525,18 @@ namespace TCGshopTestEnvironment.Controllers
             _context.products.Update(changedproduct);
             _context.SaveChanges();
 
-            return RedirectToAction("Detail", new { id = vm.Id });
+            return RedirectToAction("Detail", new { id = vm.Id, vm.returnUrl });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteProduct(int productid, string returnUrl)
+        {
+
+            Products changedproduct = _assets.GetProductsById(productid);
+            changedproduct.Removed = true;
+            _context.products.Update(changedproduct);
+            _context.SaveChanges();
+            return Redirect(returnUrl);
         }
     }
 }

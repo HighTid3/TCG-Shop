@@ -6,15 +6,11 @@
 
 <h4>@ViewData["Title"]</h4>
 
-
-
-
     <div class="card">
         <div class="card-header">
             Invoice
             <strong>@Model.Ordernr</strong>
             <span class="float-right"> <strong>Status:</strong> @Model.Orderstatus</span>
-
         </div>
         <div class="card-body">
             <div class="row mb-4">
@@ -51,7 +47,6 @@
                         <th>Amount</th>
                         <th>Unit Price</th>
                         <th>Total Price</th>
-
                     </tr>
                     </thead>
                     <tbody>
@@ -65,7 +60,6 @@
                                 <td class="">@order.Quantity</td>
                                 <td class="">@order.UnitPrice</td>
                                 <td class="">@order.TotalPrice</td>
-
                             </tr>
 
                     }
@@ -74,7 +68,6 @@
             </div>
             <div class="row">
                 <div class="col-lg-4 col-sm-5">
-
                 </div>
 
                 <div class="col-lg-4 col-sm-5 ml-auto">
@@ -90,10 +83,7 @@
                             </tr>
                         </tbody>
                     </table>
-
                 </div>
-
             </div>
-
         </div>
     </div>
