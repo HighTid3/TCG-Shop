@@ -352,8 +352,6 @@ function productformsorting() {
     document.getElementById('TheForm').submit();
 }
 
-<<<<<<< HEAD
-=======
 // show save text when changing order status
 function ChangeOrderStatus(orderid) {
     document.getElementById(orderid).style.visibility = "visible";
@@ -380,4 +378,3 @@ function SaveOrderStatus(orderid) {
     return false;
 
 }
->>>>>>> master
