@@ -7,10 +7,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Minio;
+using Minio.Exceptions;
 using TCGshopTestEnvironment.Models;
+using TCGshopTestEnvironment.Models.JoinTables;
 using TCGshopTestEnvironment.Services;
+using TCGshopTestEnvironment.ViewModels;
 using TCGshopTestEnvironment.ViewModels.ManageViewModels;
 
 namespace TCGshopTestEnvironment.Controllers
@@ -23,6 +28,22 @@ namespace TCGshopTestEnvironment.Controllers
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly UserManager<UserAccount> _userManager;
         private readonly DBModel _context;
+
+        //S3
+        //public static AmazonS3Config config = new AmazonS3Config
+        //{
+        //    RegionEndpoint = RegionEndpoint.USEast1, // MUST set this before setting ServiceURL and it should match the `MINIO_REGION` enviroment variable.
+        //    ServiceURL = "http://10.0.0.10:9000", // replace http://localhost:9000 with URL of your minio server
+        //    ForcePathStyle = true // MUST be true to work correctly with Minio server
+        //};
+        //public static AmazonS3Client amazonS3Client = new AmazonS3Client(Startup.accessKey, Startup.secretKey, config);
+        //S3
+
+        //Minio
+        // Initialize the client with access credentials.
+        private static MinioClient minio = new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey).WithSSL();
+
+        //Minio
 
         public ManageController(
             UserManager<UserAccount> userManager,
@@ -446,7 +467,158 @@ namespace TCGshopTestEnvironment.Controllers
             return Json(new { success = true });
         }
 
+        //Adding New product
+        [HttpGet]
+        public IActionResult NewProduct()
+        {
+            return View();
+        }
 
+        [HttpGet]
+        public IActionResult GetCategoryAll()
+        {
+            IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
+            return Json(categories);
+        }
+
+        [HttpPost]
+        public IActionResult NewProduct(ProductsNewProductViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                Products Product = new Products
+                {
+                    Name = vm.Name,
+                    ImageUrl = vm.ImageUrl,
+                    Price = vm.Price,
+                    Grade = vm.Grade,
+                    Stock = vm.Stock,
+                };
+                _context.Add(Product);
+
+                IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
+                foreach (string TestCategory in vm.Category)
+                {
+                    if (categories.Contains(TestCategory))
+                    {
+                        Console.WriteLine("Category: " + TestCategory + "is in database");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Category: " + TestCategory + " is NOT in database, ADDING!");
+
+                        //Here code to add new category to database
+                        Category category = new Category
+                        {
+                            CategoryName = TestCategory,
+                            Description = "NULL"
+                        };
+                        _context.Add(category);
+                    }
+
+                    //Adding date to merge Table
+                    ProductCategory productCategory = new ProductCategory
+                    {
+                        ProductId = Product.ProductId,
+                        CategoryName = TestCategory
+                    };
+                    _context.Add(productCategory);
+                }
+
+                _context.SaveChanges();
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FileUpload(FileUpload formFile)
+        {
+            // Perform an initial check to catch FileUpload class attribute violations.
+            if (!ModelState.IsValid)
+
+            {
+                return Json(new { status = "error", message = "The model is not correct" });
+            }
+
+            //Check MIME
+            if (formFile.CardImageUpload.ContentType.ToLower() != "image/png")
+                return Json(new
+                {
+                    status = "error",
+                    message = "The file mime must be image/png"
+                });
+
+            //Check if size is between 0 and 10MB
+            if (formFile.CardImageUpload.Length == 0)
+            {
+                return Json(new
+                {
+                    status = "error",
+                    message = "Upload Failed. The selected file is empty."
+                });
+            }
+            else if (formFile.CardImageUpload.Length > 10485760)
+            {
+                return Json(new
+                {
+                    status = "error",
+                    message = "The selected file exceeds 10 MB."
+                });
+            }
+
+            //Generate Random Name
+            //string ext = System.IO.Path.GetExtension(formFile.CardImageUpload.FileName); //Get the file extension
+
+            string objectName = Guid.NewGuid() + ".png";
+
+            var filePath = System.IO.Path.GetTempFileName() + objectName; //Create Temp File with Random GUID
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await formFile.CardImageUpload.CopyToAsync(fileStream);
+            }
+
+            //Prepare S3 Upload
+            var bucketName = "tcg-upload";
+            var location = "us-east-1";
+            var contentType = formFile.CardImageUpload.ContentType.ToLower();
+
+            try
+            {
+                // Make a bucket on the server, if not already present.
+                bool found = await minio.BucketExistsAsync(bucketName);
+                if (!found)
+                {
+                    await minio.MakeBucketAsync(bucketName, location);
+                }
+
+                // Upload a file to bucket.
+                await minio.PutObjectAsync(bucketName, objectName, filePath, contentType);
+                Console.Out.WriteLine("Successfully uploaded " + objectName);
+
+                return Json(new
+                {
+                    status = "Ok",
+                    message = "Successfully uploaded " + objectName,
+                    image = objectName
+                });
+            }
+            catch (MinioException e)
+            {
+                return Json(new
+                {
+                    status = "Error",
+                    message = "File Upload Error:" + e.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult FileUpload()
+        {
+            return View();
+        }
         #region Helpers
 
         private void AddErrors(IdentityResult result)
