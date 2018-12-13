@@ -4,15 +4,14 @@
     ViewData["Title"] = "Log In";
 }
 
-<script async src="/js/index.js" defer="defer"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js'></script>
+<script src="/js/index.js" defer="defer"></script>
 
 <div class="containerCenter pb-4 mb-5" style="margin-top: 35px;">
     <div class="row innerBox justify-content-center">
         
-       <div class="col col-md-12">
+        <div class="col col-md-12">
             @*<h2 class="LoginTitle">@ViewData["Title"]</h2>*@
-           <br />
+            <br />
             <form method="post" asp-action="Login" asp-controller="Account" id="loginform">
 
                 <div class="svgContainer">
@@ -130,26 +129,9 @@
                     <button id="login" class="btn btn-default">Log in</button>
                 </div>
 
-                @*EINDE BEGIN*@
-
-                @*<div class="form-group">
-                    <label asp-for="UserName"></label>
-                    <input asp-for="UserName" class="form-control" maxlength="200" />
-                    <span asp-validation-for="UserName"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" size="10" class="form-control" />
-                    <span asp-validation-for="Password"></span>
-                </div>*@
-
-
-                @*<p><input type="submit" value="Login" class="btn btn-primary btnSignIn" /></p>*@
                 <input asp-for="Href" type="hidden" value="Index" id="href"/>
-                <p><input type="submit" value="Login" class="btn btn-primary btnSignIn" /></p>
-                @*<div class="text-center mb-5" style="padding-bottom:20px;">
-            <input type="submit" value="Login" class="btn btn-primary btnSignIn" />
-        </div>*@
+                @*<p><input type="submit" value="Login" class="btn btn-primary btnSignIn" /></p>*@
+
                 <p class="text-center" style="padding-top:20px;">
                     <a asp-area="" asp-controller="Account" asp-action="Register">Register</a><br />
                     <a asp-area="" asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
@@ -157,10 +139,29 @@
             </form>
         </div>
 
-        @*<a asp-controller="account" asp-action="Register">
-                <button class="btn btn-primary btnSignIn" type="submit">
-                    Create an account
-                </button>
-            </a>*@
+
     </div>
 </div>
+<script>
+    //Login Code
+    $("#loginform").submit(function (e) {
+        var form = $(this);
+        var urls = form.attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: urls,
+            data: form.serialize(), // serializes the form's elements.
+            success: function (response) {
+                if (response["status"] == "LoggedIn") {
+                    AddLocalCartToDatabase(),  //perform the add local cart items to database cart
+                        AddDbCarttoLocal(document.getElementById("href").value);
+                }
+                else {
+                    $("#errormessages").html("Username or Password is incorrect.")
+                }
+            }
+        });
+        e.preventDefault();
+    });
+</script>

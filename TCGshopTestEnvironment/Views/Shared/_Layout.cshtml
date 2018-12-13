@@ -13,6 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true" defer="defer"></script>
+    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js'></script>
 
     <!--CSS-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
@@ -29,6 +31,7 @@
         var storagePath = "@Startup.storagePath";
     </script>
 </head>
+
 <div class="container-fluid top-header" height="50">
     <div class="row logo-image">
         <div class="col-lg-4 col-md-4 col-xs-3 col-sm-4" style="margin-top: 5px;">
@@ -121,41 +124,64 @@
 
 <!--Global Modal-->
 <!-- The Modal -->
-<div id="Modal" class="modal">
+<div id="Modal" class="modal" style="z-index: 1000; background-color: rgba(0,0,0,0.7)">
 
     <!-- Modal content -->
-    <div class="modal-content" id="modal-content">
+    <div class="modal-content" id="modal-content" >
         <span id="closeModal" class="close">&times;</span>
-        <div class="modal-body">
-            <p>Some text in the Modal..</p>
+        <div class="modal-body" id="modal-body">
+            <p>Loading...</p>
         </div>
     </div>
 </div>
 
 <script>
-    // Get the modal
-    var modal = document.getElementById('Modal');
-
-// Get the <span> element that closes the modal
-    var span = document.getElementById("closeModal");
-
-// When the user clicks on the button, open the modal 
-    function GlobalModal() {
-        modal.style.display = "block";
-        
+    //Login
+    function login() {
+        $.ajax({
+            type: "GET",
+            url: "/Account/PartialLogin",
+            success: function (viewHTML) {
+                ModalLogin = new GlobalModal(viewHTML);
+            },
+            error: function (errorData) { onError(errorData); }
+        });
     }
 
-// When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
+    //GlobalModal
+    class GlobalModal {
+        constructor(text) {
+            this.modal = document.getElementById("Modal");
+            this.span = document.getElementById("closeModal");
+            this.body = $("#modal-body");
+            this.text = text;
 
-// When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+            //Change the Text
+            this.body.html(text);
+
+            //Show the GlobalModal
+            this.modal.style.display = "block";
+
+            // When the user clicks on <span> (x), close the modal
+            this.span.onclick = function() {
+                this.close();
+            }.bind(this);
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == this.modal) {
+                    this.close();
+                }
+            }.bind(this);
+        }
+
+        // Function to close the GlobalModal
+        close() {
+            this.modal.style.display = "none";
         }
     }
+
+
 </script>
 
 
