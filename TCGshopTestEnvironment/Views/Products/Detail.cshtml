@@ -36,12 +36,12 @@
                     <p>
                         <h3 style="color:#e4e4e4;"> €@Model.Price</h3>
                     </p>
-                </div>
+
                 <button class="qty" type="button" data-func="minus" data-field="field1">-1</button>
                 <input type="text" id="SelectedAmount" name="field1" value="1" readonly="" />
                 <button class="qty" type="button" data-func="plus" data-field="field1">+1</button>
                 @*Button action handler, one for signed in users, one for guests*@
-                @if (SignInManager.IsSignedIn(User))
+                    @if (SignInManager.IsSignedIn(User))
                 {
                     <button id="AddCartBtn" onclick="postToCart('@Model.Id', '@User.Identity.Name', '@Model.ImageUrl', '@Model.Name', '@Model.Price', '@Model.Grade', document.getElementById('SelectedAmount').value); AddLocalCartToDatabase()" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                     @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
@@ -51,6 +51,7 @@
                     <button id="AddCartBtn" onclick="AddToCart('@Model.Id', '@Model.Name',  '@Model.ImageUrl', '@Model.Price', '@Model.Grade', document.getElementById('SelectedAmount').value)" class="btn btn-primary btnSignIn AddCart" style="margin-bottom: 10px;">Add <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
                     @await Html.PartialAsync("/Views/Shopping/AddedProductModalBox.cshtml")
                 }
+                </div>
 
             </div>
             @if (User.IsInRole("Admin"))

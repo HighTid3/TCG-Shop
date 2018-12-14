@@ -1,7 +1,29 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\
 for details on configuring this project to bundle and minify static web assets. */
-/*  Clearfix */
 
+.pagination > li:first-child > span, .pagination > .active > span {
+    border-radius: 100%;
+    background-color: #f5b740 !important;
+    border-color: #f5b740 !important;
+    padding-left: 13px;
+    padding-right: 13px;
+}
+.pagination > .disabled > a {
+    background-color:transparent !important;
+    color: white !important;
+    border-color: transparent !important;
+}
+
+.pagination > li > a, .pagination > li > span, .pagination > li:last-child > a, .pagination > li:first-child > a {
+    color: #337ab7;
+    background-color: #e2e2e2 !important;
+    margin: 1.5px;
+    border: 1px solid #ddd;
+    border-radius: 100%;
+}
+.bgdark {
+    background-color: #313336;
+}
 
 .innerBox .svgContainer {
     position: relative;
@@ -39,13 +61,12 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 .innerBox form label {
     margin: 0 0 12px;
-    display: block;
     font-size: 1.25em;
     color: white;
     font-weight: 700;
     font-family: inherit;
 }
-    .innerBox form input[type='email'], form input[type="text"], form input[type='password'] {
+    .innerBox form input[type='email'], .innerBox form input[type="text"], .innerBox form input[type='password'] {
         display: block;
         margin: 0;
         padding: 0 1em 0;
@@ -531,11 +552,11 @@ ul.nav.navbar-nav li {
 }
 
 .borderRegister {
-    -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
+    /*-webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
-    border: 1px solid rgba(165, 165, 165, 0.7);
-    border-radius: 5px;
+    border: 1px solid rgba(165, 165, 165, 0.7);*/
+    border-radius: 2px;
     padding: 20px;
 }
 
