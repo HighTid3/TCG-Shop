@@ -171,6 +171,13 @@ namespace TCGshopTestEnvironment.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult PartialLogin()
+        {
+            ViewBag.Title = "Login Page";
+            return PartialView("login");
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel vm)
         {

@@ -124,7 +124,8 @@ namespace TCGshopTestEnvironment
             services.AddSession();
 
             services.AddHttpContextAccessor();
-        }
+        
+    }
 
         private async Task CreateRoles(IServiceProvider serviceProvider)
         {

@@ -15,19 +15,25 @@ function transformToAssocArray(prmstr) {
 
 var params = getSearchParameters();
 
+//we store out timerIdhere
+var timeOutId = 0;
+//we define our function and STORE it in a var
+var ajaxFn = function () {
 $.ajax({
     type: "GET",
     url: "/Checkout/ProcessingStatus",
     data: {guid: params.guid},
     success: function (data) {
-        //if (data["status"] == "created") {
-            setTimeout($.ajax(this), 2000);
-        //} else {
-            localStorage.clear();
+        if (data["status"] == "created") {
+            timeOutId = setTimeout(ajaxFn, 5000);
+        } else {
+            clearTimeout(timeOutId);//stop the timeout
             $("#ShoppingCartCheckOutProcessing").html(data);
-        //}
+        }
     },
     error: function () {
-        setTimeout($.ajax(this), 5000);
+        timeOutId = setTimeout(ajaxFn, 10000);
     }
-});
+    });
+}
+ajaxFn();//we CALL the function we stored 

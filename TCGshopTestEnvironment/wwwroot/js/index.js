@@ -200,4 +200,5 @@ email.addEventListener('input', onEmailInput);
 password.addEventListener('focus', onPasswordFocus);
 password.addEventListener('blur', onPasswordBlur);
 TweenMax.set(armL, {x: -93, y: 220, rotation: 105, transformOrigin: "top left"});
-TweenMax.set(armR, {x: -93, y: 220, rotation: -105, transformOrigin: "top right"});
+TweenMax.set(armR, { x: -93, y: 220, rotation: -105, transformOrigin: "top right" });
+

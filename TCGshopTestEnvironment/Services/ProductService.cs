@@ -38,7 +38,8 @@ namespace TCGshopTestEnvironment.Services
                         ImageUrl = p.ImageUrl,
                         Name = p.Name,
                         Price = p.Price,
-                        Stock = p.Stock
+                        Stock = p.Stock,
+                        Views = p.ViewsDetails
                     }).FirstOrDefault();
         }
 
