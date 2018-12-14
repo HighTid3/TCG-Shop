@@ -20,11 +20,12 @@ $.ajax({
     url: "/Checkout/ProcessingStatus",
     data: {guid: params.guid},
     success: function (data) {
-        if (data["status"] == "created") {
-            setTimeout($.ajax(this), 5000);
-        } else {
-            $("#ShoppingCartCheckOutProcessing").html("<h1>" + data["status"] + "<h1>");
-        }
+        //if (data["status"] == "created") {
+            setTimeout($.ajax(this), 2000);
+        //} else {
+            localStorage.clear();
+            $("#ShoppingCartCheckOutProcessing").html(data);
+        //}
     },
     error: function () {
         setTimeout($.ajax(this), 5000);

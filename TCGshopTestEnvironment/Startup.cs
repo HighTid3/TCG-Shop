@@ -122,6 +122,8 @@ namespace TCGshopTestEnvironment
             //sessions configuration for shopping basket
             services.AddDistributedMemoryCache();
             services.AddSession();
+
+            services.AddHttpContextAccessor();
         }
 
         private async Task CreateRoles(IServiceProvider serviceProvider)
