@@ -104,7 +104,7 @@ namespace TCGshopTestEnvironment.Controllers
                 {
                     Id = result.prods.ProductId,
                     Name = result.prods.Name,/*.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",*/
-                    Price = result.prods.Price,
+                    Price = Convert.ToDecimal(result.prods.Price.ToString("F")),
                     ImageUrl = result.prods.ImageUrl,
                     Grade = result.prods.Grade,
                     Stock = result.prods.Stock,
@@ -249,7 +249,7 @@ namespace TCGshopTestEnvironment.Controllers
                     {
                         Id = result.prods.ProductId,
                         Name = result.prods.Name,/*.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",*/
-                        Price = result.prods.Price,
+                        Price = Convert.ToDecimal(result.prods.Price.ToString("F")),
                         ImageUrl = result.prods.ImageUrl,
                         Grade = result.prods.Grade,
                         Stock = result.prods.Stock,
