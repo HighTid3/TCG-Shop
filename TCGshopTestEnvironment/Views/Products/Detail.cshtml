@@ -24,6 +24,15 @@
                         <strong style="color:#e4e4e4;">Stock</strong> <br />
                         <label value="@Model.Stock" id="productStock">@Model.Stock</label>
                     </p>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                    <p>
+                        <strong style="color:#e4e4e4;">Views</strong> <br />
+                        <label value="@Model.Views" id="productStock">@Model.Views</label>
+                    </p>
+                    }
+
                     <p>
                         <h3 style="color:#e4e4e4;"> €@Model.Price</h3>
                     </p>
