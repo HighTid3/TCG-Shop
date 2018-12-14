@@ -1,7 +1,9 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\
 for details on configuring this project to bundle and minify static web assets. */
 /*  Clearfix */
-
+.bgdark {
+    background-color: #313336;
+}
 
 .innerBox .svgContainer {
     position: relative;
@@ -39,13 +41,12 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 .innerBox form label {
     margin: 0 0 12px;
-    display: block;
     font-size: 1.25em;
     color: white;
     font-weight: 700;
     font-family: inherit;
 }
-    .innerBox form input[type='email'], form input[type="text"], form input[type='password'] {
+    .innerBox form input[type='email'], .innerBox form input[type="text"], .innerBox form input[type='password'] {
         display: block;
         margin: 0;
         padding: 0 1em 0;
@@ -531,11 +532,11 @@ ul.nav.navbar-nav li {
 }
 
 .borderRegister {
-    -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
+    /*-webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
     box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
-    border: 1px solid rgba(165, 165, 165, 0.7);
-    border-radius: 5px;
+    border: 1px solid rgba(165, 165, 165, 0.7);*/
+    border-radius: 2px;
     padding: 20px;
 }
 
