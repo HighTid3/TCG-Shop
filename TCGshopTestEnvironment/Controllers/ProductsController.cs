@@ -40,8 +40,6 @@ namespace TCGshopTestEnvironment.Controllers
         // Initialize the client with access credentials.
         private static MinioClient minio = new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey).WithSSL();
 
-        //Minio
-
         public ProductsController(IProducts assets, DBModel context, UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager, IWishlist wishlist)
         {
             _assets = assets;
@@ -105,7 +103,7 @@ namespace TCGshopTestEnvironment.Controllers
                 {
                     Id = result.prods.ProductId,
                     Name = result.prods.Name,/*.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",*/
-                    Price = result.prods.Price,
+                    Price = Convert.ToDecimal(result.prods.Price.ToString("F")),
                     ImageUrl = result.prods.ImageUrl,
                     Grade = result.prods.Grade,
                     Stock = result.prods.Stock,
@@ -182,7 +180,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         public IActionResult Detail(int id, string returnUrl)
         {
-            if (string.IsNullOrEmpty(returnUrl) || returnUrl == "d")
+            if (string.IsNullOrEmpty(returnUrl))
             {
                 ViewBag.returnUrl = Request.Headers["Referer"].ToString();
             }
@@ -191,6 +189,13 @@ namespace TCGshopTestEnvironment.Controllers
                 ViewBag.returnUrl = returnUrl;
             }
             var model = _assets.GetByID(id);
+
+            //update views listed
+            var product = _context.products.Single(x => x.ProductId == id);
+            product.ViewsDetails += 1;
+            _context.products.Update(product);
+            _context.SaveChanges();
+
             return View(model);
         }
 
@@ -250,7 +255,7 @@ namespace TCGshopTestEnvironment.Controllers
                     {
                         Id = result.prods.ProductId,
                         Name = result.prods.Name,/*.Length < 20 ? result.prods.Name : result.prods.Name.Substring(0, 15) + "...",*/
-                        Price = result.prods.Price,
+                        Price = Convert.ToDecimal(result.prods.Price.ToString("F")),
                         ImageUrl = result.prods.ImageUrl,
                         Grade = result.prods.Grade,
                         Stock = result.prods.Stock,
@@ -328,7 +333,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewProduct(ProductsNewProductViewModel vm)
+        public IActionResult NewProduct(ProductsNewProductViewModel vm)
         {
             if (ModelState.IsValid)
             {
@@ -466,7 +471,7 @@ namespace TCGshopTestEnvironment.Controllers
             return View();
         }
 
-        public async Task<ActionResult> GetStockofCard(int productId)
+        public ActionResult GetStockofCard(int productId)
         {
             var stock = _assets.GetByID(productId).Stock;
 
@@ -492,7 +497,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> EditProduct(ProductsDetailModel vm, string returnUrl)
+        public IActionResult EditProduct(ProductsDetailModel vm, string returnUrl)
         {
             Products changedproduct = _assets.GetProductsById(vm.Id);
 
@@ -529,7 +534,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteProduct(int productid, string returnUrl)
+        public IActionResult DeleteProduct(int productid, string returnUrl)
         {
 
             Products changedproduct = _assets.GetProductsById(productid);

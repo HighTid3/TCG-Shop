@@ -56,13 +56,13 @@ namespace TCGshopTestEnvironment.Controllers
 
         // /Account/ForgetPassword
         [HttpGet]
-        public async Task<IActionResult> ForgotPassword()
+        public IActionResult ForgotPassword()
         {
             return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> ForgotPasswordConfirmation()
+        public IActionResult ForgotPasswordConfirmation()
         {
             return View();
         }
@@ -114,7 +114,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         //Reset Password
         [HttpGet]
-        public async Task<IActionResult> ResetPassword(string code = null)
+        public IActionResult ResetPassword(string code = null)
         {
             if (code == null)
             {
@@ -159,7 +159,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ResetPasswordConfirmation()
+        public IActionResult ResetPasswordConfirmation()
         {
             return View();
         }
@@ -169,6 +169,13 @@ namespace TCGshopTestEnvironment.Controllers
         {
             ViewBag.Title = "Login Page";
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult PartialLogin()
+        {
+            ViewBag.Title = "Login Page";
+            return PartialView("login");
         }
 
         [HttpPost]

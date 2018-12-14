@@ -19,5 +19,7 @@ namespace TCGshopTestEnvironment.ViewModels
         public List<string> CardCatagoryList { get; set; }
 
         public string returnUrl { get; set; }
+
+        public int Views { get; set; }
     }
 }

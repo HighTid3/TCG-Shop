@@ -3,9 +3,8 @@
 
 // Write your JavaScript code.
 
+//Autofill for Search
 $("#textSearch").keyup(function (e) {
-    console.log("HELLO");
-    // get the value ftom input
     var text = $(this).val();
 
     if (text.length > 0) {
@@ -35,6 +34,7 @@ $(document).on("click",
         //clear and hide #result
         $("#textSearch").empty().hide();
     });
+
 
 $(".AddCart").submit(function (e) {
     e.preventDefault();
@@ -272,28 +272,6 @@ function AddDbCarttoLocal(href) {
 
     return false;
 }
-/*,500)*/
-
-$("#loginform").submit(function (e) {
-    var form = $(this);
-    var urls = form.attr('action');
-
-    $.ajax({
-        type: "POST",
-        url: urls,
-        data: form.serialize(), // serializes the form's elements.
-        success: function (response) {
-            if (response["status"] == "LoggedIn") {
-                AddLocalCartToDatabase(),  //perform the add local cart items to database cart
-                    AddDbCarttoLocal(document.getElementById("href").value);
-            }
-            else {
-                $("#errormessages").html("Username or Password is incorrect.")
-            }
-        }
-    });
-    e.preventDefault();
-});
 
 function ShoppingcartBadge() {
     var totalproductamount = 0;

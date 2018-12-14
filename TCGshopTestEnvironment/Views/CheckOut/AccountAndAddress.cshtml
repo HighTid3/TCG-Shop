@@ -306,6 +306,7 @@
             contentType: "application/json",
             success: function (data) {
                 console.log('response', data);
+                localStorage.clear();
                 window.location.href = data;
 
             }
