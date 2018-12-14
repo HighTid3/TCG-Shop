@@ -28,7 +28,7 @@ $.ajax({
             timeOutId = setTimeout(ajaxFn, 5000);
         } else {
             clearTimeout(timeOutId);//stop the timeout
-            $("#ShoppingCartCheckOutProcessing").html("<h1>" + data["status"] + "<h1>");
+            $("#ShoppingCartCheckOutProcessing").html(data);
         }
     },
     error: function () {
