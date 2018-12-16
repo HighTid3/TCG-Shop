@@ -15,5 +15,7 @@ namespace TCGshopTestEnvironment.Services
         IEnumerable<UserAccount> GetRegisteredUsers();
 
         UserAccount GetRegisteredUserbyUsername(string username);
+
+        IEnumerable<Category> GetAllCategories();
     }
 }

@@ -1,0 +1,33 @@
+﻿@model TCGshopTestEnvironment.ViewModels.ManageViewModels.CategoryViewModel
+@{
+    ViewData["Title"] = "Are You sure you want to delete:";
+}
+
+<h4>@ViewData["Title"] @Model.CategoryName</h4>
+
+<div class="container">
+    <div class="row">
+        <div class="" style="margin-top:30px; margin-bottom: 30px;">
+            <div class="col-md-6" style="margin-bottom: 30px;">
+                <form class="" method="post" asp-controller="Manage" asp-action="CategoryDelete">
+                    <div class="form-group">
+                        <label asp-for="CategoryName" class="col-md-3 regLabel">Name</label>
+                        <label maxlength="200">@Model.CategoryName</label>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="col-md-3 regLabel">Description</label>
+                        <label maxlength="200">@Model.Description</label>
+                    </div>
+                    <p class="col-md-3 regReq">
+                    </p>
+                    <div class="col-md-12 text-center">
+                        <input type="hidden" value="@Model.CategoryName" name="CategoryName"/>
+                        <input type="submit" class="btn btn-primary btnRegister" value="Delete Category"/>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-1">
+            </div>
+        </div>
+    </div>
+</div>

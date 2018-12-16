@@ -1,0 +1,36 @@
+﻿@model IEnumerable<TCGshopTestEnvironment.ViewModels.ManageViewModels.CategoryViewModel>
+@{
+    ViewData["Title"] = "Manage Categories";
+    ViewData.AddActivePage(ManageNavPages.ManageCategories);
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<table class="table table-condensed" id="productsIndexTable">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in Model)
+    {
+
+        <tr class="assetRow">
+            <td class="">@order.CategoryName</td>
+            <td class="" id="@order.CategoryName">@order.Description</td>
+            <td>
+            @if (User.IsInRole("Admin"))
+            {
+                <a onclick="CatagoryEdit('@order.CategoryName')">Edit</a>
+                <a asp-action="CategoryDelete" asp-route-CategoryName="@order.CategoryName">Delete</a>
+
+            }
+        </tr>
+
+    }
+    </tbody>
+</table>
+<a asp-controller="Manage" asp-action="CategoryAdd"><button value="Save" class="btn btn-primary btnRegister">Add Catagory</button></a>

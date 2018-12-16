@@ -356,3 +356,45 @@ function SaveOrderStatus(orderid) {
     return false;
 
 }
+
+function CatagoryEdit(CatagoryName) {
+
+    var $this = $('#' + CatagoryName+'');
+    var $input = $('<input>', {
+        value: $this.text(),
+        type: 'text',
+        blur: function () {
+            $this.text(this.value);
+            $.ajax
+            ({
+                type: 'POST',
+                url: '/Manage/CategoryEdit',
+                data:
+                {
+                    categoryname: CatagoryName,
+                    categorydescription: this.value
+                },
+                success: function (response) {
+                }
+            });
+        },
+        keyup: function (e) {
+            if (e.which === 13) $input.blur();
+        }
+    }).appendTo($this.empty()).focus();
+
+}
+
+//$('CategoryDescription').on('click', function () {
+//    var $this = $(this);
+//    var $input = $('<input>', {
+//        value: $this.text(),
+//        type: 'text',
+//        blur: function () {
+//            $this.text(this.value);
+//        },
+//        keyup: function (e) {
+//            if (e.which === 13) $input.blur();
+//        }
+//    }).appendTo($this.empty()).focus();
+//});

@@ -1,0 +1,35 @@
+﻿@model TCGshopTestEnvironment.ViewModels.ManageViewModels.CategoryViewModel
+@{
+    ViewData["Title"] = "Add Category";
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<div class="container">
+    <div class="row">
+        <div class="" style="margin-top:30px; margin-bottom: 30px;">
+            <div class="col-md-6" style="margin-bottom: 30px;">
+                <form class="" method="post" asp-controller="Manage" asp-action="CategoryAdd">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CategoryName" class="col-md-3 regLabel">Name*</label>
+                        <input asp-for="CategoryName" class="form-control" maxlength="200" />
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="col-md-3 regLabel">Description</label>
+                        <input asp-for="Description" class="form-control"/>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <p class="col-md-3 regReq">
+                    </p>
+                    <div class="col-md-12 text-center">
+                        <input type="submit" value="Add Category" class="btn btn-primary btnRegister" />
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-1">
+            </div>
+        </div>
+    </div>
+</div>
