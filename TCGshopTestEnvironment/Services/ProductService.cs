@@ -158,7 +158,7 @@ namespace TCGshopTestEnvironment.Services
                           {
                               ProductId = p.ProductId,
                               Name = p.Name,
-                              Price = p.Price,
+                              Price = Convert.ToDecimal(p.Price.ToString("F")),
                               DateCreated = p.DateCreated,
                               DateUpdated = p.DateUpdated,
                               ViewsListed = p.ViewsListed,
