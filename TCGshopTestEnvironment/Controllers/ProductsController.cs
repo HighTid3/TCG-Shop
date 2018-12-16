@@ -38,7 +38,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         //Minio
         // Initialize the client with access credentials.
-        private static MinioClient minio = new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey).WithSSL();
+        private static MinioClient minio = new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey);
 
         public ProductsController(IProducts assets, DBModel context, UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager, IWishlist wishlist)
         {
