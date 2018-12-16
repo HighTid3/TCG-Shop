@@ -6,14 +6,34 @@
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 @foreach (var asset in ViewBag.OnePageOfProducts)
     {
-        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 405px; width: 270px;">
+        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 370px; width: 270px;">
             <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
-                <div>
-
-                    <h1 class="ProductTitleCat" title="@asset.Name">@asset.Name</h1>
-                    @*check if product is in wishlist or not, show icon accordingly*@
+                <div class="TitleGrade">
+                    @if (int.Parse(asset.Grade) < 4)
+                    {
+                        <h1 class="ProductTitleCat" title="@asset.Name"> @asset.Name </h1>
+                        @*check if product is in wishlist or not, show icon accordingly*@
+                        <label class="GradeBronze">@asset.Grade</label><br />
+                    }
+                    @if (int.Parse(asset.Grade) < 7 && int.Parse(asset.Grade) > 3)
+                    {
+                        <h1 class="ProductTitleCat" title="@asset.Name"> @asset.Name </h1>
+                        @*check if product is in wishlist or not, show icon accordingly*@
+                        <label class="GradeSilver">@asset.Grade</label><br />
+                    }
+                    @if (int.Parse(asset.Grade) < 10 && int.Parse(asset.Grade) > 6)
+                    {
+                        <h1 class="ProductTitleCat" title="@asset.Name"> @asset.Name </h1>
+                        @*check if product is in wishlist or not, show icon accordingly*@
+                        <label class="GradeGold">@asset.Grade</label><br />
+                    }
+                    @if (int.Parse(asset.Grade) == 10)
+                    {
+                        <h1 class="ProductTitleCat" title="@asset.Name"> @asset.Name </h1>
+                        @*check if product is in wishlist or not, show icon accordingly*@
+                        <label class="GradeDiamond">@asset.Grade</label><br />
+                    }
                 </div>
-                <label class="GradeText">[@asset.Grade]</label><br />
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
                     <img src="@(Startup.storagePath + asset.ImageUrl )" class="imageCell imagehover"/>
                 </a>
