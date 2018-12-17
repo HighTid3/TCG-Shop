@@ -4,15 +4,13 @@
     ViewData.AddActivePage(ManageNavPages.NewProduct);
 }
 
-
 <link rel="stylesheet" href="/css/MaterializeChip.css">
-<div class="container mt-5 pt-5" style="mmargin-top: 2500px !important;">
+<div class="container mt-5 pt-5" style="">
     <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-7 col-lg-7 col-sm-7" style="margin-top:50px; margin-bottom:50px;">
-            <div class="innerColomn" style="padding: 25px;">
-                <h6>Add new product</h6>
+       
+        <div class="" style="margin-top:50px; margin-bottom:50px;"> @*col-md-7 col-lg-7 col-sm-7*@
+            <div class="col-md-4" style="padding: 25px;">
+                <h3 style="color:#e2e2e2;">Add new product</h3>
                 <div class="form-group">
                     <form method="post" asp-action="NewProduct" asp-controller="Manage" id="NewProduct">
                         <div asp-validation-summary="All"></div>

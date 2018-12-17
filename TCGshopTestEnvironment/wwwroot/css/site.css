@@ -1,6 +1,15 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\
 for details on configuring this project to bundle and minify static web assets. */
 
+input[type="search"] {
+    margin-left:10px;
+    color: black;
+    font-weight: 200;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
 .pagination > li:first-child > span, .pagination > .active > span {
     border-radius: 100%;
     background-color: #f5b740 !important;
@@ -89,7 +98,7 @@ for details on configuring this project to bundle and minify static web assets. 
     border: solid 2px #4eb8dd;
 }
 .innerBox form input[type='email'], form input[type="text"] {
-    padding: 14px 1em 0px;
+    padding: 0px 1em 0px;
 }
 .innerBox form button {
     display: block;
