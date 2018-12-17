@@ -10,7 +10,7 @@ $(document).ready(function () {
         }
     });
 
-    $.getJSON("/Products/GetCategoryAll", function (result) {
+    $.getJSON("/Manage/GetCategoryAll", function (result) {
         $.each(result, function (i, field) {
             //console.log(field)
             data = Object.assign({ [field]: null }, data);
@@ -94,7 +94,7 @@ Upload.prototype.doUpload = function () {
 
     $.ajax({
         type: "POST",
-        url: "/Products/FileUpload",
+        url: "/Manage/FileUpload",
         xhr: function () {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
