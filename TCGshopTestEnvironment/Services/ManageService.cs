@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.ViewModels.ManageViewModels;
 
@@ -87,6 +88,12 @@ namespace TCGshopTestEnvironment.Services
             return (from u in _context.userAccounts
                     where u.UserName == username
                     select u).FirstOrDefault();
+        }
+
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return (from x in _context.categories
+                select x).ToList();
         }
     }
 }
