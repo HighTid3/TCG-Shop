@@ -189,10 +189,7 @@ namespace TCGshopTestEnvironment.Controllers
                 //return Json(new { status = dbOrder.PaymentStatus });
                 if (dbOrder.PaymentStatus.ToLower() == "paid")
                 {
-                    await _emailSender.SendEmailAsync(
-                        dbOrder.Email,
-                        "Order Confirmation",
-                        $"Your order has been placed successfully, your order number is {dbOrder.Guid}");
+
                     return PartialView("_CheckoutSucces", dbOrder);
 
                 }
@@ -224,6 +221,14 @@ namespace TCGshopTestEnvironment.Controllers
 
 
             await _context.SaveChangesAsync();
+            if (dbOrder.PaymentStatus.ToLower() == "paid")
+            {
+                await _emailSender.SendEmailAsync(
+                    dbOrder.Email,
+                    "Order Confirmation",
+                    $"Your order has been placed successfully, your order number is {dbOrder.Guid}");
+            }
+
 
             return Ok();
         }
