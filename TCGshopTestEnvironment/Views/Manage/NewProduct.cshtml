@@ -6,7 +6,7 @@
 
 
 <link rel="stylesheet" href="/css/MaterializeChip.css">
-<div class="container mt-5 pt-5" style="mmargin-top: 2500px !important;">
+<div class="container mt-5 pt-5">
     <div class="row">
         <div class="col-md-1">
         </div>
@@ -25,17 +25,17 @@
                                 <div class="progress-bar"></div>
                                 <div class="status">0%</div>
                             </div>
-                            <input asp-for="ImageUrl" type="hidden" value="" />
+                            <input asp-for="ImageUrl" type="hidden" value="" required/>
                             <span asp-validation-for="ImageUrl"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Price"></label>
-                            <input asp-for="Price" size="10" class="form-control" type="number" />
+                            <input asp-for="Price" size="10" class="form-control" type="number" min="0" step=".01" required/>
                             <span asp-validation-for="Price"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Grade"></label>
-                            <input asp-for="Grade" size="10" class="form-control" type="text" />
+                            <input asp-for="Grade" size="10" class="form-control" type="text" min="0" max="0" step="1" required/>
                             <span asp-validation-for="Grade"></span>
                         </div>
                         <div class="form-group">
@@ -46,10 +46,10 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="Stock"></label>
-                            <input asp-for="Stock" size="10" class="form-control" />
+                            <input asp-for="Stock" size="10" class="form-control" type="number" min="0" step="1" required/>
                             <span asp-validation-for="Stock"></span>
                         </div>
-                        <button class="btn btn-primary btnNewProduct btnLogin" type="submit" value="Add Product" name="action">
+                        <button class="btn btn-primary btnNewProduct btnLogin" type="submit" value="Add Product" name="action" disabled>
                             Add New Product
                         </button>
 

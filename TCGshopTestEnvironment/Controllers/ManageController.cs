@@ -41,7 +41,7 @@ namespace TCGshopTestEnvironment.Controllers
 
         //Minio
         // Initialize the client with access credentials.
-        private static MinioClient minio = new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey).WithSSL();
+        private static MinioClient minio = new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey);
 
         //Minio
 
@@ -175,7 +175,7 @@ namespace TCGshopTestEnvironment.Controllers
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-            var model = new ChangePasswordViewModel { StatusMessage = StatusMessage };
+            var model = new ChangePasswordViewModel {StatusMessage = StatusMessage};
             return View(model);
         }
 
@@ -212,13 +212,12 @@ namespace TCGshopTestEnvironment.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
 
-
-
             var model = _manage.OrderOverview(user.Email);
             if (User.IsInRole("Admin"))
             {
                 model = _manage.GetAllOrders();
             }
+
             // sorting list for product sorting
             var OrderStatuslist = new List<SelectListItem>
             {
@@ -228,7 +227,6 @@ namespace TCGshopTestEnvironment.Controllers
                 new SelectListItem {Text = "Expired", Value = "Expired"},
                 new SelectListItem {Text = "Shipped", Value = "Shipped"},
                 new SelectListItem {Text = "Completed", Value = "Completed"},
-
             };
             ViewBag.OrderStatus = OrderStatuslist;
             return View(model);
@@ -246,6 +244,7 @@ namespace TCGshopTestEnvironment.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
             return View(model);
         }
 
@@ -389,7 +388,7 @@ namespace TCGshopTestEnvironment.Controllers
             }
 
             StatusMessage = "Your profile has been updated";
-            return RedirectToAction("UserDetails", new { username = user.UserName });
+            return RedirectToAction("UserDetails", new {username = user.UserName});
         }
 
         [Authorize(Roles = "Admin")]
@@ -443,9 +442,11 @@ namespace TCGshopTestEnvironment.Controllers
                 _context.Database.Migrate();
 
                 //Load Data in DB
-                string categories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_categories.sql");
+                string categories =
+                    System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_categories.sql");
                 string products = System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_products.sql");
-                string productsCategories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_ProductCategory.sql");
+                string productsCategories =
+                    System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_ProductCategory.sql");
 
                 //Dont await any of them, so they all execute async
                 await _context.Database.ExecuteSqlCommandAsync(categories);
@@ -464,7 +465,7 @@ namespace TCGshopTestEnvironment.Controllers
             model.PaymentStatus = orderstatus;
             _context.Orders.Update(model);
             _context.SaveChanges();
-            return Json(new { success = true });
+            return Json(new {success = true});
         }
 
         //Adding New product
@@ -497,32 +498,40 @@ namespace TCGshopTestEnvironment.Controllers
                 _context.Add(Product);
 
                 IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
-                foreach (string TestCategory in vm.Category)
+
+                if (vm.Category?.Any() != true) //Check if Category is empty
                 {
-                    if (categories.Contains(TestCategory))
+                    //Someone did not put in a Category
+                }
+                else
+                {
+                    foreach (string TestCategory in vm.Category)
                     {
-                        Console.WriteLine("Category: " + TestCategory + "is in database");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Category: " + TestCategory + " is NOT in database, ADDING!");
-
-                        //Here code to add new category to database
-                        Category category = new Category
+                        if (categories.Contains(TestCategory))
                         {
-                            CategoryName = TestCategory,
-                            Description = "NULL"
-                        };
-                        _context.Add(category);
-                    }
+                            Console.WriteLine("Category: " + TestCategory + "is in database");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Category: " + TestCategory + " is NOT in database, ADDING!");
 
-                    //Adding date to merge Table
-                    ProductCategory productCategory = new ProductCategory
-                    {
-                        ProductId = Product.ProductId,
-                        CategoryName = TestCategory
-                    };
-                    _context.Add(productCategory);
+                            //Here code to add new category to database
+                            Category category = new Category
+                            {
+                                CategoryName = TestCategory,
+                                Description = ""
+                            };
+                            _context.Add(category);
+                        }
+
+                        //Adding date to merge Table
+                        ProductCategory productCategory = new ProductCategory
+                        {
+                            ProductId = Product.ProductId,
+                            CategoryName = TestCategory
+                        };
+                        _context.Add(productCategory);
+                    }
                 }
 
                 _context.SaveChanges();
@@ -538,7 +547,7 @@ namespace TCGshopTestEnvironment.Controllers
             if (!ModelState.IsValid)
 
             {
-                return Json(new { status = "error", message = "The model is not correct" });
+                return Json(new {status = "error", message = "The model is not correct"});
             }
 
             //Check MIME
@@ -619,6 +628,7 @@ namespace TCGshopTestEnvironment.Controllers
         {
             return View();
         }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
