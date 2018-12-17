@@ -20,7 +20,7 @@ namespace TCGshopTestEnvironment.Views.Manage
 
         public static string NewProduct => "UserManagement";
 
-        public static string TwoFactorAuthentication => "TwoFactorAuthentication";
+        public static string ManageCategories => "ManageCategories";
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
@@ -32,7 +32,7 @@ namespace TCGshopTestEnvironment.Views.Manage
 
         public static string UserManagementNavClass(ViewContext viewContext) => PageNavClass(viewContext, UserManagement);
 
-        public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+        public static string ManageCategoriesNavClass(ViewContext viewContext) => PageNavClass(viewContext, ManageCategories);
 
         public static string PageNavClass(ViewContext viewContext, string page)
         {

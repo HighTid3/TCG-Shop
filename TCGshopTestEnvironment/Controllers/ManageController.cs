@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Minio;
 using Minio.Exceptions;
+using NuGet.Frameworks;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Models.JoinTables;
 using TCGshopTestEnvironment.Services;
@@ -618,6 +619,86 @@ namespace TCGshopTestEnvironment.Controllers
         public IActionResult FileUpload()
         {
             return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult ManageCategories()
+        {
+            var asset = _manage.GetAllCategories();
+
+            var model = asset.Select(result => new CategoryViewModel
+            {
+                CategoryName = result.CategoryName,
+                Description = result.Description
+            });
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult CategoryEdit(string categoryname, string categorydescription)
+        {
+            var asset = _context.categories.Single(x => x.CategoryName == categoryname);
+            asset.Description = categorydescription;
+            _context.categories.Update(asset);
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult CategoryDelete(string CategoryName)
+        {
+            var asset = _context.categories.Single(x => x.CategoryName == CategoryName);
+            var model = new CategoryViewModel
+            {
+                CategoryName = asset.CategoryName,
+                Description = asset.Description
+            };
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult CategoryDelete(CategoryViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.categories.RemoveRange(_context.categories.Where(x => x.CategoryName == vm.CategoryName));
+                _context.ProductCategory.RemoveRange(_context.ProductCategory.Where(x => x.CategoryName == vm.CategoryName));
+                _context.SaveChanges();
+            }
+               
+            return RedirectToAction("ManageCategories");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult CategoryAdd()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult CategoryAdd(CategoryViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var asset = new Category
+                {
+                    CategoryName = vm.CategoryName,
+                    Description = vm.Description
+                };
+                _context.categories.Add(asset);
+                _context.SaveChanges();
+            }
+            else
+            {
+                return View();
+            }
+            return RedirectToAction("ManageCategories");
         }
         #region Helpers
 

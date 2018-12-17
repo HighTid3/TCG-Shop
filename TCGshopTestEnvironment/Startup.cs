@@ -20,7 +20,8 @@ namespace TCGshopTestEnvironment
         public static string accessKey = Environment.GetEnvironmentVariable("accessKey");
 
         public static string secretKey = Environment.GetEnvironmentVariable("secretKey");
-        public static string s3Server = Environment.GetEnvironmentVariable("s3Server");
+        //public static string s3Server = Environment.GetEnvironmentVariable("s3Server");
+        public static string s3Server = "bypass.tcg.sale";
         public static string storagePath = "https://cdn.tcg.sale/tcg-upload/";
         //S3
 
