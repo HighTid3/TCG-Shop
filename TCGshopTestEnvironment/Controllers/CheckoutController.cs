@@ -9,8 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels;
@@ -25,14 +27,16 @@ namespace TCGshopTestEnvironment.Controllers
         private readonly UserManager<UserAccount> _userManager;
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly IHttpContextAccessor _httpcontext;
+        private readonly IEmailSender _emailSender;
 
-        public CheckoutController(DBModel context, IShopping assets, UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager, IHttpContextAccessor httpcontext)
+        public CheckoutController(DBModel context, IShopping assets, UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager, IHttpContextAccessor httpcontext, IEmailSender emailSender)
         {
             _context = context;
             _assets = assets;
             _userManager = userManager;
             _signInManager = signInManager;
             _httpcontext = httpcontext;
+            _emailSender = emailSender;
         }
 
         public string BaseUrl()
@@ -176,7 +180,7 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpGet]
-        public ActionResult ProcessingStatus(Guid guid)
+        public async Task<ActionResult> ProcessingStatus(Guid guid)
         {
             //Search for the Order Posted by the Webhook
             var dbOrder = _context.Orders.Where(x => x.Guid == guid).Select(x => x).SingleOrDefault();
@@ -185,7 +189,12 @@ namespace TCGshopTestEnvironment.Controllers
                 //return Json(new { status = dbOrder.PaymentStatus });
                 if (dbOrder.PaymentStatus.ToLower() == "paid")
                 {
+                    await _emailSender.SendEmailAsync(
+                        dbOrder.Email,
+                        "Order Confirmation",
+                        $"Your order has been placed successfully, your order number is {dbOrder.Guid}");
                     return PartialView("_CheckoutSucces", dbOrder);
+
                 }
                 else
                 {
