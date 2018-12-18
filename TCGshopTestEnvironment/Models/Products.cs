@@ -36,5 +36,7 @@ namespace TCGshopTestEnvironment.Models
         public virtual List<Wishlist> User { get; set; }
 
         public bool Removed { get; set; }
+
+        public DateTime AutionEndTime { get; set; }
     }
 }

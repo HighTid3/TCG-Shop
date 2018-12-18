@@ -526,7 +526,7 @@ namespace TCGshopTestEnvironment.Controllers
             {
                 changedproduct.Price = Price;
             }
-
+            changedproduct.DateUpdated = DateTime.Now;
             _context.products.Update(changedproduct);
             _context.SaveChanges();
 
