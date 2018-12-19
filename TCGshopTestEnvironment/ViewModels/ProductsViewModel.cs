@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TCGshopTestEnvironment.ViewModels
 {
@@ -13,5 +14,8 @@ namespace TCGshopTestEnvironment.ViewModels
         public List<string> CardCatagoryList { get; set; }
 
         public bool Favorites { get; set; }
+
+        public DateTime AuctionEnd { get; set; }
+        public DateTime AuctionStart { get; set; }
     }
 }

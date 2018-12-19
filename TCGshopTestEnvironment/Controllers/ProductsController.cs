@@ -109,6 +109,8 @@ namespace TCGshopTestEnvironment.Controllers
                     Stock = result.prods.Stock,
                     CardCatagoryList = result.Catnames,
                     Favorites = false,
+                    AuctionEnd = result.prods.AuctionEndTime,
+                    AuctionStart = result.prods.DateCreated
                 });
 
             //filters

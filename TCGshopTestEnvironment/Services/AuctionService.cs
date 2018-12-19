@@ -25,7 +25,7 @@ namespace TCGshopTestEnvironment.Services
                 where c.CategoryName == "Auction"
                 select new AuctionViewModel
                 {
-                    AuctionEnd = p.AutionEndTime,
+                    AuctionEnd = p.AuctionEndTime,
                     AuctionStart = p.DateCreated,
                     Id = p.ProductId,
                     Grade = p.Grade,

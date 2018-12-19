@@ -37,6 +37,6 @@ namespace TCGshopTestEnvironment.Models
 
         public bool Removed { get; set; }
 
-        public DateTime AutionEndTime { get; set; }
+        public DateTime AuctionEndTime { get; set; }
     }
 }
