@@ -2,9 +2,10 @@
 
     var countDownDate = new Date(moment.unix(endTime));
 
-    // Update the count down every 1 second
-    var x = setInterval(function () {
-        console.log(id + endTime + beginTime);
+    //we store out timerIdhere
+    var timeOutId = 0;
+
+    var CalculateAuctionLoop = function () {
         // Get todays date and time
         var now = new Date().getTime();
 
@@ -21,24 +22,27 @@
         if (!days < 1) {
             text = text + days + "d ";
         }
-        if (hours < 1 && days < 1 ) {
-            
-        }
-        else
-        {
+        if (hours < 1 && days < 1) {
+
+        } else {
             text = text + hours + "h ";
         }
         if (minutes < 1 && hours < 1 && days < 1) {
-            
+
         } else {
             text = text + minutes + "m ";
         }
-        document.getElementById(id).innerHTML = text + seconds + "s " +"</h4>";
+        document.getElementById(id).innerHTML = text + seconds + "s " + "</h4>";
+
+        setTimeout(CalculateAuctionLoop, 1000);
 
         // If the count down is over, write some text 
         if (distance < 0) {
-            clearInterval(x);
+            clearTimeout(timeOutId);
             document.getElementById(id).innerHTML = "<h4>Auction has ended</h4>";
         }
-    }, 1000);
+    }
+
+    CalculateAuctionLoop();
+
 }
