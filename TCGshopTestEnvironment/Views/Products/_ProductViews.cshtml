@@ -46,12 +46,12 @@
                 <div class="">
                     @if (asset.CardCatagoryList.Contains("Auction"))
                     {
-                        <div id="@asset.Id" style="color: white">
+                        <div id="Auction_@asset.Id" style="color: white">
                             <script>
                                 @{var startime = new DateTimeOffset(asset.AuctionStart);
                                     var endtime = new DateTimeOffset(asset.AuctionEnd);
                                 }
-                                CalculateAuctionTimer(@asset.Id,
+                                CalculateAuctionTimer("Auction_@asset.Id",
                                     "@startime.ToUnixTimeSeconds()",
                                     "@endtime.ToUnixTimeSeconds()");
                             </script>
