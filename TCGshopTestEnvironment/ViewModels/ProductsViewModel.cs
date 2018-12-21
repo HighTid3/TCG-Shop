@@ -12,9 +12,7 @@ namespace TCGshopTestEnvironment.ViewModels
         public string Grade { get; set; }
         public int Stock { get; set; }
         public List<string> CardCatagoryList { get; set; }
-
         public bool Favorites { get; set; }
-
         public DateTime AuctionEnd { get; set; }
         public DateTime AuctionStart { get; set; }
     }
