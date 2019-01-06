@@ -15,65 +15,83 @@
 
 <div id="asssets">
     <div id="productsTable">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row" style="margin-top: 10px;">
-                <div class="col-md-9">
-                    <div class="col-md-12">
-                        <div class="col-md-9 float-right text-right">
-                            <h3 style="color: white">Auction House</h3>
+                <div class="col-xs-12 text-center">
+                    <h3 style="color: white">Auction House</h3>
+                </div>
+                @foreach (var asset in Model)
+                {   
+                <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
+                    <div class="col-lg-3 col-md-4 col-xs-12  text-center" style="margin-top:10px;">
+                        <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
+                            <img src="@(Startup.storagePath + asset.ImageUrl )" class="imageCell imagehover" />
+                        </a>
+                        <br>
+                        @*@asset.Stock*@
+                    </div>
+
+                    <div class="col-lg-3 col-md-4 col-xs-12 DetailsAH">
+                        <h1 class="ProductTitleCat" title="@asset.Name"> @asset.Name </h1>
+                        <h3 class="StartingBid" style="color: white;">Starting Bid: </h3>
+                        <h4 class="priceh4">Original Price: €@asset.Price</h4>
+                        <div class="TitleGrade">
+                            @if (int.Parse(asset.Grade) < 4)
+                            {
+                                <h4 class="priceh4">Grade: </h4>
+                                @*check if product is in wishlist or not, show icon accordingly*@
+                                <label class="GradeBronze">@asset.Grade</label><br />
+                            }
+                            @if (int.Parse(asset.Grade) < 7 && int.Parse(asset.Grade) > 3)
+                            {
+                                <h4 class="priceh4">Grade: </h4>
+                                @*check if product is in wishlist or not, show icon accordingly*@
+                                <label class="GradeSilver">@asset.Grade</label><br />
+                            }
+                            @if (int.Parse(asset.Grade) < 10 && int.Parse(asset.Grade) > 6)
+                            {
+                                <h4 class="priceh4">Grade: </h4>
+                                @*check if product is in wishlist or not, show icon accordingly*@
+                                <label class="GradeGold">@asset.Grade</label><br />
+                            }
+                            @if (int.Parse(asset.Grade) == 10)
+                            {
+                                <h4 class="priceh4">Grade: </h4>
+                                @*check if product is in wishlist or not, show icon accordingly*@
+                                <label class="GradeDiamond">@asset.Grade</label><br />
+                            }
                         </div>
                     </div>
-                    @foreach (var asset in Model)
-                    {
-                        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 370px; width: 270px;">
-                            <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
-                                <div class="TitleGrade">
-                                    @if (int.Parse(asset.Grade) < 4)
-                                    {
-                                        <h1 class="ProductTitleCat" title="@asset.Name"> @asset.Name </h1>
-                                        @*check if product is in wishlist or not, show icon accordingly*@
-                                        <label class="GradeBronze">@asset.Grade</label><br />
-                                    }
-                                    @if (int.Parse(asset.Grade) < 7 && int.Parse(asset.Grade) > 3)
-                                    {
-                                        <h1 class="ProductTitleCat" title="@asset.Name"> @asset.Name </h1>
-                                        @*check if product is in wishlist or not, show icon accordingly*@
-                                        <label class="GradeSilver">@asset.Grade</label><br />
-                                    }
-                                    @if (int.Parse(asset.Grade) < 10 && int.Parse(asset.Grade) > 6)
-                                    {
-                                        <h1 class="ProductTitleCat" title="@asset.Name"> @asset.Name </h1>
-                                        @*check if product is in wishlist or not, show icon accordingly*@
-                                        <label class="GradeGold">@asset.Grade</label><br />
-                                    }
-                                    @if (int.Parse(asset.Grade) == 10)
-                                    {
-                                        <h1 class="ProductTitleCat" title="@asset.Name"> @asset.Name </h1>
-                                        @*check if product is in wishlist or not, show icon accordingly*@
-                                        <label class="GradeDiamond">@asset.Grade</label><br />
-                                    }
-                                </div>
-                                <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                                    <img src="@(Startup.storagePath + asset.ImageUrl )" class="imageCell imagehover" />
-                                </a>
-                                <br>
-                                @*@asset.Stock*@
-                                <div class="">
-                                    <div id="@asset.Id" style="color: white">
-                                        <script>
-                                            @{var startime = new DateTimeOffset(asset.AuctionStart);
-                                                var endtime = new DateTimeOffset(asset.AuctionEnd);
-                                                 }
-                                            CalculateAuctionTimer(@asset.Id,
-                                                "@startime.ToUnixTimeSeconds()",
-                                                "@endtime.ToUnixTimeSeconds()");
-                                        </script>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="col-lg-3 col-md-4 col-xs-12 Timer">
+                        <h2 style="color: white;">Time Remaining:</h2>
+                        <div id="@asset.Id" style="color: white">
+
+                            <script>
+                                @{var startime = new DateTimeOffset(asset.AuctionStart);
+                                    var endtime = new DateTimeOffset(asset.AuctionEnd);
+                                     }
+
+                                CalculateAuctionTimer(@asset.Id,
+                                    "@startime.ToUnixTimeSeconds()",
+                                    "@endtime.ToUnixTimeSeconds()");
+                            </script>
                         </div>
-                    }
+                        <h4 style="color: white;">Current Highest Bids:</h4>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-xs-12 BidForm" style="margin-top:30px; margin-bottom: 30px;">
+                        <form class="" method="post" asp-controller="" asp-action="">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                            <div class="col-md-12 text-center">
+                                <input type="submit" value="Place Bid" class="btn btn-default btnPlaceBid" />
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
+                }
+
             </div>
         </div>
     </div>
