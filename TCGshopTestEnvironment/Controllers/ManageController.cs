@@ -494,6 +494,7 @@ namespace TCGshopTestEnvironment.Controllers
                     Price = vm.Price,
                     Grade = vm.Grade,
                     Stock = vm.Stock,
+                    DateCreated = DateTime.Now
                 };
                 _context.Add(Product);
 
@@ -550,7 +551,7 @@ namespace TCGshopTestEnvironment.Controllers
                     ImageUrl = vm.ImageUrl,
                     Price = vm.StartingBid,
                     Grade = vm.Grade,
-                    Stock = vm.Stock,
+                    Stock = 1,
                     DateCreated = DateTime.Now,
                     AuctionEndTime = vm.AuctionEndTime
                 };
