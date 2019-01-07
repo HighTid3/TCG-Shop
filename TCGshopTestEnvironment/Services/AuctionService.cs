@@ -20,6 +20,7 @@ namespace TCGshopTestEnvironment.Services
 
         public IEnumerable<AuctionViewModel> GetAuctionCards()
         {
+            var HighestBid = _context.AuctionBids.Where(x => x.ProductId == id).Select(x => x.Bid).DefaultIfEmpty().Max();
             return (from p in _context.products
                 join c in _context.ProductCategory on p.ProductId equals c.ProductId
                 where c.CategoryName == "Auction"
@@ -31,6 +32,7 @@ namespace TCGshopTestEnvironment.Services
                     Grade = p.Grade,
                     ImageUrl = p.ImageUrl,
                     Name = p.Name,
+                    AuctionBids = HighestBid
 
                 }).ToList();
 

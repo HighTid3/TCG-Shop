@@ -15,18 +15,16 @@
 
 <div id="asssets">
     <div id="productsTable">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row" style="margin-top: 10px;">
-                <div class="col-md-9">
-                    <div class="col-md-12">
-                        <div class="col-md-9 float-right text-right">
+                        <div class="col-md-9 text-center">
                             <h3 style="color: white">Auction House</h3>
                         </div>
                     </div>
                     @foreach (var asset in Model)
                     {
-                        <div class="col-xl-3 col-md-3 col-xs-6  text-center" style="margin-top:10px; height: 370px; width: 270px;">
-                            <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
+                        <div class="innerColomn" style="width: -webkit-fill-available; height: -webkit-fill-available;">
+                            <div class="col-xl-3 col-md-3 col-xs-12  text-center" style="margin-top:10px; height: 370px;">
                                 <div class="TitleGrade">
                                     @if (int.Parse(asset.Grade) < 4)
                                     {
@@ -54,11 +52,11 @@
                                     }
                                 </div>
                                 <a asp-controller="Auction" asp-action="AuctionDetails" asp-route-id="@asset.Id">
-                                    <img src="@(Startup.storagePath + asset.ImageUrl )" class="imageCell imagehover" />
+                                    <img src="@(Startup.storagePath + asset.ImageUrl )" class="imageCell imagehover" style="height: 185px; width: 120px;" />
                                 </a>
                                 <br>
                                 @*@asset.Stock*@
-                                <div class="">
+                                <div class="col-xl-3 col-md-3 col-xs-12 Timer">
                                     <div id="@asset.Id" style="color: white">
                                         <script>
                                             @{var startime = new DateTimeOffset(asset.AuctionStart);
@@ -73,8 +71,6 @@
                             </div>
                         </div>
                     }
-                </div>
-            </div>
         </div>
     </div>
 </div>
