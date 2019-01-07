@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TCGshopTestEnvironment.Models;
@@ -9,9 +10,10 @@ using TCGshopTestEnvironment.Models;
 namespace TCGshopTestEnvironment.Migrations
 {
     [DbContext(typeof(DBModel))]
-    partial class DBModelModelSnapshot : ModelSnapshot
+    [Migration("20190106221621_AuctionBids")]
+    partial class AuctionBids
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,7 +137,7 @@ namespace TCGshopTestEnvironment.Migrations
 
                     b.Property<DateTime>("BidDate");
 
-                    b.Property<int>("ProductId");
+                    b.Property<int?>("ProductId");
 
                     b.Property<string>("UserId");
 
@@ -467,12 +469,11 @@ namespace TCGshopTestEnvironment.Migrations
             modelBuilder.Entity("TCGshopTestEnvironment.Models.AuctionBids", b =>
                 {
                     b.HasOne("TCGshopTestEnvironment.Models.Products", "Product")
-                        .WithMany("AuctionUser")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("ProductId");
 
                     b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "User")
-                        .WithMany("AuctionProducts")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

@@ -37,9 +37,18 @@
                         <label class="GradeDiamond">@asset.Grade</label><br />
                     }
                 </div>
-                <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
-                    <img src="@(Startup.storagePath + asset.ImageUrl )" class="imageCell imagehover"/>
+            @if (asset.CardCatagoryList.Contains("Auction"))
+            {
+                <a asp-controller="Auction" asp-action="AuctionDetails" asp-route-id="@asset.Id">
+                    <img src="@(Startup.storagePath + asset.ImageUrl)" class="imageCell imagehover"/>
                 </a>
+            }
+            else
+            {
+                <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
+                    <img src="@(Startup.storagePath + asset.ImageUrl)" class="imageCell imagehover"/>
+                </a>
+            }
                 <br>
                 @*@asset.Stock*@
 
