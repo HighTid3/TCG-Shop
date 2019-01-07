@@ -532,6 +532,65 @@ namespace TCGshopTestEnvironment.Controllers
             return View();
         }
 
+        //Adding New product
+        [HttpGet]
+        public IActionResult NewAuction()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult NewAuction(NewAuctionViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                Products Product = new Products
+                {
+                    Name = vm.Name,
+                    ImageUrl = vm.ImageUrl,
+                    Price = vm.StartingBid,
+                    Grade = vm.Grade,
+                    Stock = vm.Stock,
+                    DateCreated = DateTime.Now,
+                    AuctionEndTime = vm.AuctionEndTime
+                };
+                _context.Add(Product);
+
+                if(!vm.Category.Contains("Auction")) vm.Category.Add("Auction");
+                IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
+                foreach (string TestCategory in vm.Category)
+                {
+                    if (categories.Contains(TestCategory))
+                    {
+                        Console.WriteLine("Category: " + TestCategory + "is in database");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Category: " + TestCategory + " is NOT in database, ADDING!");
+
+                        //Here code to add new category to database
+                        Category category = new Category
+                        {
+                            CategoryName = TestCategory,
+                            Description = "NULL"
+                        };
+                        _context.Add(category);
+                    }
+
+                    //Adding date to merge Table
+                    ProductCategory productCategory = new ProductCategory
+                    {
+                        ProductId = Product.ProductId,
+                        CategoryName = TestCategory
+                    };
+                    _context.Add(productCategory);
+                }
+
+                _context.SaveChanges();
+            }
+
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> FileUpload(FileUpload formFile)
         {
@@ -700,6 +759,8 @@ namespace TCGshopTestEnvironment.Controllers
             }
             return RedirectToAction("ManageCategories");
         }
+
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
