@@ -9,5 +9,7 @@ namespace TCGshopTestEnvironment.Services
     public interface IAuction
     {
         IEnumerable<AuctionViewModel> GetAuctionCards();
+
+        AuctionDetailViewModel GetByID(int id);
     }
 }

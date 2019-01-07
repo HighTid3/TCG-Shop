@@ -385,6 +385,26 @@ function CatagoryEdit(CatagoryName) {
 
 }
 
+function AuctionBid(Bid, ProductId, currentBid) {
+    if (Bid <= currentBid) {
+        alert("Bid must exceed the current highest bid");
+    }
+    else {
+        $.ajax
+        ({
+            type: 'POST',
+            url: '/Auction/AuctionDetails',
+            data:
+            {
+                Bid: Bid,
+                ProductId: ProductId
+            },
+            success: function(response) {
+                location.reload();
+            }
+        });
+    }
+}
 //$('CategoryDescription').on('click', function () {
 //    var $this = $(this);
 //    var $input = $('<input>', {
