@@ -38,6 +38,7 @@ namespace TCGshopTestEnvironment.Services
 
         public AuctionDetailViewModel GetByID(int id)
         {
+            var HighestBid = _context.AuctionBids.Where(x => x.ProductId == id).Select(x => x.Bid).DefaultIfEmpty().Max();
             return (from p in _context.products
                 let AuctionBids = (from a in _context.AuctionBids
                     where a.Product.ProductId == p.ProductId
@@ -53,7 +54,6 @@ namespace TCGshopTestEnvironment.Services
                         UserId = a.UserId
 
                     }).OrderByDescending(x => x.Bid).Take(5).ToList()
-                let HighestBid = (from b in _context.AuctionBids where b.ProductId == p.ProductId select b.Bid).DefaultIfEmpty().Max()
                 where p.ProductId == id
                 select new AuctionDetailViewModel
                 {
@@ -65,7 +65,7 @@ namespace TCGshopTestEnvironment.Services
                     ImageUrl = p.ImageUrl,
                     Name = p.Name,
                     Price = p.Price,
-                    //HighestBid = HighestBid
+                    HighestBid = HighestBid
         }).FirstOrDefault();
         }
     }

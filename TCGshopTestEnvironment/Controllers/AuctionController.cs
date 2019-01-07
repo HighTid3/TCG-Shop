@@ -47,7 +47,7 @@ namespace TCGshopTestEnvironment.Controllers
         public async Task<IActionResult> AuctionDetails(decimal Bid, int productId)
         {
             var user = await _userManager.GetUserAsync(User);
-            var HighestBid = _context.AuctionBids.Where(x => x.ProductId == productId).Select(x => x.Bid).Max();
+            var HighestBid = _context.AuctionBids.Where(x => x.ProductId == productId).Select(x => x.Bid).DefaultIfEmpty().Max();
             var AuctionBid = new AuctionBids
                 {Bid = Bid, BidDate = DateTime.Now, ProductId = productId, UserId = user.Id};
             _context.AuctionBids.Add(AuctionBid);
