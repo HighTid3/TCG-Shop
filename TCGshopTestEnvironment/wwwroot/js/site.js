@@ -385,9 +385,9 @@ function CatagoryEdit(CatagoryName) {
 
 }
 
-function AuctionBid(Bid, ProductId, currentBid) {
-    if (Bid <= currentBid) {
-        alert("Bid must exceed the current highest bid");
+function AuctionBid(Bid, ProductId, currentBid, Price) {
+    if (Bid <= currentBid || Bid <= Price) {
+        alert("Bid must exceed the current highest bid or the starting bid");
     }
     else {
         $.ajax
