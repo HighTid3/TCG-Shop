@@ -15,6 +15,8 @@ namespace TCGshopTestEnvironment.ViewModels
         public string Grade { get; set; }
         public DateTime AuctionStart { get; set; }
         public DateTime AuctionEnd { get; set; }
+        public string Email { get; set; }
+        public string UserName { get; set; }
 
         public decimal Price { get; set; }
 

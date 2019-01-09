@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Text.Encodings.Web;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Services;
 using TCGshopTestEnvironment.ViewModels;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace TCGshopTestEnvironment.Controllers
 {
@@ -54,5 +56,49 @@ namespace TCGshopTestEnvironment.Controllers
             _context.SaveChanges();
             return Json(new { success = true });
         }
+        //public async Task<IActionResult> NewBid(AuctionDetailViewModel vm)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new UserAccount
+        //        {
+        //            UserName = vm.UserName,
+        //            Email = vm.Email,
+        //
+        //        };
+        //        var result = await _userManager.CreateAsync(user, vm.Email);
+        //
+        //        if (result.Succeeded)
+        //        {
+        //            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        //            //var callbackUrl = Url.Page(
+        //            //    "/Account/ConfirmEmail",
+        //            //    pageHandler: null,
+        //            //    values: new { userId = user.Id, code = code },
+        //            //    protocol: Request.Scheme);
+        //
+        //            var callbackUrl = Url.Action(new UrlActionContext
+        //            {
+        //                Action = "ConfirmEmail",
+        //                Controller = "Account",
+        //                Values = new { userId = user.Id, code = code },
+        //                Protocol = HttpContext.Request.Scheme
+        //            });
+        //
+        //            await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
+        //                "Please confirm your account by <a href=" + callbackUrl + ">clicking here</a>.");
+        //
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        else
+        //        {
+        //            foreach (var error in result.Errors)
+        //            {
+        //                ModelState.AddModelError("", error.Description);
+        //            }
+        //        }
+        //    }
+        //    return View(vm);
+        //}
     }
 }

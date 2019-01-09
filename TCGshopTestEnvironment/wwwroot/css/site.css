@@ -593,6 +593,9 @@ ul.nav.navbar-nav li {
     font-size: 1.6rem;
     border-radius: 5px;
 }
+.BidsForm {
+    width: 250px;
+}
 .callToAction {
     background-color: #f5b740;
     border-color: #f5b740;
