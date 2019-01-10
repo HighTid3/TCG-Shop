@@ -223,12 +223,14 @@ namespace TCGshopTestEnvironment.Controllers
             // sorting list for product sorting
             var OrderStatuslist = new List<SelectListItem>
             {
-                new SelectListItem {Text = "Paid", Value = "paid"},
-                new SelectListItem {Text = "Created", Value = "created"},
+                new SelectListItem {Text = "Order Received", Value = "Order Received"},
+                new SelectListItem {Text = "Assembling Package", Value = "Assembling Package"},
+                new SelectListItem {Text = "Being Transported", Value = "Being Transported"},
+                new SelectListItem {Text = "Delivered", Value = "Delivered"},
                 new SelectListItem {Text = "Cancelled", Value = "Canceled"},
+                new SelectListItem {Text = "Waiting for payment", Value = "Waiting for payment"},
                 new SelectListItem {Text = "Expired", Value = "Expired"},
-                new SelectListItem {Text = "Shipped", Value = "Shipped"},
-                new SelectListItem {Text = "Completed", Value = "Completed"},
+
 
             };
             ViewBag.OrderStatus = OrderStatuslist;
@@ -248,6 +250,35 @@ namespace TCGshopTestEnvironment.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult OrderStatusUpdate()
+        {
+            var status = new List<string> {"Paid", "Assembling Package", "Being Transported", "Order Received", "Waiting for payment", "created" };
+            foreach (var order in _context.Orders.Where(x => status.Contains(x.PaymentStatus) && (DateTime.Now - x.OrderDate).TotalDays > 1 ))
+            {
+                if (order.PaymentStatus == "Paid" || order.PaymentStatus == "Order Received")
+                {
+                    order.PaymentStatus = "Assembling Package";
+                }
+                if (order.PaymentStatus == "Assembling Package")
+                {
+                    order.PaymentStatus = "Being Transported";
+                }
+                if (order.PaymentStatus == "Being Transported")
+                {
+                    order.PaymentStatus = "Delivered";
+                }
+
+                if (order.PaymentStatus == "Waiting for payment" || order.PaymentStatus.ToLower() == "created")
+                {
+                    order.PaymentStatus = "Expired";
+                }
+                _context.Update(order);
+            }
+            _context.SaveChanges();
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
