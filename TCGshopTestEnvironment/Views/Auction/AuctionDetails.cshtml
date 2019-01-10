@@ -113,14 +113,16 @@
                                     <a asp-action="Login" asp-controller="Account"><button value="Place Bid" class="btn btn-default btnPlaceBid" id="PlaceBid">Login to place a bid</button></a>
                                 </div>
                             }
+                            
                             @if (SignInManager.IsSignedIn(User))
                             {                       
                                 @if (DateTime.Now > Model.AuctionEnd)
                                 {
                                     @if (Model.HighestBid == Model.HighestBid)
                                     {
-                                        <button id="AddCartBtn" onclick="AddToCart('@Model.Id', '@Model.Name', '@Model.ImageUrl', '@Model.HighestBid', '@Model.Grade', '1')" class="btnSignIn AddCart" style="background-color: transparent; border-color: transparent; padding-left: 50px; margin-bottom: 10px;"> <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
-
+                                <div class="col-md-12 text-center">
+                                    <button id="AddCartBtn" onclick="AddToCart('@Model.Id', '@Model.Name', '@Model.ImageUrl', '@Model.HighestBid', '@Model.Grade', '1')" class="btn btn-default btnPlaceBid" value="ClaimReward" style="margin-top: 10px;">Claim Reward</button>
+                                </div> 
                                     }
                                 }
                             }
