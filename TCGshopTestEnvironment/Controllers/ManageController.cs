@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Minio;
 using Minio.Exceptions;
 using NuGet.Frameworks;
@@ -700,6 +701,34 @@ namespace TCGshopTestEnvironment.Controllers
             }
             return RedirectToAction("ManageCategories");
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult Statistics()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult ChartGenerator()
+        {
+            return PartialView();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult ChartGenerator(IFormCollection formCollection)
+        {
+            return PartialView();
+        }
+
+
+
+
+
+
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)

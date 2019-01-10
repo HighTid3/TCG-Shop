@@ -1,0 +1,126 @@
+﻿@model IEnumerable<TCGshopTestEnvironment.ViewModels.ManageViewModels.CategoryViewModel>
+@{
+    ViewData["Title"] = "Statistics";
+    ViewData.AddActivePage(ManageNavPages.ManageCategories);
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<!--Proof Of Concept-->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<!---->
+
+
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" href="#collapse1" style="color: black; font-weight: 200;">Chart Configurator</a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse in">
+            <div class="panel-body">
+
+                <form class="form-horizontal" id="ChartConfig">
+                    <fieldset>
+
+                        <!-- Multiple Radios -->
+                        <div class="form-group">
+                            
+                            <div class="col-md-6">
+                                <label>DataSet</label>
+                                <!--RadioPicker-->
+                                <div class="radio">
+                                    <label for="DataSet-0">
+                                        <input type="radio" name="DataSet" id="DataSet-0" value="Sales_Order_Count" checked="checked">
+                                        Sales (number of orders)
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label for="DataSet-1">
+                                        <input type="radio" name="DataSet" id="DataSet-1" value="Sales_Value_Orders">
+                                        Sales (Value of orders)
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label for="DataSet-2">
+                                        <input type="radio" name="DataSet" id="DataSet-2" value="Sales_Item_Count">
+                                        Sales (Amount of Items)
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Date Range</label>
+                                <input style="color: black" type="text" name="daterange" value="01/01/2018 - 01/1/2019" />
+                                <input type="hidden" id="DateStart" name="DateStart" value="">
+                                <input type="hidden" id="DateEnd" name="DateEnd" value="">
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ChartGen"></div>
+
+<script>
+    $(function() {
+        $('input[name="daterange"]').daterangepicker({
+            "showWeekNumbers": true,
+            locale: {
+                format: 'DD/MM/YYYY'
+            },
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            "startDate": "01/01/2018",
+            "endDate": "01/01/2019"
+        
+        }, function(start, end, label) {
+            console.log("A new date selection was made: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
+            $("#DateStart").val(start.format('DD/MM/YYYY'));
+            $("#DateEnd").val(end.format('DD/MM/YYYY'));
+        });
+    });
+</script>
+
+
+<script>
+
+    $('input[type=radio]').on('change', function () {
+        $(this).closest("form").submit();
+    });
+
+
+    $("#ChartConfig").submit(function (e) {
+        var form = $(this);
+        var url = "/Manage/ChartGenerator";
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(), // serializes the form's elements.
+            success: function (data) {
+                $("#ChartGen").html(data); // show response from the php script.
+            }
+        });
+
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
