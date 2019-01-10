@@ -56,49 +56,40 @@ namespace TCGshopTestEnvironment.Controllers
             _context.SaveChanges();
             return Json(new { success = true });
         }
-        //public async Task<IActionResult> NewBid(AuctionDetailViewModel vm)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new UserAccount
-        //        {
-        //            UserName = vm.UserName,
-        //            Email = vm.Email,
-        //
-        //        };
-        //        var result = await _userManager.CreateAsync(user, vm.Email);
-        //
-        //        if (result.Succeeded)
-        //        {
-        //            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        //            //var callbackUrl = Url.Page(
-        //            //    "/Account/ConfirmEmail",
-        //            //    pageHandler: null,
-        //            //    values: new { userId = user.Id, code = code },
-        //            //    protocol: Request.Scheme);
-        //
-        //            var callbackUrl = Url.Action(new UrlActionContext
-        //            {
-        //                Action = "ConfirmEmail",
-        //                Controller = "Account",
-        //                Values = new { userId = user.Id, code = code },
-        //                Protocol = HttpContext.Request.Scheme
-        //            });
-        //
-        //            await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
-        //                "Please confirm your account by <a href=" + callbackUrl + ">clicking here</a>.");
-        //
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        else
-        //        {
-        //            foreach (var error in result.Errors)
-        //            {
-        //                ModelState.AddModelError("", error.Description);
-        //            }
-        //        }
-        //    }
-        //    return View(vm);
-        //}
+
+        [HttpPost]
+        public async Task<IActionResult> RewardEmail(AuctionDetailViewModel vm)
+        {
+            
+                var HighestBidder = new AuctionDetailViewModel
+                {
+                    Id = vm.Id,
+                    UserName = vm.UserName,
+                    Email = vm.Email,
+                    UserId = vm.UserId,
+                    AuctionEnd = vm.AuctionEnd
+                    
+                };
+        
+                if (vm.AuctionEnd < DateTime.Now)
+                {
+                   
+        
+                    var callbackUrl = Url.Action(new UrlActionContext
+                    {
+                        Action = "ClaimReward",
+                        Controller = "Auction",
+                        Values = new { userId = HighestBidder.UserId},
+                        Protocol = HttpContext.Request.Scheme
+                    });
+        
+                    await _emailSender.SendEmailAsync(HighestBidder.Email, "Auction Won!",
+                        "Please claim your reward by <a href=" + callbackUrl + ">clicking here</a>.");
+        
+                    return RedirectToAction("AuctionHouse", "Auction");
+                }
+            
+            return View(vm);
+        }
     }
 }

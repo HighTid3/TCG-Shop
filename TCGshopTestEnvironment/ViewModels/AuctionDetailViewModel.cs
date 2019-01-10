@@ -17,6 +17,7 @@ namespace TCGshopTestEnvironment.ViewModels
         public DateTime AuctionEnd { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
+        public int UserId { get; set; }
 
         public decimal Price { get; set; }
 
