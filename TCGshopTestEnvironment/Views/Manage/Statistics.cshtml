@@ -55,8 +55,8 @@
                             <div class="col-md-6">
                                 <label>Date Range</label>
                                 <input style="color: black" type="text" name="daterange" value="01/01/2018 - 01/1/2019" />
-                                <input type="hidden" id="DateStart" name="DateStart" value="">
-                                <input type="hidden" id="DateEnd" name="DateEnd" value="">
+                                <input type="hidden" id="DateStart" name="DateStart" value="01/01/2018">
+                                <input type="hidden" id="DateEnd" name="DateEnd" value="01/01/2019">
                             </div>
                         </div>
 
@@ -108,12 +108,31 @@
 
     $("#ChartConfig").submit(function (e) {
         var form = $(this);
-        var url = "/Manage/ChartGenerator";
+        var serForm = objectifyForm(form.serializeArray());
+
+
+        var DataSetViewModels = [];
+        DataSetViewModels.push(serForm);
+
+        function objectifyForm(formArray) { //serialize data function
+
+            var returnArray = {};
+            for (var i = 0; i < formArray.length; i++) {
+                returnArray[formArray[i]['name']] = formArray[i]['value'];
+            }
+            return returnArray;
+        }
+
+        var ChartViewModel = { DataSetViewModels: DataSetViewModels }
+
+
+        var d = { ChartViewModel: ChartViewModel };
 
         $.ajax({
             type: "POST",
-            url: url,
-            data: form.serialize(), // serializes the form's elements.
+            url: "/Manage/ChartGenerator",
+            data: JSON.stringify(d), // serializes the form's elements.
+            contentType: "application/json",
             success: function (data) {
                 $("#ChartGen").html(data); // show response from the php script.
             }

@@ -718,8 +718,9 @@ namespace TCGshopTestEnvironment.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult ChartGenerator(IFormCollection formCollection)
+        public IActionResult ChartGenerator(ChartViewModel ChartViewModel)
         {
+
             return PartialView();
         }
 
