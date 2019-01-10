@@ -116,9 +116,9 @@
                             
                             @if (SignInManager.IsSignedIn(User))
                             {                       
-                                @if (DateTime.Now > Model.AuctionEnd)
+                                if (DateTime.Now > Model.AuctionEnd)
                                 {
-                                    @if (Model.HighestBid == Model.HighestBid)
+                                    if (Model.HighestBid == Model.HighestBid)
                                     {
                                 <div class="col-md-12 text-center">
                                     <button id="AddCartBtn" onclick="AddToCart('@Model.Id', '@Model.Name', '@Model.ImageUrl', '@Model.HighestBid', '@Model.Grade', '1')" class="btn btn-default btnPlaceBid" value="ClaimReward" style="margin-top: 10px;">Claim Reward</button>
