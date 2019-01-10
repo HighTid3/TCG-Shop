@@ -52,12 +52,14 @@
                         <h4 style="color: #e6e6e6;">Auction Ends In:</h4>
                         <div id="@asset.Id" style="color: white">
                             <script>
-                                            @{var startime = new DateTimeOffset(asset.AuctionStart);
+                                @{var startime = new DateTimeOffset(asset.AuctionStart);
                                                 var endtime = new DateTimeOffset(asset.AuctionEnd);
                                                  }
-                                            CalculateAuctionTimer(@asset.Id,
-                                                "@startime.ToUnixTimeSeconds()",
-                                                "@endtime.ToUnixTimeSeconds()");
+                                CalculateAuctionTimer(@asset.Id,
+                                    "@startime.ToUnixTimeSeconds()",
+                                    "@endtime.ToUnixTimeSeconds()");
+
+
                             </script>
                         </div>
                         <a asp-controller="Auction" asp-action="AuctionDetails" asp-route-id="@asset.Id">
@@ -67,5 +69,14 @@
                 </div>
             </div>
          }
+        <script>
+            $.ajax
+            ({
+                type: 'POST',
+                url: '/Auction/RewardEmail',
+                success: function (response) {
+                }
+            });
+        </script>
     </div>
 </div>

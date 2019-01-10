@@ -58,38 +58,51 @@ namespace TCGshopTestEnvironment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RewardEmail(AuctionDetailViewModel vm)
+        public async Task<IActionResult> RewardEmail()
         {
-            
-                var HighestBidder = new AuctionDetailViewModel
-                {
-                    Id = vm.Id,
-                    UserName = vm.UserName,
-                    Email = vm.Email,
-                    UserId = vm.UserId,
-                    AuctionEnd = vm.AuctionEnd
+            var EndedAuctions = _context.products.Where(x => x.AuctionEndTime < DateTime.Now && x.AuctionEndTime > new DateTime(2017)).ToList();
+
+                //var HighestBidder = new AuctionDetailViewModel
+                //{
+                //    Id = vm.Id,
+                //    UserName = vm.UserName,
+                //    Email = vm.Email,
+                //    UserId = vm.UserId,
+                //    AuctionEnd = vm.AuctionEnd
                     
-                };
-        
-                if (vm.AuctionEnd < DateTime.Now)
-                {
+                //};
+            var highestBid = new List<UserAccount> { };
+
+            foreach (var Highestbiddings in EndedAuctions)
+            {
+                var userbid = _context.AuctionBids.Where(x => x.ProductId == Highestbiddings.ProductId)
+                    .Select(x => x.User).DefaultIfEmpty().FirstOrDefault();
+                if(userbid != null) highestBid.Add(userbid);
+
+            }
                    
         
-                    var callbackUrl = Url.Action(new UrlActionContext
-                    {
-                        Action = "ClaimReward",
-                        Controller = "Auction",
-                        Values = new { userId = HighestBidder.UserId},
-                        Protocol = HttpContext.Request.Scheme
-                    });
-        
-                    await _emailSender.SendEmailAsync(HighestBidder.Email, "Auction Won!",
-                        "Please claim your reward by <a href=" + callbackUrl + ">clicking here</a>.");
-        
-                    return RedirectToAction("AuctionHouse", "Auction");
-                }
+
+
+            foreach (var user in highestBid)
+            {
+                var callbackUrl = Url.Action(new UrlActionContext
+                {
+                    Action = "ClaimReward",
+                    Controller = "Auction",
+                    Values = new { userId = user.Id },
+                    Protocol = HttpContext.Request.Scheme
+                });
+
+                await _emailSender.SendEmailAsync(user.Email, "Auction Won!",
+                    "Please claim your reward by <a href=" + callbackUrl + ">clicking here</a>.");
+            }
             
-            return View(vm);
+
+            return RedirectToAction("AuctionHouse", "Auction");
+                
+            
+            //return View(vm);
         }
     }
 }
