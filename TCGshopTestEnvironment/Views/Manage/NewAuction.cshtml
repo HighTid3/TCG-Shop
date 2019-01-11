@@ -14,9 +14,8 @@
 
                 <div class="form-group">
                     <form method="post" asp-action="NewAuction" asp-controller="Manage" id="NewProduct">
-                        <div asp-validation-summary="All"></div>
                         <div class="form-group">
-                            <label asp-for="Name"></label> <input asp-for="Name" size="10" class="form-control" /> <span asp-validation-for="Name"></span>
+                            <label asp-for="Name"></label> <input asp-for="Name" size="10" class="form-control" /> <span asp-validation-for="Name" style="color: #e6e6e6"></span>
                         </div>
                         <div class="form-group">
                             <input type="file" class="form-control" style="height: auto" data-val="true" data-val-required="The CardImageUpload field is required." id="CardImageUpload">
@@ -25,28 +24,29 @@
                                 <div class="status">0%</div>
                             </div>
                             <input asp-for="ImageUrl" type="hidden" value="" />
-                            <span asp-validation-for="ImageUrl"></span>
+                            <span asp-validation-for="ImageUrl" style="color: #e6e6e6"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="StartingBid"></label>
                             <input asp-for="StartingBid" size="10" class="form-control" type="number" />
-                            <span asp-validation-for="StartingBid"></span>
+                            <span asp-validation-for="StartingBid" style="color: #e6e6e6"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="AuctionEndTime"></label>
                             <input asp-for="AuctionEndTime" size="10" class="form-control" type="datetime-local" />
-                            <span asp-validation-for="AuctionEndTime"></span>
+                            <span asp-validation-for="AuctionEndTime" style="color: #e6e6e6"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Grade"></label>
                             <input asp-for="Grade" size="10" class="form-control" type="text" />
-                            <span asp-validation-for="Grade"></span>
+                            <span asp-validation-for="Grade" style="color: #e6e6e6"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Category"></label>
+                            <label asp-for="Category" style="color: #e6e6e6"></label>
                             <div class="chips chips-autocomplete catagory-chips" id="NewProductChip"></div>
                             <div id="HiddenCategroyInput">
                             </div>
+                            <span asp-validation-for="Category" style="color: #e6e6e6"></span>
                         </div>
                         <button class="btn btn-primary btnNewProduct btnLogin" type="submit" value="Add Product" name="action">
                             Add New Product
