@@ -1,8 +1,36 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\
 for details on configuring this project to bundle and minify static web assets. */
 
+.pt-10 {
+    padding-top:10px;
+}
+.paddingt50 {
+    padding-top: 50px;
+}
+.paddingb50 {
+    padding-bottom: 60px;
+}
+.slideshow h1 {
+    font-weight: 700;
+}
+.slideshow h1, .slideshow p {
+    color: white;
+}
+.slideshow small {
+    padding-top:5px;
+    color: #ecb858;
+    font-weight: 700;
+    font-size:18px;
+}
+
+td#Magic input[type="text"] {
+    color: black !important;
+    padding: 5px;
+    width: auto;
+}
+
 input[type="search"] {
-    margin-left:10px;
+    margin-left: 10px;
     color: black;
     font-weight: 200;
     padding: 5px;
@@ -422,7 +450,7 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
     color: #e4e4e4;
 }
 .TitleGrade {
-    width: 120px;
+    width: 125px;
     display: -webkit-inline-box;
 } 
 .innerColomn {
@@ -444,6 +472,7 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
     
 }
 .GradeDiamond {
+    text-align: -webkit-center;
     text-transform: uppercase;
     font-size: 1.5rem;
     color: #373737;
@@ -456,6 +485,7 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
 }
 
 .GradeGold {
+    text-align: -webkit-center;
     text-transform: uppercase;
     font-size: 1.5rem;
     color: #373737;
@@ -468,6 +498,7 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
 }
 
 .GradeSilver {
+    text-align: -webkit-center;
     text-transform: uppercase;
     font-size: 1.5rem;
     color: #373737;
@@ -479,6 +510,7 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
     margin-left: 20px;
 } 
 .GradeBronze {
+    text-align: -webkit-center;
     text-transform: uppercase;
     font-size: 1.5rem;
     color: #373737;
@@ -571,7 +603,15 @@ ul.nav.navbar-nav li {
     ul.nav.navbar-nav li:first-child {
         border-left: 1px solid rgba(0, 0, 0, 0.3);
     }
-
+.btnPlaceBid {
+    background-color: #f5b740;
+    border-color: #f5b740;
+    padding: 10px 35px 10px 35px;
+    color: #FFF;
+    font-weight: 700;
+    font-size: 1.6rem;
+    border-radius: 5px;
+}
 .callToAction {
     background-color: #f5b740;
     border-color: #f5b740;

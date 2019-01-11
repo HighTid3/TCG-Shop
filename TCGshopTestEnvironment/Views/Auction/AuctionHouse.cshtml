@@ -53,7 +53,7 @@
                                         <label class="GradeDiamond">@asset.Grade</label><br />
                                     }
                                 </div>
-                                <a asp-controller="Products" asp-action="Detail" asp-route-id="@asset.Id">
+                                <a asp-controller="Auction" asp-action="AuctionDetails" asp-route-id="@asset.Id">
                                     <img src="@(Startup.storagePath + asset.ImageUrl )" class="imageCell imagehover" />
                                 </a>
                                 <br>
@@ -78,4 +78,3 @@
         </div>
     </div>
 </div>
-

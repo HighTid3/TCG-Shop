@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Services;
+using TCGshopTestEnvironment.ViewModels;
 
 namespace TCGshopTestEnvironment.Controllers
 {
@@ -35,5 +36,23 @@ namespace TCGshopTestEnvironment.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult AuctionDetails(int id)
+        {
+            var model = _auction.GetByID(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AuctionDetails(decimal Bid, int productId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var HighestBid = _context.AuctionBids.Where(x => x.ProductId == productId).Select(x => x.Bid).DefaultIfEmpty().Max();
+            var AuctionBid = new AuctionBids
+                {Bid = Bid, BidDate = DateTime.Now, ProductId = productId, UserId = user.Id};
+            _context.AuctionBids.Add(AuctionBid);
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
     }
 }
