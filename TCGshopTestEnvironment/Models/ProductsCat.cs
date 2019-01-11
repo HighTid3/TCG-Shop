@@ -30,5 +30,7 @@ namespace TCGshopTestEnvironment.Models
         public string ImageUrl { get; set; }
 
         public string CategoryName { get; set; }
+
+        public DateTime AuctionEndTime { get; set; }
     }
 }

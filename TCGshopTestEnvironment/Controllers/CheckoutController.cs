@@ -127,7 +127,7 @@ namespace TCGshopTestEnvironment.Controllers
                     }
 
                     );
-
+                    dbProduct.Stock -= product.Amount;
                     //Updating Total
                     Total = Total + product.Amount * dbProduct.Price;
                 }

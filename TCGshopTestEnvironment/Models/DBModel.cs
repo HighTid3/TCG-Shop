@@ -20,6 +20,7 @@ namespace TCGshopTestEnvironment.Models
         public DbSet<ProductsCat> ProductsCat { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<AuctionBids> AuctionBids { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +46,17 @@ namespace TCGshopTestEnvironment.Models
             modelBuilder.Entity<Wishlist>()
                 .HasOne(ma => ma.Product)
                 .WithMany(m => m.User)
+                .HasForeignKey(ma => ma.ProductId);
+
+            modelBuilder.Entity<AuctionBids>()
+                .HasKey(t => new {t.Id});
+            modelBuilder.Entity<AuctionBids>()
+                .HasOne(ma => ma.User)
+                .WithMany(m => m.AuctionProducts)
+                .HasForeignKey(ma => ma.UserId);
+            modelBuilder.Entity<AuctionBids>()
+                .HasOne(ma => ma.Product)
+                .WithMany(m => m.AuctionUser)
                 .HasForeignKey(ma => ma.ProductId);
         }
     }

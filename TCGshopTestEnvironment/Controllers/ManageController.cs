@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Minio;
 using Minio.Exceptions;
 using NuGet.Frameworks;
@@ -223,12 +224,14 @@ namespace TCGshopTestEnvironment.Controllers
             // sorting list for product sorting
             var OrderStatuslist = new List<SelectListItem>
             {
-                new SelectListItem {Text = "Paid", Value = "paid"},
-                new SelectListItem {Text = "Created", Value = "created"},
-                new SelectListItem {Text = "Cancelled", Value = "Canceled"},
+                new SelectListItem {Text = "Order Received", Value = "Order Received"},
+                new SelectListItem {Text = "Assembling Package", Value = "Assembling Package"},
+                new SelectListItem {Text = "Being Transported", Value = "Being Transported"},
+                new SelectListItem {Text = "Delivered", Value = "Delivered"},
+                new SelectListItem {Text = "Cancelled", Value = "Cancelled"},
+                new SelectListItem {Text = "Waiting for payment", Value = "Waiting for payment"},
                 new SelectListItem {Text = "Expired", Value = "Expired"},
-                new SelectListItem {Text = "Shipped", Value = "Shipped"},
-                new SelectListItem {Text = "Completed", Value = "Completed"},
+
 
             };
             ViewBag.OrderStatus = OrderStatuslist;
@@ -248,6 +251,40 @@ namespace TCGshopTestEnvironment.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult OrderStatusUpdate()
+        {
+            var status = new List<string> {"Paid", "Assembling Package", "Being Transported", "Order Received", "Waiting for payment", "created" };
+            foreach (var order in _context.Orders.Where(x => status.Contains(x.PaymentStatus) && (DateTime.Now - x.OrderDate).TotalDays > 1 ))
+            {
+                if (order.PaymentStatus == "Paid" || order.PaymentStatus == "Order Received")
+                {
+                    order.PaymentStatus = "Assembling Package";
+                }
+                if (order.PaymentStatus == "Assembling Package")
+                {
+                    order.PaymentStatus = "Being Transported";
+                }
+                if (order.PaymentStatus == "Being Transported")
+                {
+                    order.PaymentStatus = "Delivered";
+                }
+
+                if (order.PaymentStatus == "Waiting for payment" || order.PaymentStatus.ToLower() == "created")
+                {
+                    order.PaymentStatus = "Expired";
+                    foreach (var orderdetail in order.OrderDetails)
+                    {
+                        var product = _context.products.Single(x => x.ProductId == orderdetail.ProductId);
+                        product.Stock += orderdetail.Quantity;
+                    }
+                }
+                _context.Update(order);
+            }
+            _context.SaveChanges();
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
@@ -431,6 +468,45 @@ namespace TCGshopTestEnvironment.Controllers
             return RedirectToAction("UserManagement");
         }
 
+        [HttpGet]
+        public IActionResult UserAdd()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserAdd(UserManagementAddViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new UserAccount
+                {
+                    UserName = vm.Username,
+                    Email = vm.Email,
+                    ZipCode = vm.ZipCode,
+                    Country = vm.Country,
+                    Address = vm.Address,
+                    PhoneNumber = vm.PhoneNumber,
+                    LastName = vm.LastName,
+                    FirstName = vm.FirstName
+                };
+                var result = await _userManager.CreateAsync(user, vm.Password);
+
+                if (result.Succeeded)
+                {
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
+            return View(vm);
+        }
         //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> FixDatabase(bool yes)
@@ -462,7 +538,16 @@ namespace TCGshopTestEnvironment.Controllers
         public JsonResult ChangeorderStatus(string orderstatus, int orderid)
         {
             var model = _context.Orders.Single(x => x.OrderId == orderid);
+            var orderDetails = _context.Orders.Where(x => x.OrderId == orderid).Select(x => x.OrderDetails).SingleOrDefault();
             model.PaymentStatus = orderstatus;
+            if (orderstatus == "Cancelled" || orderstatus == "Expired")
+            {
+                foreach (var orderdetail in orderDetails)
+                {
+                    var product = _context.products.Single(x => x.ProductId == orderdetail.ProductId);
+                    product.Stock += orderdetail.Quantity;
+                }
+            }
             _context.Orders.Update(model);
             _context.SaveChanges();
             return Json(new { success = true });
@@ -494,6 +579,7 @@ namespace TCGshopTestEnvironment.Controllers
                     Price = vm.Price,
                     Grade = vm.Grade,
                     Stock = vm.Stock,
+                    DateCreated = DateTime.Now
                 };
                 _context.Add(Product);
 
@@ -532,6 +618,65 @@ namespace TCGshopTestEnvironment.Controllers
             return View();
         }
 
+        //Adding New product
+        [HttpGet]
+        public IActionResult NewAuction()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult NewAuction(NewAuctionViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                Products Product = new Products
+                {
+                    Name = vm.Name,
+                    ImageUrl = vm.ImageUrl,
+                    Price = vm.StartingBid,
+                    Grade = vm.Grade,
+                    Stock = 1,
+                    DateCreated = DateTime.Now,
+                    AuctionEndTime = vm.AuctionEndTime
+                };
+                _context.Add(Product);
+
+                if(!vm.Category.Contains("Auction")) vm.Category.Add("Auction");
+                IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
+                foreach (string TestCategory in vm.Category)
+                {
+                    if (categories.Contains(TestCategory))
+                    {
+                        Console.WriteLine("Category: " + TestCategory + "is in database");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Category: " + TestCategory + " is NOT in database, ADDING!");
+
+                        //Here code to add new category to database
+                        Category category = new Category
+                        {
+                            CategoryName = TestCategory,
+                            Description = "NULL"
+                        };
+                        _context.Add(category);
+                    }
+
+                    //Adding date to merge Table
+                    ProductCategory productCategory = new ProductCategory
+                    {
+                        ProductId = Product.ProductId,
+                        CategoryName = TestCategory
+                    };
+                    _context.Add(productCategory);
+                }
+
+                _context.SaveChanges();
+            }
+
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> FileUpload(FileUpload formFile)
         {
@@ -700,6 +845,8 @@ namespace TCGshopTestEnvironment.Controllers
             }
             return RedirectToAction("ManageCategories");
         }
+
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)

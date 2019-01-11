@@ -20,6 +20,8 @@ namespace TCGshopTestEnvironment.Views.Manage
 
         public static string NewProduct => "UserManagement";
 
+        public static string NewAuction => "NewAuction";
+
         public static string ManageCategories => "ManageCategories";
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
@@ -30,6 +32,7 @@ namespace TCGshopTestEnvironment.Views.Manage
 
         public static string NewProductNavClass(ViewContext viewContext) => PageNavClass(viewContext, Orderdetails);
 
+        public static string NewAuctionNavClass(ViewContext viewContext) => PageNavClass(viewContext, NewAuction);
         public static string UserManagementNavClass(ViewContext viewContext) => PageNavClass(viewContext, UserManagement);
 
         public static string ManageCategoriesNavClass(ViewContext viewContext) => PageNavClass(viewContext, ManageCategories);

@@ -109,6 +109,8 @@ namespace TCGshopTestEnvironment.Controllers
                     Stock = result.prods.Stock,
                     CardCatagoryList = result.Catnames,
                     Favorites = false,
+                    AuctionEnd = result.prods.AuctionEndTime,
+                    AuctionStart = result.prods.DateCreated
                 });
 
             //filters
@@ -526,7 +528,7 @@ namespace TCGshopTestEnvironment.Controllers
             {
                 changedproduct.Price = Price;
             }
-
+            changedproduct.DateUpdated = DateTime.Now;
             _context.products.Update(changedproduct);
             _context.SaveChanges();
 
