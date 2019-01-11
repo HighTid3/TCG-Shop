@@ -1,10 +1,9 @@
-﻿@model IEnumerable<TCGshopTestEnvironment.ViewModels.ManageViewModels.CategoryViewModel>
+﻿@using Newtonsoft.Json
+@model IEnumerable<TCGshopTestEnvironment.ViewModels.ManageViewModels.CategoryViewModel>
 @{
     ViewData["Title"] = "ChartGenerator";
     ViewData.AddActivePage(ManageNavPages.ManageCategories);
 }
-
-<h4>@ViewData["Title"]</h4>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
@@ -12,23 +11,56 @@
 
 
 <script>
+
+    var label = [];
+    var total = [];
+    @if (ViewBag.ChartName == "Sales_Value_Orders" || ViewBag.ChartName == "Sales_Order_Count")
+    {
+        if (ViewBag.Chart != null)
+        {
+            foreach (var charts in ViewBag.Chart)
+            {
+                foreach (var chart in charts)
+                {
+                    @: label.push("@chart.OrderDate");
+                    @: total.push("@chart.Total");
+                }
+            }
+        }
+    }
+
+
+    Chart.defaults.global.defaultFontColor = "#e4e4e4";
     var ctx = document.getElementById('myChart').getContext('2d');
-    var chart = new Chart(ctx, {
-        // The type of chart we want to create
-        type: 'line',
+    var chart = new Chart(ctx,
+        {
+            // The type of chart we want to create
+            type: 'line',
 
-        // The data for our dataset
-        data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [{
-                label: "My First dataset",
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45],
-            }]
-        },
 
-        // Configuration options go here
-        options: {}
-    });
+            // The data for our dataset
+            data: {
+                labels: label,
+                datasets: [
+                    {
+                        label: "@ViewBag.ChartNameNice",
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: total
+                    }
+                ]
+            },
+
+            // Configuration options go here
+            options: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: '#e4e4e4'
+                    }
+
+                }
+            }
+        }
+    );
 </script>

@@ -35,7 +35,7 @@
                                 <!--RadioPicker-->
                                 <div class="radio">
                                     <label for="DataSet-0">
-                                        <input type="radio" name="DataSet" id="DataSet-0" value="Sales_Order_Count" checked="checked">
+                                        <input type="radio" name="DataSet" id="DataSet-0" value="Sales_Order_Count">
                                         Sales (number of orders)
                                     </label>
                                 </div>
@@ -43,12 +43,6 @@
                                     <label for="DataSet-1">
                                         <input type="radio" name="DataSet" id="DataSet-1" value="Sales_Value_Orders">
                                         Sales (Value of orders)
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label for="DataSet-2">
-                                        <input type="radio" name="DataSet" id="DataSet-2" value="Sales_Item_Count">
-                                        Sales (Amount of Items)
                                     </label>
                                 </div>
                             </div>
@@ -123,15 +117,14 @@
             return returnArray;
         }
 
-        var ChartViewModel = { DataSetViewModels: DataSetViewModels }
+        var chartViewModel = { DataSetViewModels: DataSetViewModels }
 
 
-        var d = { ChartViewModel: ChartViewModel };
 
         $.ajax({
             type: "POST",
             url: "/Manage/ChartGenerator",
-            data: JSON.stringify(d), // serializes the form's elements.
+            data: JSON.stringify(chartViewModel), // serializes the form's elements.
             contentType: "application/json",
             success: function (data) {
                 $("#ChartGen").html(data); // show response from the php script.
