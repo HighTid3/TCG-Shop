@@ -473,12 +473,12 @@ namespace TCGshopTestEnvironment.Controllers
         //    return View();
         //}
 
-        //public ActionResult GetStockofCard(int productId)
-        //{
-        //    var stock = _assets.GetByID(productId).Stock;
+        public ActionResult GetStockofCard(int productId)
+        {
+            var stock = _assets.GetByID(productId).Stock;
 
-        //    return Json(stock);
-        //}
+            return Json(stock);
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpGet]

@@ -35,8 +35,8 @@
                                 <!--RadioPicker-->
                                 <div class="radio">
                                     <label for="DataSet-0">
-                                        <input type="radio" name="DataSet" id="DataSet-0" value="Sales_Order_Count">
-                                        Sales (number of orders)
+                                        <input type="radio" name="DataSet" id="DataSet-0" value="Sales_Order_Count" required checked>
+                                        Sales (Number of orders)
                                     </label>
                                 </div>
                                 <div class="radio">
@@ -49,8 +49,8 @@
                             <div class="col-md-6">
                                 <label>Date Range</label>
                                 <input style="color: black" type="text" name="daterange" value="01/01/2018 - 01/1/2019" />
-                                <input type="hidden" id="DateStart" name="DateStart" value="01/01/2018">
-                                <input type="hidden" id="DateEnd" name="DateEnd" value="01/01/2019">
+                                <input type="hidden" id="DateStart" data-format="dd/MM/yyyy" name="DateStart" value="01/01/2018">
+                                <input type="hidden" id="DateEnd" data-format="dd/MM/yyyy" name="DateEnd" value="01/01/2019">
                             </div>
                         </div>
 
@@ -88,6 +88,7 @@
             console.log("A new date selection was made: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
             $("#DateStart").val(start.format('DD/MM/YYYY'));
             $("#DateEnd").val(end.format('DD/MM/YYYY'));
+            $("input[type=radio]").trigger("change");
         });
     });
 </script>
@@ -133,6 +134,14 @@
 
         e.preventDefault(); // avoid to execute the actual submit of the form.
     });
+
+    
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<script>
+        $(document).ready(function () {
+            $("input[type=radio]").trigger("change");
+        });
+    </script>

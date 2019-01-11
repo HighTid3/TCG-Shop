@@ -877,12 +877,12 @@ namespace TCGshopTestEnvironment.Controllers
             {
                 
                 string SQL_SUM_ORDERS =
-                    "SELECT SUM(\"Total\") as \"Total\", \"OrderDate\"::date FROM \"Orders\" WHERE \"OrderDate\"::date BETWEEN date \'" +
-                    dataSet.DateStart + "\' AND date \'" + dataSet.DateEnd + "\' GROUP BY \"OrderDate\"::date";
+                    "SELECT SUM(\"Total\") as \"Total\", \"OrderDate\"::date FROM \"Orders\" WHERE \"OrderDate\"::date BETWEEN to_date(\'" +
+                    dataSet.DateStart + "\', \'DD-MM-YYYY\') AND to_date(\'" + dataSet.DateEnd + "\', \'DD-MM-YYYY\') GROUP BY \"OrderDate\"::date";
 
                 string SQL_COUNT_ORDERS =
-                    "SELECT count(\"Total\") as \"Total\", \"OrderDate\"::date  FROM \"Orders\" WHERE \"OrderDate\"::date BETWEEN date \'" +
-                    dataSet.DateStart + "\' AND date \'" + dataSet.DateEnd + "\' GROUP BY \"OrderDate\"::date";
+                    "SELECT count(\"Total\") as \"Total\", \"OrderDate\"::date  FROM \"Orders\" WHERE \"OrderDate\"::date BETWEEN to_date(\'" +
+                    dataSet.DateStart + "\', \'DD-MM-YYYY\') AND to_date(\'" + dataSet.DateEnd + "\', \'DD-MM-YYYY\') GROUP BY \"OrderDate\"::date";
 
                 string SQL_CODE = "";
 

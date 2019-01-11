@@ -9,9 +9,9 @@ namespace TCGshopTestEnvironment.ViewModels
         public string DataSet { get; set; }
 
         [Required]
-        public DateTime DateStart { get; set; }
+        public string DateStart { get; set; }
 
         [Required]
-        public DateTime DateEnd { get; set; }
+        public string DateEnd { get; set; }
     }
 }
