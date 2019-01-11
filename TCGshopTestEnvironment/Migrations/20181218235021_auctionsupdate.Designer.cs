@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TCGshopTestEnvironment.Models;
@@ -9,9 +10,10 @@ using TCGshopTestEnvironment.Models;
 namespace TCGshopTestEnvironment.Migrations
 {
     [DbContext(typeof(DBModel))]
-    partial class DBModelModelSnapshot : ModelSnapshot
+    [Migration("20181218235021_auctionsupdate")]
+    partial class auctionsupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,28 +126,6 @@ namespace TCGshopTestEnvironment.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.AuctionBids", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("Bid");
-
-                    b.Property<DateTime>("BidDate");
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AuctionBids");
                 });
 
             modelBuilder.Entity("TCGshopTestEnvironment.Models.Category", b =>
@@ -462,18 +442,6 @@ namespace TCGshopTestEnvironment.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("TCGshopTestEnvironment.Models.AuctionBids", b =>
-                {
-                    b.HasOne("TCGshopTestEnvironment.Models.Products", "Product")
-                        .WithMany("AuctionUser")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("TCGshopTestEnvironment.Models.UserAccount", "User")
-                        .WithMany("AuctionProducts")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("TCGshopTestEnvironment.Models.JoinTables.ProductCategory", b =>

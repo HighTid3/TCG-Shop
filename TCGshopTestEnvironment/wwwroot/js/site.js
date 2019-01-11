@@ -320,7 +320,7 @@ function toggleWishlist(classId) {
 
 //price input in product edit page
 $('#priceinput').on('input', function () {
-    $(this).val($(this).val().replace(/\./g, ','));
+    //$(this).val($(this).val().replace(/\./g, ','));
 });
 
 //add current sort to form on submit
@@ -385,6 +385,31 @@ function CatagoryEdit(CatagoryName) {
 
 }
 
+function AuctionBid(Bid, ProductId, currentBid, Price) {
+    if (Bid <= currentBid || Bid <= Price) {
+        alert("Bid must exceed the current highest bid or the starting bid");
+    }
+    else {
+        $.ajax
+        ({
+            type: 'POST',
+            url: '/Auction/AuctionDetails',
+            data:
+            {
+                Bid: Bid,
+                ProductId: ProductId
+            },
+                success: function (response) {
+                    if (response == "test") {
+                        alert("Someone else already made a bid using this amount, please refresh page");
+                    } else {
+                        location.reload();
+                    }
+                
+            }
+        });
+    }
+}
 //$('CategoryDescription').on('click', function () {
 //    var $this = $(this);
 //    var $input = $('<input>', {

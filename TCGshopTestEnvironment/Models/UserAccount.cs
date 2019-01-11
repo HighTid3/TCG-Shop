@@ -15,5 +15,7 @@ namespace TCGshopTestEnvironment.Models
         public string FirstName { get; set; }
 
         public virtual List<Wishlist> Products { get; set; }
+
+        public virtual List<AuctionBids> AuctionProducts { get; set; }
     }
 }

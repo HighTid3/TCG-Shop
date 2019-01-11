@@ -4,42 +4,66 @@
     ViewData.AddActivePage(ManageNavPages.Orderdetails);
 }
 
+<h4>Order Status</h4>
+
+@if (Model.Orderstatus.ToLower() == "paid") { Model.Orderstatus = "Order Received"; }
+@if (Model.Orderstatus.ToLower() == "created") { Model.Orderstatus = "Waiting for payment"; }
+@{
+    if (Model.Orderstatus == "Order Received")
+    {
+        <img src="~/images/Stage1-IMG.png" id="TrackOrderimg" style="width: 100%; padding-bottom: 5px; padding-top: 5px" />
+    }
+    else if (Model.Orderstatus == "Assembling Package")
+    {
+        <img src="~/images/Stage2-IMG.png" id="TrackOrderimg" style="width: 100%; padding-bottom: 5px; padding-top: 5px" />
+    }
+    else if (Model.Orderstatus == "Being Transported")
+    {
+        <img src="~/images/Stage3-IMG.png" id="TrackOrderimg" style="width: 100%; padding-bottom: 5px; padding-top: 5px" />
+    }
+    else if (Model.Orderstatus == "Delivered")
+    {
+        <img src="~/images/Stage4-IMG.png" id="TrackOrderimg" style="width: 100%; padding-bottom: 5px; padding-top: 5px" />
+    }
+
+}
+<hr />
 <h4>@ViewData["Title"]</h4>
 
-    <div class="card">
-        <div class="card-header">
-            Invoice
-            <strong>@Model.Ordernr</strong>
-            <br>
-            <span> <strong>Status:</strong> @Model.Orderstatus</span>
-        </div>
-        <div class="card-body">
-            <div class="row mb-4">
-                <div class="col-sm-6">
-                    <h6 class="mb-3">From:</h6>
-                    <div>
-                        <strong>TCG Shop</strong>
-                    </div>
-                    <div>PikachuLane 8</div>
-                    <div>1-99 Level, The Netherlands</div>
-                    <div>Email: Jurre@TCG.Shop</div>
-                    <div>Phone: +31 6 11 22 33 44</div>
+<div class="card">
+    <div class="card-header">
+        Invoice
+        <strong>@Model.Ordernr</strong>
+        <br>
+        <span> <strong>Status:</strong> @Model.Orderstatus</span>
+    </div>
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-sm-6">
+                <h6 class="mb-3">From:</h6>
+                <div>
+                    <strong>TCG Shop</strong>
                 </div>
-
-                <div class="col-sm-6">
-                    <h6 class="mb-3">To:</h6>
-                    <div>
-                        <strong>@Model.FirstName @Model.LastName</strong>
-                    </div>
-                    <div>@Model.Address</div>
-                    <div>@Model.PostalCode, @Model.Country</div>
-                    <div>Email: @Model.Email</div>
-                </div>
+                <div>PikachuLane 8</div>
+                <div>1-99 Level, The Netherlands</div>
+                <div>Email: Jurre@TCG.Shop</div>
+                <div>Phone: +31 6 11 22 33 44</div>
             </div>
 
-            <div class="table-responsive-sm">
-                <table class="table table-striped">
-                    <thead>
+            <div class="col-sm-6">
+                <h6 class="mb-3">To:</h6>
+                <div>
+                    <strong>@Model.FirstName @Model.LastName</strong>
+                </div>
+                <div>@Model.Address</div>
+                <div>@Model.PostalCode, @Model.Country</div>
+                <div>Email: @Model.Email</div>
+            </div>
+        </div>
+
+        <div class="table-responsive-sm">
+            <table class="table table-striped">
+                <thead>
                     <tr>
 
                         <th>Product nr.</th>
@@ -49,42 +73,42 @@
                         <th>Unit Price</th>
                         <th>Total Price</th>
                     </tr>
-                    </thead>
-                    <tbody>
+                </thead>
+                <tbody>
                     @foreach (var order in Model.Orderdetails)
                     {
 
-                            <tr class="assetRow">
-                                <td class="">@order.ProductId</td>
-                                <td class=""><a asp-controller="Products" asp-action="Detail" asp-route-id="@order.ProductId" style="color: white"> @order.ProductName</a></td>
-                                <td class="">@order.Grade</td>
-                                <td class="">@order.Quantity</td>
-                                <td class="">@order.UnitPrice</td>
-                                <td class="">@order.TotalPrice</td>
-                            </tr>
+                        <tr class="assetRow">
+                            <td class="">@order.ProductId</td>
+                            <td class=""><a asp-controller="Products" asp-action="Detail" asp-route-id="@order.ProductId" style="color: white"> @order.ProductName</a></td>
+                            <td class="">@order.Grade</td>
+                            <td class="">@order.Quantity</td>
+                            <td class="">@order.UnitPrice</td>
+                            <td class="">@order.TotalPrice</td>
+                        </tr>
 
                     }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-5">
+            </div>
+
+            <div class="col-lg-4 col-sm-5 ml-auto">
+                <table class="table table-clear">
+                    <tbody>
+                        <tr>
+                            <td class="left">
+                                <strong>Total</strong>
+                            </td>
+                            <td class="right">
+                                <strong>€@Model.Total</strong>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-sm-5">
-                </div>
-
-                <div class="col-lg-4 col-sm-5 ml-auto">
-                    <table class="table table-clear">
-                        <tbody>
-                            <tr>
-                                <td class="left">
-                                    <strong>Total</strong>
-                                </td>
-                                <td class="right">
-                                    <strong>€@Model.Total</strong>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
+</div>
