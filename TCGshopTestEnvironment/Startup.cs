@@ -8,7 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Localization;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Services;
 
@@ -37,11 +40,23 @@ namespace TCGshopTestEnvironment
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-GB");
+                options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-GB") };
+                options.RequestCultureProviders.Clear();
+            });
+
+            // other configurations after (not before)
+
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+
+
             });
 
             services.AddIdentity<UserAccount, IdentityRole>()
@@ -170,6 +185,17 @@ namespace TCGshopTestEnvironment
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
+
+                var supportedCultures = new[] { new CultureInfo("en-GB") };
+                app.UseRequestLocalization(new RequestLocalizationOptions
+                {
+                    DefaultRequestCulture = new RequestCulture("en-GB"),
+                    SupportedCultures = supportedCultures,
+                    SupportedUICultures = supportedCultures
+                });
+
+                // other configurations after (not before)
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
