@@ -10,8 +10,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Minio;
 using Minio.Exceptions;
+using Newtonsoft.Json.Linq;
 using NuGet.Frameworks;
 using TCGshopTestEnvironment.Models;
 using TCGshopTestEnvironment.Models.JoinTables;
@@ -42,7 +45,8 @@ namespace TCGshopTestEnvironment.Controllers
 
         //Minio
         // Initialize the client with access credentials.
-        private static MinioClient minio = new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey).WithSSL();
+        private static MinioClient minio =
+            new MinioClient(Startup.s3Server, Startup.accessKey, Startup.secretKey).WithSSL();
 
         //Minio
 
@@ -176,7 +180,7 @@ namespace TCGshopTestEnvironment.Controllers
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-            var model = new ChangePasswordViewModel { StatusMessage = StatusMessage };
+            var model = new ChangePasswordViewModel {StatusMessage = StatusMessage};
             return View(model);
         }
 
@@ -213,23 +217,22 @@ namespace TCGshopTestEnvironment.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
 
-
-
             var model = _manage.OrderOverview(user.Email);
             if (User.IsInRole("Admin"))
             {
                 model = _manage.GetAllOrders();
             }
+
             // sorting list for product sorting
             var OrderStatuslist = new List<SelectListItem>
             {
-                new SelectListItem {Text = "Paid", Value = "paid"},
-                new SelectListItem {Text = "Created", Value = "created"},
-                new SelectListItem {Text = "Cancelled", Value = "Canceled"},
+                new SelectListItem {Text = "Order Received", Value = "Order Received"},
+                new SelectListItem {Text = "Assembling Package", Value = "Assembling Package"},
+                new SelectListItem {Text = "Being Transported", Value = "Being Transported"},
+                new SelectListItem {Text = "Delivered", Value = "Delivered"},
+                new SelectListItem {Text = "Cancelled", Value = "Cancelled"},
+                new SelectListItem {Text = "Waiting for payment", Value = "Waiting for payment"},
                 new SelectListItem {Text = "Expired", Value = "Expired"},
-                new SelectListItem {Text = "Shipped", Value = "Shipped"},
-                new SelectListItem {Text = "Completed", Value = "Completed"},
-
             };
             ViewBag.OrderStatus = OrderStatuslist;
             return View(model);
@@ -247,7 +250,42 @@ namespace TCGshopTestEnvironment.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult OrderStatusUpdate()
+        {
+            var status = new List<string> {"Paid", "Assembling Package", "Being Transported", "Order Received", "Waiting for payment", "created" };
+            foreach (var order in _context.Orders.Where(x => status.Contains(x.PaymentStatus) && (DateTime.Now - x.OrderDate).TotalDays > 1 ))
+            {
+                if (order.PaymentStatus == "Paid" || order.PaymentStatus == "Order Received")
+                {
+                    order.PaymentStatus = "Assembling Package";
+                }
+                if (order.PaymentStatus == "Assembling Package")
+                {
+                    order.PaymentStatus = "Being Transported";
+                }
+                if (order.PaymentStatus == "Being Transported")
+                {
+                    order.PaymentStatus = "Delivered";
+                }
+
+                if (order.PaymentStatus == "Waiting for payment" || order.PaymentStatus.ToLower() == "created")
+                {
+                    order.PaymentStatus = "Expired";
+                    foreach (var orderdetail in order.OrderDetails)
+                    {
+                        var product = _context.products.Single(x => x.ProductId == orderdetail.ProductId);
+                        product.Stock += orderdetail.Quantity;
+                    }
+                }
+                _context.Update(order);
+            }
+            _context.SaveChanges();
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
@@ -390,7 +428,7 @@ namespace TCGshopTestEnvironment.Controllers
             }
 
             StatusMessage = "Your profile has been updated";
-            return RedirectToAction("UserDetails", new { username = user.UserName });
+            return RedirectToAction("UserDetails", new {username = user.UserName});
         }
 
         [Authorize(Roles = "Admin")]
@@ -431,6 +469,45 @@ namespace TCGshopTestEnvironment.Controllers
             return RedirectToAction("UserManagement");
         }
 
+        [HttpGet]
+        public IActionResult UserAdd()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserAdd(UserManagementAddViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new UserAccount
+                {
+                    UserName = vm.Username,
+                    Email = vm.Email,
+                    ZipCode = vm.ZipCode,
+                    Country = vm.Country,
+                    Address = vm.Address,
+                    PhoneNumber = vm.PhoneNumber,
+                    LastName = vm.LastName,
+                    FirstName = vm.FirstName
+                };
+                var result = await _userManager.CreateAsync(user, vm.Password);
+
+                if (result.Succeeded)
+                {
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
+            return View(vm);
+        }
         //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> FixDatabase(bool yes)
@@ -444,9 +521,11 @@ namespace TCGshopTestEnvironment.Controllers
                 _context.Database.Migrate();
 
                 //Load Data in DB
-                string categories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_categories.sql");
+                string categories =
+                    System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_categories.sql");
                 string products = System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_products.sql");
-                string productsCategories = System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_ProductCategory.sql");
+                string productsCategories =
+                    System.IO.File.ReadAllText(Environment.CurrentDirectory + "/DbRestore/_ProductCategory.sql");
 
                 //Dont await any of them, so they all execute async
                 await _context.Database.ExecuteSqlCommandAsync(categories);
@@ -462,10 +541,19 @@ namespace TCGshopTestEnvironment.Controllers
         public JsonResult ChangeorderStatus(string orderstatus, int orderid)
         {
             var model = _context.Orders.Single(x => x.OrderId == orderid);
+            var orderDetails = _context.Orders.Where(x => x.OrderId == orderid).Select(x => x.OrderDetails).SingleOrDefault();
             model.PaymentStatus = orderstatus;
+            if (orderstatus == "Cancelled" || orderstatus == "Expired")
+            {
+                foreach (var orderdetail in orderDetails)
+                {
+                    var product = _context.products.Single(x => x.ProductId == orderdetail.ProductId);
+                    product.Stock += orderdetail.Quantity;
+                }
+            }
             _context.Orders.Update(model);
             _context.SaveChanges();
-            return Json(new { success = true });
+            return Json(new {success = true});
         }
 
         //Adding New product
@@ -599,7 +687,7 @@ namespace TCGshopTestEnvironment.Controllers
             if (!ModelState.IsValid)
 
             {
-                return Json(new { status = "error", message = "The model is not correct" });
+                return Json(new {status = "error", message = "The model is not correct"});
             }
 
             //Check MIME
@@ -703,7 +791,7 @@ namespace TCGshopTestEnvironment.Controllers
             asset.Description = categorydescription;
             _context.categories.Update(asset);
             _context.SaveChanges();
-            return Json(new { success = true });
+            return Json(new {success = true});
         }
 
         [Authorize(Roles = "Admin")]
@@ -726,10 +814,11 @@ namespace TCGshopTestEnvironment.Controllers
             if (ModelState.IsValid)
             {
                 _context.categories.RemoveRange(_context.categories.Where(x => x.CategoryName == vm.CategoryName));
-                _context.ProductCategory.RemoveRange(_context.ProductCategory.Where(x => x.CategoryName == vm.CategoryName));
+                _context.ProductCategory.RemoveRange(
+                    _context.ProductCategory.Where(x => x.CategoryName == vm.CategoryName));
                 _context.SaveChanges();
             }
-               
+
             return RedirectToAction("ManageCategories");
         }
 
@@ -758,9 +847,84 @@ namespace TCGshopTestEnvironment.Controllers
             {
                 return View();
             }
+
             return RedirectToAction("ManageCategories");
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult Statistics()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult ChartGenerator()
+        {
+            return PartialView();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult ChartGenerator([FromBody] ChartViewModel chartViewModel)
+        {
+            string dataSetType = "";
+
+            List<List<StatSumOrder>> ChartData = new List<List<StatSumOrder>>();
+
+            foreach (var dataSet in chartViewModel.DataSetViewModels)
+            {
+                
+                string SQL_SUM_ORDERS =
+                    "SELECT SUM(\"Total\") as \"Total\", \"OrderDate\"::date FROM \"Orders\" WHERE \"OrderDate\"::date BETWEEN date \'" +
+                    dataSet.DateStart + "\' AND date \'" + dataSet.DateEnd + "\' GROUP BY \"OrderDate\"::date";
+
+                string SQL_COUNT_ORDERS =
+                    "SELECT count(\"Total\") as \"Total\", \"OrderDate\"::date  FROM \"Orders\" WHERE \"OrderDate\"::date BETWEEN date \'" +
+                    dataSet.DateStart + "\' AND date \'" + dataSet.DateEnd + "\' GROUP BY \"OrderDate\"::date";
+
+                string SQL_CODE = "";
+
+                if (dataSet.DataSet == "Sales_Value_Orders")
+                {
+                    SQL_CODE = SQL_SUM_ORDERS;
+                    ViewBag.ChartNameNice = "Sales (Value Orders)";
+                }
+
+                if (dataSet.DataSet == "Sales_Order_Count")
+                {
+                    SQL_CODE = SQL_COUNT_ORDERS;
+                    ViewBag.ChartNameNice = "Sales (Count Orders)";
+                }
+
+
+                var SQL_RESULT = _context.StatSumOrders.FromSql(SQL_CODE).ToList();
+
+                if (SQL_RESULT.Count > 0)
+                {
+                    ChartData.Add(SQL_RESULT);
+                    dataSetType = dataSet.DataSet;
+                }
+
+            
+            }
+
+            ViewBag.Chart = ChartData;
+            ViewBag.ChartName = dataSetType;
+
+
+            //foreach(var charts in ChartData)
+            //{
+            //    foreach (var chart in charts)
+            //    {
+            //        var date = chart.OrderDate;
+            //        decimal total = chart.Total;
+            //    }
+
+            //}
+            return PartialView();
+        }
 
         #region Helpers
 

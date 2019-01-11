@@ -18,7 +18,8 @@
     <tbody>
         @foreach (var order in Model)
         {
-
+            if (order.Status.ToLower() == "paid") {order.Status = "Order Received";}
+            if (order.Status.ToLower() == "created") { order.Status = "Waiting for payment"; }
         <tr class="assetRow">
             <td class="">@order.OrderDate</td>
             <td class="">@order.Ordernr</td>
