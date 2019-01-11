@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Manage\ChartGenerator" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0-preview2-35157" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0-preview2-35157" />
@@ -29,6 +33,12 @@
     <Content Update="Views\Home\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="Views\Manage\ChartGenerator.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Manage\Statistics.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Manage\NewAuction.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -38,6 +48,10 @@
     <Content Update="Views\Products\YuGiOh\YuGiOh.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\NewFolder\" />
   </ItemGroup>
   <Target Name="PrePublishTarget" AfterTargets="Publish">
     <Exec Command="dotnet ef database update" />

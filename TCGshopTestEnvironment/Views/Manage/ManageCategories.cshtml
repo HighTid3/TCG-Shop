@@ -24,13 +24,20 @@
             <td>
             @if (User.IsInRole("Admin"))
             {
+                var excludes = new[] { "YuGiOh", "Pokemon", "Magic", "Auction" };
+                if (!excludes.Contains(order.CategoryName))
+                { 
                 <a onclick="CatagoryEdit('@order.CategoryName')">Edit</a>
                 <a asp-action="CategoryDelete" asp-route-CategoryName="@order.CategoryName">Delete</a>
-
+                }
+                else
+                {
+                    <a>Cannot Modify Default Category</a>
+                }
             }
         </tr>
 
     }
     </tbody>
 </table>
-<a asp-controller="Manage" asp-action="CategoryAdd"><button value="Save" class="btn btn-primary btnRegister">Add Catagory</button></a>
+<a asp-controller="Manage" asp-action="CategoryAdd"><button value="Save" class="btn btn-primary btnRegister">Add Category</button></a>

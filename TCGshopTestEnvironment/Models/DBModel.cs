@@ -21,6 +21,8 @@ namespace TCGshopTestEnvironment.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<AuctionBids> AuctionBids { get; set; }
+        public DbQuery<StatSumOrder> StatSumOrders { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

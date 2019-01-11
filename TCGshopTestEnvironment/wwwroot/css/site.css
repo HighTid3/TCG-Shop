@@ -1,6 +1,28 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\
 for details on configuring this project to bundle and minify static web assets. */
 
+.pt-10 {
+    padding-top:10px;
+}
+.paddingt50 {
+    padding-top: 50px;
+}
+.paddingb50 {
+    padding-bottom: 60px;
+}
+.slideshow h1 {
+    font-weight: 700;
+}
+.slideshow h1, .slideshow p {
+    color: white;
+}
+.slideshow small {
+    padding-top:5px;
+    color: #ecb858;
+    font-weight: 700;
+    font-size:18px;
+}
+
 td#Magic input[type="text"] {
     color: black !important;
     padding: 5px;
