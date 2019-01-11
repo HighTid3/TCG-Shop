@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Minio;
 using Minio.Exceptions;
 using NuGet.Frameworks;
@@ -227,7 +228,7 @@ namespace TCGshopTestEnvironment.Controllers
                 new SelectListItem {Text = "Assembling Package", Value = "Assembling Package"},
                 new SelectListItem {Text = "Being Transported", Value = "Being Transported"},
                 new SelectListItem {Text = "Delivered", Value = "Delivered"},
-                new SelectListItem {Text = "Cancelled", Value = "Canceled"},
+                new SelectListItem {Text = "Cancelled", Value = "Cancelled"},
                 new SelectListItem {Text = "Waiting for payment", Value = "Waiting for payment"},
                 new SelectListItem {Text = "Expired", Value = "Expired"},
 
@@ -274,6 +275,11 @@ namespace TCGshopTestEnvironment.Controllers
                 if (order.PaymentStatus == "Waiting for payment" || order.PaymentStatus.ToLower() == "created")
                 {
                     order.PaymentStatus = "Expired";
+                    foreach (var orderdetail in order.OrderDetails)
+                    {
+                        var product = _context.products.Single(x => x.ProductId == orderdetail.ProductId);
+                        product.Stock += orderdetail.Quantity;
+                    }
                 }
                 _context.Update(order);
             }
@@ -462,6 +468,45 @@ namespace TCGshopTestEnvironment.Controllers
             return RedirectToAction("UserManagement");
         }
 
+        [HttpGet]
+        public IActionResult UserAdd()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserAdd(UserManagementAddViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new UserAccount
+                {
+                    UserName = vm.Username,
+                    Email = vm.Email,
+                    ZipCode = vm.ZipCode,
+                    Country = vm.Country,
+                    Address = vm.Address,
+                    PhoneNumber = vm.PhoneNumber,
+                    LastName = vm.LastName,
+                    FirstName = vm.FirstName
+                };
+                var result = await _userManager.CreateAsync(user, vm.Password);
+
+                if (result.Succeeded)
+                {
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
+            return View(vm);
+        }
         //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> FixDatabase(bool yes)
@@ -493,7 +538,16 @@ namespace TCGshopTestEnvironment.Controllers
         public JsonResult ChangeorderStatus(string orderstatus, int orderid)
         {
             var model = _context.Orders.Single(x => x.OrderId == orderid);
+            var orderDetails = _context.Orders.Where(x => x.OrderId == orderid).Select(x => x.OrderDetails).SingleOrDefault();
             model.PaymentStatus = orderstatus;
+            if (orderstatus == "Cancelled" || orderstatus == "Expired")
+            {
+                foreach (var orderdetail in orderDetails)
+                {
+                    var product = _context.products.Single(x => x.ProductId == orderdetail.ProductId);
+                    product.Stock += orderdetail.Quantity;
+                }
+            }
             _context.Orders.Update(model);
             _context.SaveChanges();
             return Json(new { success = true });
