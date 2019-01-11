@@ -37,6 +37,8 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Manage\Statistics.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Manage\NewAuction.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
