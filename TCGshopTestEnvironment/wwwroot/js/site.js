@@ -399,8 +399,13 @@ function AuctionBid(Bid, ProductId, currentBid, Price) {
                 Bid: Bid,
                 ProductId: ProductId
             },
-            success: function(response) {
-                location.reload();
+                success: function (response) {
+                    if (response == "test") {
+                        alert("Someone else already made a bid using this amount, please refresh page");
+                    } else {
+                        location.reload();
+                    }
+                
             }
         });
     }

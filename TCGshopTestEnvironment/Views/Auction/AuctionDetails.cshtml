@@ -71,6 +71,14 @@
                                     CalculateAuctionTimer(@Model.Id,
                                         "@startime.ToUnixTimeSeconds()",
                                         "@endtime.ToUnixTimeSeconds()");
+
+                                    $.ajax
+                                    ({
+                                        type: 'POST',
+                                        url: '/Auction/RewardEmail',
+                                        success: function (response) {
+                                        }
+                                    });
                                 </script>
                             </div>
                             <h4 style="color: white;">Current Bids:</h4>
@@ -90,22 +98,43 @@
                             {
 
                                 <p>
-                                    <strong style="color: #e4e4e4;">Price</strong> <br/>
-                                    <label style="color: #e4e4e4;"><input class="form-control" style="color: black;" id="BidInput" placeholder="@Model.HighestBid"/></label>
+                                    <strong style="color: #e4e4e4;">Place Bid</strong> <br />
+                                    <label style="color: #e4e4e4;"><input class="BidsForm" style="color: #2b2b2b; height: 30px; border-radius: 3px; padding-left: 10px;" id="BidInput" placeholder="@Model.HighestBid" /></label>
                                 </p>
 
                                 <div class="col-md-12 text-center">
                                     <button value="Place Bid" class="btn btn-default btnPlaceBid" id="PlaceBid" onclick="AuctionBid(document.getElementById('BidInput').value, @Model.Id, @Model.HighestBid, @Model.Price)">Place Bid</button>
                                 </div>
+                                if (DateTime.Now > Model.AuctionEnd)
+                                {
+                                    if (Model.HighestBid == Model.HighestBid)
+                                    {
+                                        <button id="AddCartBtn" onclick="AddToCart('@Model.Id', '@Model.Name', '@Model.ImageUrl', '@Model.HighestBid', '@Model.Grade', '1')" class="btnSignIn AddCart" style="background-color: transparent; border-color: transparent; padding-left: 50px; margin-bottom: 10px;"> <i class="fa fa-shopping-cart" style="font-size: 2.0rem;"></i></button>
 
+                                    }
+                                }
 
                             }
                             else
                             {
                                 <div class="col-md-12 text-center">
-                                    <a asp-action="Login" asp-controller="Account"><button value="Place Bid" class="btn btn-default btnPlaceBid" id="PlaceBid">Please login to place a bid</button></a>
+                                    <a asp-action="Login" asp-controller="Account"><button value="Place Bid" class="btn btn-default btnPlaceBid" id="PlaceBid">Login to place a bid</button></a>
                                 </div>
                             }
+                            
+                            @if (SignInManager.IsSignedIn(User))
+                            {                       
+                                if (DateTime.Now > Model.AuctionEnd)
+                                {
+                                    if (Model.HighestBid == Model.HighestBid)
+                                    {
+                                <div class="col-md-12 text-center">
+                                    <button id="AddCartBtn" onclick="AddToCart('@Model.Id', '@Model.Name', '@Model.ImageUrl', '@Model.HighestBid', '@Model.Grade', '1')" class="btn btn-default btnPlaceBid" value="ClaimReward" style="margin-top: 10px;">Claim Reward</button>
+                                </div> 
+                                    }
+                                }
+                            }
+
                         </div>
                     </div>
             </div>

@@ -31,5 +31,7 @@ namespace TCGshopTestEnvironment.ViewModels
         public string Email { get; set; }
 
         public decimal Price { get; set; }
+
+        public decimal AuctionBids { get; set; }
     }
 }

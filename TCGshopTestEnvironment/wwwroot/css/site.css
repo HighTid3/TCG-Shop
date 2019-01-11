@@ -595,6 +595,9 @@ button.btn.btn-default.btnSignIn:hover, button.btn.btn-default.btnSignIn:focus, 
     margin-top: 20px;
     margin-bottom: 20px;
 }
+.AuctionGrid {
+    display: inline;
+}
 
 ul.nav.navbar-nav li {
     border-right: 1px solid rgba(0, 0, 0, 0.3);
@@ -611,6 +614,9 @@ ul.nav.navbar-nav li {
     font-weight: 700;
     font-size: 1.6rem;
     border-radius: 5px;
+}
+.BidsForm {
+    width: 250px;
 }
 .callToAction {
     background-color: #f5b740;

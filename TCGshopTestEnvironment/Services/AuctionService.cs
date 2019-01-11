@@ -22,7 +22,7 @@ namespace TCGshopTestEnvironment.Services
         {
             return (from p in _context.products
                 join c in _context.ProductCategory on p.ProductId equals c.ProductId
-                where c.CategoryName == "Auction"
+                where c.CategoryName == "Auction" && p.Removed == false
                 select new AuctionViewModel
                 {
                     AuctionEnd = p.AuctionEndTime,
@@ -30,7 +30,7 @@ namespace TCGshopTestEnvironment.Services
                     Id = p.ProductId,
                     Grade = p.Grade,
                     ImageUrl = p.ImageUrl,
-                    Name = p.Name,
+                    Name = p.Name
 
                 }).ToList();
 
@@ -52,6 +52,7 @@ namespace TCGshopTestEnvironment.Services
                         Product = a.Product,
                         ProductId = a.ProductId,
                         UserId = a.UserId
+                        
 
                     }).OrderByDescending(x => x.Bid).Take(5).ToList()
                 where p.ProductId == id
