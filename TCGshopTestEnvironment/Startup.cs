@@ -40,12 +40,12 @@ namespace TCGshopTestEnvironment
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-GB");
-                options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-GB") };
-                options.RequestCultureProviders.Clear();
-            });
+            //services.Configure<RequestLocalizationOptions>(options =>
+            //{
+            //    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-GB");
+            //    options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-GB") };
+            //    options.RequestCultureProviders.Clear();
+            //});
 
             // other configurations after (not before)
 
@@ -185,14 +185,6 @@ namespace TCGshopTestEnvironment
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
-
-                var supportedCultures = new[] { new CultureInfo("en-GB") };
-                app.UseRequestLocalization(new RequestLocalizationOptions
-                {
-                    DefaultRequestCulture = new RequestCulture("en-GB"),
-                    SupportedCultures = supportedCultures,
-                    SupportedUICultures = supportedCultures
-                });
 
                 // other configurations after (not before)
             
