@@ -175,6 +175,7 @@ namespace TCGshopTestEnvironment.Controllers
         public IActionResult PartialLogin()
         {
             ViewBag.Title = "Login Page";
+            ViewBag.Checkout = "Checkout";
             return PartialView("login");
         }
 

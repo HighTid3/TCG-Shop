@@ -275,8 +275,9 @@ namespace TCGshopTestEnvironment.Controllers
 
                 if (order.PaymentStatus == "Waiting for payment" || order.PaymentStatus.ToLower() == "created")
                 {
+                    var orderdetails = _context.OrderDetails.Where(x => x.OrderId == order.OrderId).ToList();
                     order.PaymentStatus = "Expired";
-                    foreach (var orderdetail in order.OrderDetails)
+                    foreach (var orderdetail in orderdetails)
                     {
                         var product = _context.products.Single(x => x.ProductId == orderdetail.ProductId);
                         product.Stock += orderdetail.Quantity;
@@ -462,6 +463,8 @@ namespace TCGshopTestEnvironment.Controllers
             var currentuser = await _userManager.GetUserAsync(User);
             if (user != currentuser)
             {
+                var wishlists = _context.wishlists.Where(x => x.UserId == user.Id);
+                _context.wishlists.RemoveRange(wishlists);
                 _context.userAccounts.Remove(user);
                 _context.SaveChanges();
             }
@@ -587,32 +590,35 @@ namespace TCGshopTestEnvironment.Controllers
                 _context.Add(Product);
 
                 IEnumerable<string> categories = _context.categories.Select(x => x.CategoryName).ToList();
-                foreach (string TestCategory in vm.Category)
+                if (vm.Category != null)
                 {
-                    if (categories.Contains(TestCategory))
+                    foreach (string TestCategory in vm.Category)
                     {
-                        Console.WriteLine("Category: " + TestCategory + "is in database");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Category: " + TestCategory + " is NOT in database, ADDING!");
-
-                        //Here code to add new category to database
-                        Category category = new Category
+                        if (categories.Contains(TestCategory))
                         {
-                            CategoryName = TestCategory,
-                            Description = "NULL"
-                        };
-                        _context.Add(category);
-                    }
+                            Console.WriteLine("Category: " + TestCategory + "is in database");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Category: " + TestCategory + " is NOT in database, ADDING!");
 
-                    //Adding date to merge Table
-                    ProductCategory productCategory = new ProductCategory
-                    {
-                        ProductId = Product.ProductId,
-                        CategoryName = TestCategory
-                    };
-                    _context.Add(productCategory);
+                            //Here code to add new category to database
+                            Category category = new Category
+                            {
+                                CategoryName = TestCategory,
+                                Description = "NULL"
+                            };
+                            _context.Add(category);
+                        }
+
+                        //Adding date to merge Table
+                        ProductCategory productCategory = new ProductCategory
+                        {
+                            ProductId = Product.ProductId,
+                            CategoryName = TestCategory
+                        };
+                        _context.Add(productCategory);
+                    }
                 }
 
                 _context.SaveChanges();
