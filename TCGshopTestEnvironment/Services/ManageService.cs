@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TCGshopTestEnvironment.Models;
@@ -24,7 +25,7 @@ namespace TCGshopTestEnvironment.Services
                        OrderDate = p.OrderDate,
                        Ordernr = p.Guid.ToString(),
                        Status = p.PaymentStatus,
-                       TotalPrice = p.Total,
+                       TotalPrice = Convert.ToDecimal(p.Total.ToString("F")),
                        OrderId = p.OrderId
                    }).OrderByDescending(x => x.OrderDate);
         }
@@ -37,7 +38,7 @@ namespace TCGshopTestEnvironment.Services
                        OrderDate = p.OrderDate,
                        Ordernr = p.Guid.ToString(),
                        Status = p.PaymentStatus,
-                       TotalPrice = p.Total,
+                       TotalPrice = Convert.ToDecimal(p.Total.ToString("F")),
                        OrderId = p.OrderId
                    }).OrderByDescending(x => x.OrderDate);
         }
@@ -55,8 +56,8 @@ namespace TCGshopTestEnvironment.Services
                                             Grade = c.Grade,
                                             ProductId = d.ProductId,
                                             Quantity = d.Quantity,
-                                            UnitPrice = d.UnitPrice,
-                                            TotalPrice = d.UnitPrice * d.Quantity
+                                            UnitPrice = Convert.ToDecimal(d.UnitPrice.ToString("F")),
+                                            TotalPrice = Convert.ToDecimal(d.UnitPrice.ToString("F")) * d.Quantity
                                         }).ToList()
                     where p.OrderId == OrderId
                     select new OrderDetailsViewModel
@@ -73,7 +74,7 @@ namespace TCGshopTestEnvironment.Services
                         Orderstatus = p.PaymentStatus,
                         PostalCode = p.PostalCode,
                         State = p.State,
-                        Total = p.Total
+                        Total = Convert.ToDecimal(p.Total.ToString("F"))
                     }).FirstOrDefault();
         }
 
