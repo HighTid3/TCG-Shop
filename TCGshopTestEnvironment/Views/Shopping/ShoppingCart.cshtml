@@ -95,11 +95,11 @@ else
                <div class="col-md-6" style="padding-top:35px;">
                    @if (SignInManager.IsSignedIn(User))
                    {
-                       <a href="/checkout/start"><button class="btn btn-default btnSignIn" style="width: 100% !important;">Checkout</button></a>
+                       <a href="/checkout/start"><button class="btn btn-default btnSignIn" style="width: 100% !important;" id="btn-checkout">Checkout</button></a>
                    }
                    else
                    {
-                       <a asp-action="LoginOrContinue" asp-controller="Checkout"><button class="btn btn-default btnSignIn" style="width: 100% !important;">Checkout</button></a>
+                       <a asp-action="LoginOrContinue" asp-controller="Checkout"><button class="btn btn-default btnSignIn" style="width: 100% !important;" id="btn-checkout">Checkout</button></a>
                    }
 
                </div>
@@ -118,6 +118,7 @@ document.getElementById("clearall").addEventListener('click', function () {
     window.location.reload();
   }
 });
+if (shoppingCart.length < 1) { $("#btn-checkout").attr("disabled", true); }
 </script>
 
 <script type='text/javascript' src='/js/ShoppingCart.js' defer='defer'></script>*

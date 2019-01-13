@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    if (shoppingCart.length < 1) { $("#btn-checkout").attr("disabled", true); }
     shoppingCart.forEach(function (e) {
         floatprice = e.Price.replace(/,/g, ".");
         totalprice = e.Amount * parseFloat(floatprice).toFixed(2);
@@ -86,6 +87,7 @@
             }
 
             $button.parent().find("input").val(newVal);
+            if (shoppingCart.length < 1) { $("#btn-checkout").attr("disabled", true); }
         });
     });
 
@@ -132,6 +134,7 @@ function overzichtotalprice() {
     for (var i = 0, _len = shoppingCart.length; i < _len; i++) {
         total += (parseFloat(shoppingCart[i]["Price"].replace(/,/g, ".")) * shoppingCart[i]["Amount"]);
     }
+    if (shoppingCart.length < 1) { $("#btn-checkout").attr("disabled", true); }
     return total.toFixed(2);
 }
 //check if manual input of amount for the item is valid with stock and not negative
@@ -192,7 +195,6 @@ function inputvalidatewithstock(productid) {
             });
     }
 }
-
 //$(function () {
 //    // Document.ready -> link up remove event handler
 //    $(".RemoveLink").click(function () {
