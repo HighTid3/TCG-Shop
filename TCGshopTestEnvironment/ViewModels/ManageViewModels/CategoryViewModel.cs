@@ -9,6 +9,7 @@ namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
     public class CategoryViewModel
     {
         [Required]
+        [Display(Name = "Category name")]
         public string CategoryName { get; set; }
 
         public string Description { get; set; }

@@ -45,7 +45,7 @@ namespace TCGshopTestEnvironment.Services
 
                     select new AuctionBids
                     {
-                        Bid = a.Bid,
+                        Bid = Convert.ToDecimal(a.Bid.ToString("F")),
                         User = a.User,
                         BidDate = a.BidDate,
                         Id = a.Id,

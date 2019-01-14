@@ -22,6 +22,7 @@ namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
         [Display(Name = "Email Address")]
         public string Email { get; set; }
 
+        [Display(Name = "Email Confirmed?")]
         public bool EmailConfirmed { get; set; }
 
         [DataType(DataType.PhoneNumber)] public string PhoneNumber { get; set; }

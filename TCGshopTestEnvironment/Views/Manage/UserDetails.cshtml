@@ -38,10 +38,14 @@
                         <label asp-for="ZipCode" class="col-md-3 regLabel"></label>
                         <label maxlength="10">@Model.ZipCode</label>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="PhoneNumber" class="col-md-3 regLabel"></label>
-                        <label maxlength="200">@Model.PhoneNumber</label>
-                    </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="col-md-3 regLabel"></label>
+                    <label maxlength="200">@Model.PhoneNumber</label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailConfirmed" class="col-md-3 regLabel"></label>
+                    <input asp-for="EmailConfirmed" type="checkbox" disabled="" value="@Model.EmailConfirmed"></input>
+                </div>
                     <p class="col-md-3 regReq">
                     </p>
                     <div class="col-md-12 text-center">

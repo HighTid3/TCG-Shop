@@ -19,11 +19,11 @@
 
                     <div class="col-md-6">
                         <strong style="color: #e4e4e4;">Name</strong> <br />
-                        <input asp-for="Name" class="form-control" style="color: black;" />
+                        <input asp-for="Name" class="form-control" style="color: black;" pattern=".{1,}"   required title="Name has to be atleast 1 character"/>
                         <strong style="color: #e4e4e4;">Grade</strong> <br />
                         <label class="GradeText" style="font-size: 1.5rem;">
                             <input asp-for="Grade" class="form-control" type="number" style="color: black;" min="1"
-                                   step="1"
+                                   step="1" max="10"
                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                    title="Numbers only">
                         </label>
@@ -43,7 +43,7 @@
 
                         <p>
                             <strong style="color: #e4e4e4;">Price</strong> <br />
-                            <label style="color: #e4e4e4;"><input asp-for="Price" class="form-control" style="color: black;" id="priceinput" /></label>
+                            <label style="color: #e4e4e4;"><input asp-for="Price" class="form-control" style="color: black;" id="priceinput" min="0.01" type="price" step=".01"/></label>
                         </p>
                         <input type="hidden" asp-for="Id" value="@Model.Id" />
                         <input type="hidden" asp-for="returnUrl" value="@ViewBag.returnUrl" />

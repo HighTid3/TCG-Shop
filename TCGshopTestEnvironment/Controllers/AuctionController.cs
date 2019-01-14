@@ -71,7 +71,7 @@ namespace TCGshopTestEnvironment.Controllers
                         "You have been outbidden on a action you made a bid on");
                 }
                 var AuctionBid = new AuctionBids
-                { Bid = Bid, BidDate = DateTime.Now, ProductId = productId, UserId = user.Id };
+                { Bid = Convert.ToDecimal(Bid.ToString("F")), BidDate = DateTime.Now, ProductId = productId, UserId = user.Id };
                 _context.AuctionBids.Add(AuctionBid);
                 _context.SaveChanges();
                 return Json(new { success = true });

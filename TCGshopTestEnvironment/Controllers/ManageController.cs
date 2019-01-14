@@ -427,6 +427,15 @@ namespace TCGshopTestEnvironment.Controllers
                     throw new ApplicationException(
                         $"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
             }
+            var emailconfirmed = user.EmailConfirmed;
+            if (vm.EmailConfirmed != emailconfirmed)
+            {
+                user.EmailConfirmed = vm.EmailConfirmed;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                    throw new ApplicationException(
+                        $"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
+            }
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction("UserDetails", new {username = user.UserName});
@@ -492,7 +501,9 @@ namespace TCGshopTestEnvironment.Controllers
                     Address = vm.Address,
                     PhoneNumber = vm.PhoneNumber,
                     LastName = vm.LastName,
-                    FirstName = vm.FirstName
+                    FirstName = vm.FirstName,
+                    EmailConfirmed = vm.EmailConfirmed
+                    
                 };
                 var result = await _userManager.CreateAsync(user, vm.Password);
 
