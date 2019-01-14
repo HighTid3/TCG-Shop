@@ -29,12 +29,10 @@ namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
 
         [DataType(DataType.PostalCode)] public string ZipCode { get; set; }
 
-        [Required]
         [MaxLength(256)]
         [Display(Name = "Last name")]
         public string LastName { get; set; }
 
-        [Required]
         [MaxLength(256)]
         [Display(Name = "First name")]
         public string FirstName { get; set; }
