@@ -4,7 +4,6 @@ namespace TCGshopTestEnvironment.ViewModels.ManageViewModels
 {
     public class IndexViewModel
     {
-        [Required]
         public string Username { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
